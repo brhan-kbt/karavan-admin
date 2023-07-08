@@ -1,0 +1,144 @@
+<div class="relative h-screen flex ">
+    <div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
+      <div class="sm:w-1/2 xl:w-3/5 h-full hidden md:flex flex-auto items-center justify-center p-10 overflow-hidden  text-white bg-no-repeat bg-cover relative"
+      style="background-image: url('assets/bg/bg-1.svg');" 
+      >
+        <div class="w-full  max-w-md z-10">
+          <div class="flex gap-5 justify-center">
+            <img class="w-[50%]"  src="assets/navbar/logo.svg" alt="">
+            <img class="w-[50%]" src="assets/navbar/text.svg" alt="">
+        </div>
+        </div>
+     
+      </div>
+      <div class="md:flex md:items-center md:justify-center font-cormorant w-full sm:w-auto md:h-full w-2/5 xl:w-2/5 p-8  md:p-10 lg:p-14 sm:rounded-lg md:rounded-none bg-white">
+        <div class="max-w-md w-full space-y-8">
+            <div class="flex md:hidden gap-5 justify-center">
+                <img class="w-[50%]"  src="assets/navbar/logogreen.svg" alt="">
+                <img class="w-[50%]" src="assets/navbar/textgreen.svg" alt="">
+            </div>
+          <div class="text-center">
+            <h2 class="mt-6 text-5xl font-bold text-[#0E483F]">
+              Welcom Back!
+            </h2>
+            <p class="mt-2 text-2xl  text-gray-900">Please sign in to your account</p>
+          </div>
+          
+          <form class="mt-8 space-y-6" action="#" method="POST">
+            <input type="hidden" name="remember" value="true">
+            <div class="flex flex-col mb-5">
+                <label
+                  for="email"
+                  class="mb-3 text-xl tracking-wide text-gray-800"
+                  >Email Address:</label
+                >
+                <div class="relative">
+                  <div
+                    class="
+                      inline-flex
+                      items-center
+                      text-xl
+                      justify-center
+                      absolute
+                      left-0
+                      top-0
+                      h-full
+                      w-10
+                      text-gray-800
+                    "
+                  >
+                    <i class="fas fa-at text-[#0E483F]"></i>
+                  </div>
+  
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    class="
+                      placeholder-gray-600
+                      pl-10
+                      pr-4
+                      rounded-lg
+                      text-xl
+                      border border-gray-400
+                      w-full
+                      py-2
+                      focus:outline-none focus:border-[#0E483F]
+                    "
+                    placeholder="Enter your email"
+                  />
+                </div>
+              </div>
+              <div class="flex flex-col mb-6">
+                <label
+                  for="password"
+                  class="mb-3 text-xl tracking-wide text-gray-900"
+                  >Password:</label
+                >
+                <div class="relative">
+                  <div
+                    class="
+                      inline-flex
+                      items-center
+                      justify-center
+                      absolute
+                      text-xl
+                      left-0
+                      top-0
+                      h-full
+                      w-10
+                      text-gray-400
+                    "
+                  >
+                    <span>
+                      <i class="fas fa-lock text-[#0E483F]"></i>
+                    </span>
+                  </div>
+  
+                  <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    class="
+                      text-xl
+                      placeholder-gray-600
+                      pl-10
+                      pr-4
+                      rounded-lg
+                      border border-gray-400
+                      w-full
+                      py-2
+                      focus:outline-none focus:border-[#0E483F]
+                    "
+                    placeholder="Enter your password"
+                  />
+                </div>
+              </div>
+  
+            <div class="flex flex-col gap-5 md:flex-row md:items-center justify-between">
+              <div class="flex items-center">
+                <input id="remember_me" name="remember_me" type="checkbox"
+                  class="h-4 w-4 bg-[#0E483F] focus:ring-[#0E483F] border-gray-300 rounded">
+                <label for="remember_me" class="ml-2 block text-xl text-gray-900">
+                  Remember me
+                </label>
+              </div>
+              <div class="flex justify-end">
+                <a href="#" class="text-indigo-700 text-xl font-bold hover:text-[#0E483F]">
+                  Forgot your password?
+                </a>
+              </div>
+            </div>
+            
+            <div>
+              <button type="submit"
+                class="w-full flex justify-center bg-[#0E483F] text-xl  hover:bg-[#0E483F]/90 text-gray-100 p-4  rounded-lg  font-semibold  shadow-lg cursor-pointer ease-in duration-500">
+                Sign in
+              </button>
+            </div>
+          
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

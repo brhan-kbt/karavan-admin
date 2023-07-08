@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Cormorant+Infant:wght@400;500;600;700&family=Josefin+Sans:ital,wght@0,400;1,500;1,600;1,700&display=swap');
+@import '~@angular/cdk/overlay-prebuilt.css';
+$primaryColor: #0E483F;
+$secondaryColor: #EDDDC4;
+$thirdColor: #343942;
+$fourthColor: #FFF8F5;
+$whiteColor: #FFFFFF;
+$blackColor: #000000;
+$redColor: #FF0000;
+$cormorant-gramond: 'Cormorant Garamond', serif;
+$cormorant-infant: 'Cormorant Infant', serif;
+$josefin: 'Josefin Sans', sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    background: #f4f7fa;
+}
+
+
+.card{
+    display: flex;
+    flex-direction: column;
+    border-radius: .5rem;
+    background-color: #fff;
+    margin: 1.25rem 1.25rem 0;
+    box-shadow:0 0.25rem .5rem #e6edef;
+    color: #495057;
+    .card-head{
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid  #edf1f7;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    .card-body{
+        padding: 1rem 1.5rem;
+    }
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// .mat-mdc-table{
+//     background-color: $secondaryColor;
+// }
+// .mat-mdc-table .mdc-data-table__header-row , .mat-mdc-paginator-container {
+//     background-color: $primaryColor;
+// }
+// .mdc-data-table__cell {
+//     color: #000000;
+// }
+// .mat-mdc-table .mdc-mdc-row{
+//     border-bottom: 1px solid $thirdColor;
+// }
+// .mdc-data-table__content tr{
+//     border-bottom: 2px solid #b2b3b5;
+// }
+
+// .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label{
+//     color: #0E483F;
+// }
+
+// .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label{
+//     color: #000000;
+// }
