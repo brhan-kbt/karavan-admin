@@ -13,6 +13,31 @@ $redColor: #FF0000;
 $cormorant-gramond: 'Cormorant Garamond', serif;
 $cormorant-infant: 'Cormorant Infant', serif;
 $josefin: 'Josefin Sans', sans-serif;
+// @use '@angular/material' as mat;
+
+// @include mat.core();
+
+// $indigo-palette: (
+//  50: #e8eaf6,
+//  100: #c5cae9,
+//  200: #9fa8da,
+//  300: #7986cb,
+// );
+
+// $my-primary: mat.define-palette(mat.$indigo-palette, 500);
+// $my-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+
+// $my-theme: mat.define-light-theme((
+//  color: (
+//    primary: $my-primary,
+//    accent: $my-accent,
+//  ),
+//  typography: mat.define-typography-config(),
+//  density: 0,
+// ));
+
+// @include mat.all-component-themes($my-theme);
+
 * {
     margin: 0;
     padding: 0;
@@ -23,8 +48,20 @@ body {
     position: relative;
     background: #f4f7fa;
 }
+ .mdc-notched-outline__leading {
+    border-color: #0E483F !important;
+  }
+   .mdc-notched-outline__notch {
+    border-right-color: transparent !important;
+    border-left-color: #0E483F !important;
+    border-bottom-color: #0E483F !important;
+    border-top-color: #0E483F !important;
+  }
+   .mdc-notched-outline__trailing {
+    border-color: #0E483F !important;
+  }
 
-
+  
 .card{
     display: flex;
     flex-direction: column;
@@ -68,3 +105,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 // .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label{
 //     color: #000000;
 // }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

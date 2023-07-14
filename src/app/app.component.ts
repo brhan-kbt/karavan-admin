@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AuthService } from './services/auth/auth.service';
 interface SideNavToggle{
   screenWidth:number;
   collapsed:boolean;
@@ -15,19 +16,28 @@ export class AppComponent implements OnInit{
   isSideNavCollapsed=false;
   screenWidth=0;
   isLoginPage:any;
-  constructor(private router:Router){
+  loggedIn:boolean=false;
+  constructor(private router:Router, private auth:AuthService){
 
   }
+  
   ngOnInit() {
+    const loggedIn = this.auth.isAuthenticated();
+    if (loggedIn) {
+      this.loggedIn = true;
+    } else {
+      this.router.navigate(['/login']);
+    }
+    console.log('Logged:', this.loggedIn);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isLoginPage = event.url === '/login';
-        console.log('====================================');
         console.log(this.isLoginPage);
-        console.log('====================================');
       }
     });
   }
+  
+  
   
   
   onToggleSideNav(data:SideNavToggle){

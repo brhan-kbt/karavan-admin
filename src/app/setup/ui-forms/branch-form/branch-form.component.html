@@ -1,0 +1,53 @@
+
+<div class="flex flex-col">
+    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Branch</h2>
+    <mat-dialog-content class="mat-typography" >
+      <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="md:w-1/2">
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Branch Name</mat-label>
+              <input matInput placeholder="John Doe" formControlName="branchName" required>
+              <mat-error *ngIf="form.get('branchName')?.touched && form.get('branchName')?.invalid">Product Name is required</mat-error>
+        
+            </mat-form-field>
+          </div>
+          <div class="md:w-1/2">
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Branch Address</mat-label>
+              <input matInput placeholder="johnDoe@example.com" type="branchAddress" formControlName="branchAddress"  required>
+              <mat-error *ngIf="form.get('branchAddress')?.touched && form.get('branchAddress')?.invalid">Branch Address is required</mat-error>
+        
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="md:w-1/2">
+              <mat-form-field class="w-full" appearance="outline">
+                <mat-label>Opening Hour</mat-label>
+                <input matInput type="time" placeholder="12:00 AM" formControlName="openingHour" required>
+                <mat-error *ngIf="form.get('openingHour')?.touched && form.get('openingHour')?.invalid">Opening Hour is required</mat-error>
+          
+              </mat-form-field>
+            </div>
+            <div class="md:w-1/2">
+              <mat-form-field class="w-full" appearance="outline">
+                <mat-label>Closing Hour</mat-label>
+                <input matInput type="time" placeholder="12:00 PM" formControlName="closingHour"  required>
+                <mat-error *ngIf="form.get('closingHour')?.touched && form.get('closingHour')?.invalid">Closing Hour is required</mat-error>
+          
+              </mat-form-field>
+            </div>
+          </div>
+
+        <button
+         class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+        (click)="onSave()"
+      >
+        Save
+      </button>
+      </form>
+    </mat-dialog-content>
+  </div>
+  

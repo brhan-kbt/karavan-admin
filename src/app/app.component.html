@@ -1,16 +1,21 @@
-<ng-container *ngIf="!isLoginPage">
-    <app-sidenav (onToggleSideNav)="onToggleSideNav($event)"></app-sidenav>
-    <app-header
-    [collapsed]="isSideNavCollapsed"
-    [screenWidth]="screenWidth"
-    ></app-header>
-    <app-body
-    [collapsed]="isSideNavCollapsed"
-    [screenWidth]="screenWidth"
-    >
-    
-    </app-body>
-</ng-container>
-<ng-container *ngIf="isLoginPage">
-    <router-outlet></router-outlet>
-</ng-container>
+<div *ngIf="loggedIn">
+    <ng-container *ngIf="!isLoginPage">
+        <app-sidenav (onToggleSideNav)="onToggleSideNav($event)"></app-sidenav>
+        <app-header
+        [collapsed]="isSideNavCollapsed"
+        [screenWidth]="screenWidth"
+        ></app-header>
+        <app-body
+        [collapsed]="isSideNavCollapsed"
+        [screenWidth]="screenWidth"
+        >
+        
+        </app-body>
+    </ng-container>
+
+</div>
+<div *ngIf="!loggedIn">
+    <ng-container *ngIf="isLoginPage">
+        <router-outlet></router-outlet>
+    </ng-container>
+</div>

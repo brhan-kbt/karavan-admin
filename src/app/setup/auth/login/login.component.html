@@ -24,13 +24,13 @@
             <p class="mt-2 text-2xl  text-gray-900">Please sign in to your account</p>
           </div>
           
-          <form class="mt-8 space-y-6" action="#" method="POST">
+          <form  [formGroup]="loginForm" class="mt-8 space-y-6">
             <input type="hidden" name="remember" value="true">
             <div class="flex flex-col mb-5">
                 <label
-                  for="email"
+                  for="phoneNumber"
                   class="mb-3 text-xl tracking-wide text-gray-800"
-                  >Email Address:</label
+                  >Phone Number</label
                 >
                 <div class="relative">
                   <div
@@ -47,13 +47,13 @@
                       text-gray-800
                     "
                   >
-                    <i class="fas fa-at text-[#0E483F]"></i>
+                    <i class="fas fa-phone text-[#0E483F]"></i>
                   </div>
   
                   <input
-                    id="email"
-                    type="email"
-                    name="email"
+                    id="phoneNumber"
+                    type="phoneNumber"
+                    formControlName="phoneNumber"
                     class="
                       placeholder-gray-600
                       pl-10
@@ -68,53 +68,53 @@
                     placeholder="Enter your email"
                   />
                 </div>
-              </div>
-              <div class="flex flex-col mb-6">
-                <label
-                  for="password"
-                  class="mb-3 text-xl tracking-wide text-gray-900"
-                  >Password:</label
+            </div>
+            <div class="flex flex-col mb-6">
+              <label
+                for="password"
+                class="mb-3 text-xl tracking-wide text-gray-900"
+                >Password:</label
+              >
+              <div class="relative">
+                <div
+                  class="
+                    inline-flex
+                    items-center
+                    justify-center
+                    absolute
+                    text-xl
+                    left-0
+                    top-0
+                    h-full
+                    w-10
+                    text-gray-400
+                  "
                 >
-                <div class="relative">
-                  <div
-                    class="
-                      inline-flex
-                      items-center
-                      justify-center
-                      absolute
-                      text-xl
-                      left-0
-                      top-0
-                      h-full
-                      w-10
-                      text-gray-400
-                    "
-                  >
-                    <span>
-                      <i class="fas fa-lock text-[#0E483F]"></i>
-                    </span>
-                  </div>
-  
-                  <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    class="
-                      text-xl
-                      placeholder-gray-600
-                      pl-10
-                      pr-4
-                      rounded-lg
-                      border border-gray-400
-                      w-full
-                      py-2
-                      focus:outline-none focus:border-[#0E483F]
-                    "
-                    placeholder="Enter your password"
-                  />
+                  <span>
+                    <i class="fas fa-key text-[#0E483F]"></i>
+                  </span>
                 </div>
+
+                <input
+                  id="password"
+                  type="password"
+                  formControlName="password"
+                  class="
+                    text-xl
+                    placeholder-gray-600
+                    pl-10
+                    pr-4
+                    rounded-lg
+                    border border-gray-400
+                    w-full
+                    py-2
+                    focus:outline-none focus:border-[#0E483F]
+                  "
+                  placeholder="Enter your password"
+                />
               </div>
-  
+            </div>
+
             <div class="flex flex-col gap-5 md:flex-row md:items-center justify-between">
               <div class="flex items-center">
                 <input id="remember_me" name="remember_me" type="checkbox"
@@ -131,7 +131,8 @@
             </div>
             
             <div>
-              <button type="submit"
+              <button 
+                (click)="login()"
                 class="w-full flex justify-center bg-[#0E483F] text-xl  hover:bg-[#0E483F]/90 text-gray-100 p-4  rounded-lg  font-semibold  shadow-lg cursor-pointer ease-in duration-500">
                 Sign in
               </button>

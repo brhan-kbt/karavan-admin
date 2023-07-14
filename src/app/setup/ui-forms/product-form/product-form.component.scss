@@ -1,0 +1,11 @@
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .image-preview {
+    max-width: 400px;
+  }
+  

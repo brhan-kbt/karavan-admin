@@ -20,6 +20,10 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import { MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { AuthInterceptor } from './setup/interceptor/auth.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,10 +46,17 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatTableModule,
     MatSortModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    HttpClientModule,
+    MatProgressSpinnerModule
 
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

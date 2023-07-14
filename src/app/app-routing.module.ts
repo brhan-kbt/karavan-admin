@@ -18,6 +18,14 @@ const routes: Routes = [
     loadChildren:()=>import('./setup/products/product.module').then(m=>m.ProductModule),
   },
   {
+    path:'users',
+    loadChildren:()=>import('./setup/users/user.module').then(m=>m.UserModule),
+  },
+  {
+    path:'branch',
+    loadChildren:()=>import('./setup/branch/branch.module').then(m=>m.BranchModule),
+  },
+  {
     path:'settings',
     loadChildren:()=>import('./setup/settings/setting.module').then(m=>m.SettingModule),
   }
