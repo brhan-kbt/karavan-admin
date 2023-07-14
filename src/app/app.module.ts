@@ -23,6 +23,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { AuthInterceptor } from './setup/interceptor/auth.interceptor';
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import { RevenueAnalysisComponent } from './setup/auth/analytics/revenue-analysis/revenue-analysis.component';
+import { NgChartsConfiguration, NgChartsModule } from 'ng2-charts';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { ChartComponent } from './setup/auth/chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +39,8 @@ import { AuthInterceptor } from './setup/interceptor/auth.interceptor';
     HeaderComponent,
     LoginComponent,
     LayoutComponent,
+    RevenueAnalysisComponent,
+    ChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,15 +55,20 @@ import { AuthInterceptor } from './setup/interceptor/auth.interceptor';
     MatInputModule,
     MatFormFieldModule,
     HttpClientModule,
-    MatProgressSpinnerModule
-
+    MatProgressSpinnerModule,
+    CanvasJSAngularChartsModule,
+    NgChartsModule,
+    NgApexchartsModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }],
+    },
+    { provide: NgChartsConfiguration, useValue: { generateColors: false }}
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
