@@ -24,10 +24,10 @@ export class UserFormComponent {
     role: '',
     gender: '',
     birthDate: '',
-    
+
   };
 
-  
+
 
   @Output() savetodatabase = new EventEmitter<any>();
   form: FormGroup;
@@ -43,6 +43,7 @@ export class UserFormComponent {
   @Output() saveAdmin = new EventEmitter<any>();
   @Output() saveBranchAdmin = new EventEmitter<any>();
   @Output() saveFinanceAdmin = new EventEmitter<any>();
+  @Output() editAdmin = new EventEmitter<any>();
   constructor(
     public dialogRef: MatDialogRef<ProductFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -53,33 +54,44 @@ export class UserFormComponent {
     private branch:BranchService
   ) {
     this.isEdit = data.isEdit;
-  
+
     if (this.isEdit) {
       this.userData = data.user; // Access the candidate from the passed data
     } else {
       this.userData = null;
     }
-  
+
     console.log('user:', this.user);
-  
+
     this.form = this.formBuilder.group({
+      id: [this.userData?.id || null],
       active: [this.userData?.active || false],
       fullName: [this.userData?.fullName || null, [Validators.required]],
       email: [this.userData?.email || null],
       phoneNumber: [this.userData?.phoneNumber || null],
       password: [this.userData?.password || 3],
       branchId: [this.userData?.branchId || ''],
-      role: [this.userData?.role || ''],
+      role: [this.userData?.role || '', [Validators.required]],
       gender: [this.userData?.gender || ''],
       birthDate: [this.userData?.birthDate || ''],
     });
-  
+
+    this.form.get('role')?.valueChanges.subscribe((role) => {
+      if (role === 'Branch_Admin') {
+        this.form.get('branchId')?.setValidators([Validators.required]);
+      } else {
+        this.form.get('branchId')?.clearValidators();
+      }
+
+      this.form.get('branchId')?.updateValueAndValidity();
+    });
+
     // this.getCategories();
     // this.getSubCategories();
     this.getBranches();
   }
-  
-  
+
+
    async getBranches() {
      try {
        let branches = await this.branch.getAll();
@@ -147,19 +159,37 @@ handleRole(event: any): void {
   }
 
   onSave(): void {
-    console.log(this.form.value)
-    if (this.form.valid) {
-      console.log(this.form.value);
-      if(this.form.value.role==='Branch_Admin'){
-        this.saveBranchAdmin.emit(this.form.value);
-      }else if(this.form.value.role==='Finance'){
-        this.saveFinanceAdmin.emit(this.form.value);
+    if(!this.isEdit){
+      console.log(this.form.value)
+      if (this.form.valid) {
+        console.log(this.form.value);
+        if(this.form.value.role==='Branch_Admin'){
+          this.saveBranchAdmin.emit(this.form.value);
+        }else if(this.form.value.role==='Finance'){
+          this.saveFinanceAdmin.emit(this.form.value);
+        }
+        else{
+          this.saveAdmin.emit(this.form.value);
+        }
+       } else {
+        console.log('Form is invalid');
       }
-      else{
-        this.saveAdmin.emit(this.form.value);
+    }
+    else{
+      if(this.form.valid){
+        const editUser={
+          id:this.userData.id,
+          role:this.form.value.role,
+          branchId:this.form.value.branchId,
+        }
+        console.log(this.form.value);
+        console.log("EdiT",editUser);
+         if(editUser){
+           this.editAdmin.emit(editUser);
+         }
+       } else {
+        console.log('Form is invalid');
       }
-     } else {
-      console.log('Form is invalid');
     }
   }
 

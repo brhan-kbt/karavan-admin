@@ -1,28 +1,42 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { Product } from 'src/app/models/product';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  baseUrl: string = `http://196.189.119.123/api/Category `;
+  baseUrl: string = `http://196.189.119.123/api/Category`;
   cache: { [key: string]: any | undefined } = {}; // Internal cache object
+  private selectedCategorySubject = new BehaviorSubject<any | null>(null);
+  selectedCategory$ = this.selectedCategorySubject.asObservable();
+
+  private selectedCategorySubCategorySubject = new BehaviorSubject<any | null>(null);
+  selectedCategorySubCategory$ = this.selectedCategorySubCategorySubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
   async getAll() {
+    const url = this.baseUrl + '/admin-list'
     const cacheKey = 'categories';
     if (this.cache[cacheKey]) {
       console.log('Category From Cache');
       return this.cache[cacheKey]; // Return cached data
     } else {
-      const res = await this.http.get<any>(this.baseUrl).toPromise();
+      const res = await this.http.get<any>(url).toPromise();
       this.cache[cacheKey] = res.data; // Store data in cache
       console.log('Category From Api', res.data)
       return res.data;
     }
+  }
+  setSelectedCategory(category: any | null) {
+    this.selectedCategorySubject.next(category);
+  }
+
+
+  setSelectedCategorySubCategory(category: any | null) {
+    this.selectedCategorySubCategorySubject.next(category);
   }
 
 
@@ -55,5 +69,5 @@ export class CategoryService {
   //             return res;
   //           }))
   // }
- 
+
 }

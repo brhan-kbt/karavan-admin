@@ -28,7 +28,18 @@ const routes: Routes = [
   {
     path:'settings',
     loadChildren:()=>import('./setup/settings/setting.module').then(m=>m.SettingModule),
+  },
+  {
+    path:'order',
+    loadChildren:()=>import('./setup/order/order.module').then(m=>m.OrderModule),
+  },
+
+  {
+    path:'category',
+    loadChildren:()=>import('./setup/category/category.module').then(m=>m.CategoryModule),
   }
+
+
 ];
 
 @NgModule({

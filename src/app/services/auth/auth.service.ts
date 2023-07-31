@@ -24,7 +24,24 @@ export class AuthService {
   saveRefreshToken(token: string): void {
     localStorage.setItem('karavanRefreshToken', token);
   }
+  saveUser(user: any): void {
+    const userJson = JSON.stringify(user);
+    localStorage.setItem('karavan-user', userJson);
+    console.log('====================================');
+    console.log(user);
+    console.log('====================================');
+  }
 
+
+  getToken(): string {
+      this.token = localStorage.getItem('karavanToken') as string;
+      return this.token;
+  }
+
+   isAuthenticated(): boolean {
+     const token = this.getToken();
+     return !!token;
+   }
 
 saveAdminUser(data: any) {
     const url = this.baseUrl + '/admin/auth/create'; // Replace '/admin-users' with the appropriate endpoint
@@ -43,7 +60,7 @@ saveAdminUser(data: any) {
       })
     );
   }
-  
+
   saveBranchAdminUser(data: any) {
     const url = this.baseUrl + '/admin/auth/Create/BranchAdmin'; // Replace '/branch-admin-users' with the appropriate endpoint
     return this.http.post<any>(url, data).pipe(
@@ -52,9 +69,9 @@ saveAdminUser(data: any) {
       })
     );
   }
-  
 
-  
+
+
   async saveFinanceAdminUser(data: any) {
     const url = this.baseUrl + '/admin/auth/Create'; // Replace '/finance-admin-users' with the appropriate endpoint
     console.log(data);
@@ -66,25 +83,8 @@ saveAdminUser(data: any) {
       throw error;
     }
   }
-  
-  
 
-  saveUser(user: any): void {
-    const userJson = JSON.stringify(user);
-    localStorage.setItem('karavan-user', userJson);
-    console.log('====================================');
-    console.log(user);
-    console.log('====================================');
-  }
-  
 
-  getToken(): string {
-      this.token = localStorage.getItem('karavanToken') as string;
-      return this.token;
-  }
 
-   isAuthenticated(): boolean {
-     const token = this.getToken();
-     return !!token;
-   }
+
 }

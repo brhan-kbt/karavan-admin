@@ -2,112 +2,157 @@
 <div class="flex flex-col">
     <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} User</h2>
     <mat-dialog-content class="mat-typography" >
-      <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
-        <div class="flex flex-col md:flex-row gap-4">
-          <div class="md:w-1/2">
-            <mat-form-field class="w-full" appearance="outline">
-              <mat-label>Full Name</mat-label>
-              <input matInput placeholder="John Doe" formControlName="fullName" required>
-              <mat-error *ngIf="form.get('fullName')?.touched && form.get('fullName')?.invalid">Product Name is required</mat-error>
-        
-            </mat-form-field>
-          </div>
-          <div class="md:w-1/2">
-            <mat-form-field class="w-full" appearance="outline">
-              <mat-label>Email</mat-label>
-              <input matInput placeholder="johnDoe@example.com" type="email" formControlName="email"  required>
-              <mat-error *ngIf="form.get('email')?.touched && form.get('email')?.invalid">Email is required</mat-error>
-        
-            </mat-form-field>
-          </div>
-        </div>
+     <ng-container *ngIf="!isEdit">
+       <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
+         <div class="flex flex-col md:flex-row gap-4">
+           <div class="md:w-1/2">
+             <mat-form-field class="w-full" appearance="outline">
+               <mat-label>Full Name</mat-label>
+               <input matInput placeholder="John Doe" formControlName="fullName" required>
+               <mat-error *ngIf="form.get('fullName')?.touched && form.get('fullName')?.invalid">Product Name is required</mat-error>
 
-        <div class="flex flex-col md:flex-row gap-4">
-          <div class="md:w-1/2">
-           
+             </mat-form-field>
+           </div>
+           <div class="md:w-1/2">
+             <mat-form-field class="w-full" appearance="outline">
+               <mat-label>Email</mat-label>
+               <input matInput placeholder="johnDoe@example.com" type="email" formControlName="email"  required>
+               <mat-error *ngIf="form.get('email')?.touched && form.get('email')?.invalid">Email is required</mat-error>
 
-            <mat-form-field floatLabel="always" appearance="outline" class="w-full">
-              <mat-label>Phone Number</mat-label>
-              <input matInput type="text"  placeholder="091123332" formControlName="phoneNumber" required>
-              <mat-error *ngIf="form.get('phoneNumber')?.touched && form.get('phoneNumber')?.invalid">Phone Number is required</mat-error>
+             </mat-form-field>
+           </div>
+         </div>
 
-            </mat-form-field>
-          </div>
-          <ng-container *ngIf="!isEdit">
-            <div class="md:w-1/2">
-              <mat-form-field floatLabel="always" appearance="outline" class="w-full">
-                <mat-label>Password</mat-label>
-                <input matInput type="password"  placeholder="Password" formControlName="password"  required>
-                <mat-error *ngIf="form.get('password')?.touched && form.get('password')?.invalid">Password is required</mat-error>
-  
-              </mat-form-field>
-            
-            </div>
-          </ng-container>
-          
-        </div>
+         <div class="flex flex-col md:flex-row gap-4">
+           <div class="md:w-1/2">
 
-        <div class="flex flex-col md:flex-row gap-4">
-          <div class="md:w-1/2">
-            <mat-form-field class="w-full" appearance="outline">
-                <mat-label>Choose a Birth Date</mat-label>
-                <input matInput [min]="" [max]="" [matDatepicker]="picker"  formControlName="birthDate">
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-              
-          </div>
-          <div class="md:w-1/2">
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Select Gender</mat-label>
 
-            <mat-select  formControlName="gender" placeholder="Select Gender" >
-            <mat-option  value="male">
-              Male
-            </mat-option>
-            <mat-option  value="male">
-                Female
-              </mat-option>
-            </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
+             <mat-form-field floatLabel="always" appearance="outline" class="w-full">
+               <mat-label>Phone Number</mat-label>
+               <input matInput type="text"  placeholder="091123332" formControlName="phoneNumber" required>
+               <mat-error *ngIf="form.get('phoneNumber')?.touched && form.get('phoneNumber')?.invalid">Phone Number is required</mat-error>
 
-        <div class="flex flex-col md:flex-row gap-4">
-            <div class="md:w-1/2">
-              <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Select Role</mat-label>
-                <mat-select formControlName="role" (selectionChange)="handleRole($event)" placeholder="Select Role" required>
-                  <mat-option value="Branch_Admin">Branch Admin</mat-option>
-                  <mat-option value="Finance">Finance Admin</mat-option>
-                  <mat-option value="Admin">Admin</mat-option>
-                </mat-select>
-              <mat-error *ngIf="form.get('role')?.touched && form.get('role')?.invalid">Role is required</mat-error>
+             </mat-form-field>
+           </div>
+           <ng-container *ngIf="!isEdit">
+             <div class="md:w-1/2">
+               <mat-form-field floatLabel="always" appearance="outline" class="w-full">
+                 <mat-label>Password</mat-label>
+                 <input matInput type="password"  placeholder="Password" formControlName="password"  required>
+                 <mat-error *ngIf="form.get('password')?.touched && form.get('password')?.invalid">Password is required</mat-error>
 
-              </mat-form-field>
-            </div>
-            <div class="md:w-1/2" *ngIf="showBranchSelection">
-              <mat-form-field class="w-full" appearance="outline">
-                <mat-label>Select Branch</mat-label>
-                <mat-select formControlName="branchId" placeholder="Select Branch">
-                  <ng-container *ngFor="let branch of branches">
-                    <mat-option [value]="branch.id">{{branch.branchName}}</mat-option>
-                  </ng-container>
-                
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-          
-          
+               </mat-form-field>
 
-        <button
-         class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
-        (click)="onSave()"
-      >
-        Save
-      </button>
-      </form>
+             </div>
+           </ng-container>
+
+         </div>
+
+         <div class="flex flex-col md:flex-row gap-4">
+           <div class="md:w-1/2">
+             <mat-form-field class="w-full" appearance="outline">
+                 <mat-label>Choose a Birth Date</mat-label>
+                 <input matInput [min]="" [max]="" [matDatepicker]="picker"  formControlName="birthDate">
+                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                 <mat-datepicker #picker></mat-datepicker>
+               </mat-form-field>
+
+           </div>
+           <div class="md:w-1/2">
+             <mat-form-field appearance="outline" class="w-full">
+                 <mat-label>Select Gender</mat-label>
+
+             <mat-select  formControlName="gender" placeholder="Select Gender" >
+             <mat-option  value="male">
+               Male
+             </mat-option>
+             <mat-option  value="male">
+                 Female
+               </mat-option>
+             </mat-select>
+             </mat-form-field>
+           </div>
+         </div>
+
+         <div class="flex flex-col md:flex-row gap-4">
+             <div class="md:w-1/2">
+               <mat-form-field appearance="outline" class="w-full">
+                 <mat-label>Select Role</mat-label>
+                 <mat-select formControlName="role" (selectionChange)="handleRole($event)" placeholder="Select Role" required>
+                   <mat-option value="Branch_Admin">Branch Admin</mat-option>
+                   <mat-option value="Finance">Finance Admin</mat-option>
+                   <mat-option value="Admin">Admin</mat-option>
+                 </mat-select>
+               <mat-error *ngIf="form.get('role')?.touched && form.get('role')?.invalid">Role is required</mat-error>
+
+               </mat-form-field>
+             </div>
+             <div class="md:w-1/2" *ngIf="showBranchSelection">
+               <mat-form-field class="w-full" appearance="outline">
+                 <mat-label>Select Branch</mat-label>
+                 <mat-select formControlName="branchId" placeholder="Select Branch">
+                   <ng-container *ngFor="let branch of branches">
+                     <mat-option [value]="branch.id">{{branch.branchName}}</mat-option>
+                   </ng-container>
+
+                 </mat-select>
+               </mat-form-field>
+             </div>
+           </div>
+
+
+
+         <button
+          class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+         (click)="onSave()"
+       >
+         Save
+       </button>
+       </form>
+     </ng-container>
+
+     <ng-container *ngIf="isEdit">
+       <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
+
+
+
+
+
+         <div class="flex flex-col gap-4">
+             <div >
+               <mat-form-field appearance="outline" class="w-full">
+                 <mat-label>Select Role</mat-label>
+                 <mat-select formControlName="role" (selectionChange)="handleRole($event)" placeholder="Select Role" required>
+                   <!-- <mat-option value="Branch_Admin">Branch Admin</mat-option> -->
+                   <mat-option value="Finance">Finance Admin</mat-option>
+                   <mat-option value="Admin">Admin</mat-option>
+                 </mat-select>
+               <mat-error *ngIf="form.get('role')?.touched && form.get('role')?.invalid">Role is required</mat-error>
+
+               </mat-form-field>
+             </div>
+             <div  *ngIf="showBranchSelection">
+               <mat-form-field class="w-full" appearance="outline">
+                 <mat-label>Select Branch</mat-label>
+                 <mat-select formControlName="branchId" placeholder="Select Branch">
+                   <ng-container *ngFor="let branch of branches">
+                     <mat-option [value]="branch.id">{{branch.branchName}}</mat-option>
+                   </ng-container>
+
+                 </mat-select>
+               </mat-form-field>
+             </div>
+           </div>
+
+
+
+         <button
+          class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+         (click)="onSave()"
+       >
+         Save
+       </button>
+       </form>
+     </ng-container>
     </mat-dialog-content>
   </div>
-  

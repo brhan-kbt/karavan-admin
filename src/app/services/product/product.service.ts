@@ -13,21 +13,30 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   async getProducts() {
+    const url = this.baseUrl + '/list'
     const cacheKey = 'products';
     if (this.cache[cacheKey]) {
       console.log('From Cache');
       return this.cache[cacheKey]; // Return cached data
     } else {
-      const res = await this.http.get<any>(this.baseUrl).toPromise();
+      const res = await this.http.get<any>(url).toPromise();
       this.cache[cacheKey] = res; // Store data in cache
       console.log('From Api', res)
       return res;
     }
   }
 
+  async getProds() {
+    const url = this.baseUrl + '/list'
+    const res = await this.http.get<any>(url).toPromise();
+    console.log('From Api', res)
+    return res;
+}
+
   async saveProduct(data: Product) {
+    const url = this.baseUrl + '/create'
     console.log(data);
-    const res = await this.http.post<Product>(this.baseUrl, data).toPromise();
+    const res = await this.http.post<Product>(url, data).toPromise();
     return res;
   }
 
@@ -43,9 +52,22 @@ export class ProductService {
   }
 
   async updateProduct(data: Product, id: number) {
-    const res = await this.http.put<Product>(`${this.baseUrl}/${id}`, data).toPromise();
+    const url = this.baseUrl +'/update'
+    const res = await this.http.put<Product>(`${url}/${id}`, data).toPromise();
     return res;
   }
+
+
+  async updateOrderable(data: any) {
+    const url = this.baseUrl + '/update-orderable'
+    if(data && data.id){
+    const res = await this.http.put<any>(`${url}/${data.id}`, data).toPromise();
+    return res;
+    }else{
+      return 'Failed to update Status';
+    }
+  }
+
 
   // deleteProduct(id:number){
   //   return this.http.delete<Product>("http://localhost:3000/products"+id)
@@ -53,5 +75,5 @@ export class ProductService {
   //             return res;
   //           }))
   // }
- 
+
 }

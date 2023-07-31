@@ -1,0 +1,89 @@
+<div class="flex justify-between items-center py-5">
+    <h2 class="font-bold font-cormorant text-3xl">Detail of Order</h2>
+</div>
+<!-- Order and Customer Information -->
+<div class="flex gap-8 justify-between">
+    <div class="border p-5 w-full">
+        <h2 class="font-bold font-cormorantInfant text-3xl">Order Information</h2>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Order Code </span> : <span class="font-semibold">#0E483F </span></p>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Order Type </span> : <span class="font-semibold">{{selectedOrder.orderType}} </span></p>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1">  Total Items </span> : <span class="font-semibold"> {{selectedOrder.orderDetails.length}} </span></p>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Order Date and Time </span> : <span class="font-semibold">{{selectedOrder.orderDateTime | date:'short'}} </span></p>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Pick Up Date and Time </span> : <span class="font-semibold">{{selectedOrder.pickupDateTime | date:'short'}} </span></p>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Status </span> : <span class="font-semibold">
+
+            <ng-container *ngIf="selectedOrder.status">
+                <span class="font-semibold text-green-500">Done </span>
+            </ng-container>
+            <ng-container *ngIf="!selectedOrder.status">
+                <span class="font-semibold text-red-500">Pending </span>
+            </ng-container>
+
+        </span></p>
+    </div>
+
+
+    <div class="border p-5 w-full">
+        <h2 class="font-bold font-cormorantInfant text-3xl">Customer Information</h2>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Customer Name </span> : <span class="font-semibold px-1"> {{selectedOrder.customer.fullName}}</span> </p>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Customer Email </span> : <span class="font-semibold px-1"> {{selectedOrder.customer.email}}</span> </p>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Customer Phone Number </span> : <span class="font-semibold px-1"> {{selectedOrder.customer.phoneNumber}}</span> </p>
+    </div>
+</div>
+<!-- Order Detail Information -->
+<div class="mt-8 border p-5">
+    <h2 class="font-bold font-cormorantInfant text-3xl">Order Details</h2>
+
+    <div class="flex gap-4">
+        <div class="w-full hide-scroll-bar overflow-y-auto md:w-3/5 h-96">
+            <ng-container *ngFor="let item of selectedOrder.orderDetails">
+               <div class="flex  gap-5 border p-3 my-1 rounded-md">
+                   <div>
+                    <img class="w-20 h-20" src="assets/cake1.svg" alt="">
+                   </div>
+
+                   <div>
+                    <p> {{item.product.name}}</p>
+                    <p>{{item.product.code}}</p>
+                    <p> x {{item.quantity}}</p>
+                    </div>
+               </div>
+
+            </ng-container>
+            <div class="flex  gap-5 border p-3 my-1 rounded-md">
+                <div>
+                 <img class="w-20 h-20" src="assets/cake1.svg" alt="">
+                </div>
+
+                <div>
+                 <p> Product Name</p>
+                 <p>PL09jkhk</p>
+                 <p> x 10</p>
+                 </div>
+            </div>
+
+            <div class="flex  gap-5 border p-3 my-1 rounded-md">
+                <div>
+                 <img class="w-20 h-20" src="assets/cake1.svg" alt="">
+                </div>
+
+                <div>
+                 <p> Product Name</p>
+                 <p>PL09jkhk</p>
+                 <p> x 10</p>
+                 </div>
+            </div>
+
+
+        </div>
+
+        <div class="border p-5 w-full md:w-2/5">
+            <h2 class="font-bold font-cormorantInfant text-3xl">Payment Information</h2>
+            <p class="text-xl font-cormorantInfant"> <span class="px-1"> Total Amount </span> : <span class="font-semibold">{{selectedOrder.payment.amount}} </span></p>
+            <p class="text-xl font-cormorantInfant"> <span class="px-1"> Charge </span> : <span class="font-semibold">{{selectedOrder.payment.charge}} </span></p>
+            <p class="text-xl font-cormorantInfant"> <span class="px-1"> Txn Reference   </span> : <span class="font-semibold"> {{selectedOrder.payment.reference}} </span></p>
+            <p class="text-xl font-cormorantInfant"> <span class="px-1"> Payment Date </span> : <span class="font-semibold px-1"> {{selectedOrder.payment.updated_AtChapa | date:'short'}}</span> </p>
+        </div>
+    </div>
+
+</div>

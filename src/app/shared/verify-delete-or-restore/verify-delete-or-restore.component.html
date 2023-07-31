@@ -1,0 +1,13 @@
+<!-- Use a variable to display dynamic dialog title -->
+<h2 mat-dialog-title>{{ data.action === 'delete' ? 'Delete Confirmation' : 'Restore Confirmation' }}</h2>
+<mat-dialog-content>
+  <!-- Use a variable to display dynamic confirmation message -->
+  Are you sure you want to {{ data.action === 'delete' ? 'delete' : 'restore' }} {{user.fullName}}?
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <!-- Use a variable to display dynamic button label -->
+  <button mat-button [color]="data.action === 'delete' ? 'warn' : 'primary'" (click)="onConfirm()">
+    {{ data.action === 'delete' ? 'Delete' : 'Restore' }}
+  </button>
+</mat-dialog-actions>

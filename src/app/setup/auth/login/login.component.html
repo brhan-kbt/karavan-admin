@@ -1,7 +1,7 @@
 <div class="relative h-screen flex ">
-    <div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
+    <div class="flex sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
       <div class="sm:w-1/2 xl:w-3/5 h-full hidden md:flex flex-auto items-center justify-center p-10 overflow-hidden  text-white bg-no-repeat bg-cover relative"
-      style="background-image: url('assets/bg/bg-1.svg');" 
+      style="background-image: url('assets/bg/bg-1.svg');"
       >
         <div class="w-full  max-w-md z-10">
           <div class="flex gap-5 justify-center">
@@ -9,7 +9,7 @@
             <img class="w-[50%]" src="assets/navbar/text.svg" alt="">
         </div>
         </div>
-     
+
       </div>
       <div class="md:flex md:items-center md:justify-center font-cormorant w-full sm:w-auto md:h-full w-2/5 xl:w-2/5 p-8  md:p-10 lg:p-14 sm:rounded-lg md:rounded-none bg-white">
         <div class="max-w-md w-full space-y-8">
@@ -23,7 +23,8 @@
             </h2>
             <p class="mt-2 text-2xl  text-gray-900">Please sign in to your account</p>
           </div>
-          
+          <h2 class="text-center font-bold text-red-600 text-xl">{{errors}}</h2>
+
           <form  [formGroup]="loginForm" class="mt-8 space-y-6">
             <input type="hidden" name="remember" value="true">
             <div class="flex flex-col mb-5">
@@ -49,7 +50,7 @@
                   >
                     <i class="fas fa-phone text-[#0E483F]"></i>
                   </div>
-  
+
                   <input
                     id="phoneNumber"
                     type="phoneNumber"
@@ -66,7 +67,11 @@
                       focus:outline-none focus:border-[#0E483F]
                     "
                     placeholder="Enter your email"
+
                   />
+                </div>
+                <div *ngIf="loginForm.controls['phoneNumber'].invalid && loginForm.controls['phoneNumber'].touched">
+                  <p class="text-red-600 font-bold">Phone Number is required.</p>
                 </div>
             </div>
             <div class="flex flex-col mb-6">
@@ -111,7 +116,11 @@
                     focus:outline-none focus:border-[#0E483F]
                   "
                   placeholder="Enter your password"
+
                 />
+              </div>
+              <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
+                <p class="text-red-600 font-bold">Password is required.</p>
               </div>
             </div>
 
@@ -129,15 +138,15 @@
                 </a>
               </div>
             </div>
-            
+
             <div>
-              <button 
+              <button
                 (click)="login()"
                 class="w-full flex justify-center bg-[#0E483F] text-xl  hover:bg-[#0E483F]/90 text-gray-100 p-4  rounded-lg  font-semibold  shadow-lg cursor-pointer ease-in duration-500">
                 Sign in
               </button>
             </div>
-          
+
           </form>
         </div>
       </div>

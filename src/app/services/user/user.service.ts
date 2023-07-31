@@ -20,7 +20,7 @@ export class UserService {
   async updateCache() {
       const cacheKey = 'users';
       const res = await this.http.get<any>(this.baseUrl).toPromise();
-      this.cache[cacheKey] = res; 
+      this.cache[cacheKey] = res;
       console.log('From Api', res)
       return res;
   }
@@ -52,15 +52,59 @@ export class UserService {
     return res;
   }
 
-   deleteUser(id:any){
+
+  async updateStatus(data: any) {
+    if(data && data.id){
+    const res = await this.http.put<any>(`http://196.189.119.123/admin/user/update-status/${data.id}`, data).toPromise();
+    return res;
+    }else{
+      return 'Failed to update Status';
+    }
+  }
+
+
+  async updateBranchofAdmin(data: any) {
+    if(data && data.id){
+      const res = await this.http.put<any>(`http://196.189.119.123/admin/user/update-admin-branch/${data.id}`, data).toPromise();
+      return res;
+    }
+    else{
+      return 'Failed to Update Branch for Branch Admin'
+    }
+  }
+
+
+  async updateRole(data: any) {
+    if(data && data.id){
+      const res = await this.http.put<any>(`http://196.189.119.123/admin/user/update-role/${data.id}`, data).toPromise();
+      return res;
+    }
+    else{
+      return 'Failed to Update Role'
+    }
+  }
+
+   deleteUser(data:any){
+    return this.http.put<any>(`http://196.189.119.123/admin/user/softDelete/${data.id}`, data).pipe(
+      map((res: any) => {
+        this.updateCache();
+        console.log('====================================');
+        return res;
+
+      })
+    );
+   }
+
+   deleteUserPermanently(id:any){
     return this.http.delete<any>(`http://196.189.119.123/admin/user/delete/${id}`).pipe(
       map((res: any) => {
         this.updateCache();
         console.log('====================================');
         return res;
-        
+
       })
     );
    }
- 
+
 }
+

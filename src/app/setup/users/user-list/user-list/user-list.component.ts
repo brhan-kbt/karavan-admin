@@ -16,7 +16,7 @@ import { UserFormComponent } from 'src/app/setup/ui-forms/user-form/user-form.co
 })
 export class UserListComponent {
 
-  displayedColumns: string[] = ['id', 'fullName', 'email', 'phoneNumber','username','role', 'actions'];
+  displayedColumns: string[] = ['id', 'fullName', 'email','role', 'phoneNumber','status', 'actions'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -32,7 +32,7 @@ export class UserListComponent {
   async getUsers() {
     try {
       let user = await this.user.getUsers();
-      this.users=user.data
+      this.users = user.data.filter((res:any) => res.isDeleted === false);
       console.log('users:',this.users);
       this.dataSource = new MatTableDataSource<any>(this.users);
       this.dataSource.paginator = this.paginator;
@@ -42,34 +42,34 @@ export class UserListComponent {
     }finally {
       this.isLoading = false; // Move isLoading assignment inside the finally block
     }
-  
+
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  
+
   openDialog(): void {
     const dialogRef = this.dialog.open(UserFormComponent, {
        width: '75%',
       data: { candidate: {} }
-    }); 
+    });
      dialogRef.componentInstance.saveAdmin.subscribe(user => {
        console.log('ADMIN',user);
        this.auth.saveAdminUser(user).subscribe(res=>{
         this.fetchAndUpdateUsers()
          console.log(res)
        })
-        
+
        },err=>{
          console.log(err);
-        
+
      });
 
      dialogRef.componentInstance.saveFinanceAdmin.subscribe(user => {
@@ -78,10 +78,10 @@ export class UserListComponent {
         this.fetchAndUpdateUsers();
         console.log(res)
       })
-       
+
       },err=>{
         console.log(err);
-       
+
     });
 
     dialogRef.componentInstance.saveBranchAdmin.subscribe(user => {
@@ -90,38 +90,58 @@ export class UserListComponent {
         this.fetchAndUpdateUsers();
         console.log(res)
       })
-       
+
       },err=>{
         console.log(err);
-       
+
     });
   }
 
   openEditDialog(row: any): void {
-    
+    console.log(row)
+
     const dialogRef = this.dialog.open(UserFormComponent, {
        width: '75%',
-      data: {   
+      data: {
         user:row,
         isEdit: !!row }
     });
-  
-    
 
-   dialogRef.componentInstance.saveAdmin.subscribe((event: { formData: any, id?:any }) => {
-    console.log('Update Id:', event.id)
-    this.product.updateProduct(event.formData, event.id).then(res=>{
-      console.log(res)
+
+   dialogRef.componentInstance.editAdmin.subscribe(user => {
+    console.log('Update Id:',user, user.id)
+
+    this.user.updateRole(user).then(res=>{
+      console.log('Success', res);
+      this.fetchAndUpdateUsers();
     })
+
   }, (err:any) => {
     console.log(err);
 });
 
   }
-  
+
+
+  onStatusButtonClick(data:any){
+    console.log(data)
+    const userData={
+      id:data.id,
+      isActive:!data.isActive
+    }
+    console.log(userData)
+    this.user.updateStatus(userData).then(res=>{
+      console.log('Success',res);
+      this.fetchAndUpdateUsers();
+    })
+  }
   deleteData(user:any){
     if (confirm(`Are you sure you want to delete ${user.fullName}?`)) {
-      this.deleteUser(user.id)
+      const data ={
+        isDeleted:!user.isDeleted,
+        id:user.id
+      }
+      this.deleteUser(data)
   }
 }
 

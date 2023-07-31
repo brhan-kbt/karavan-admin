@@ -79,14 +79,31 @@ export const navbarData:INavbarData[]=[
         label:'User ',
         items:[
             {
-            routeLink:'users/list',
+            routeLink:'users/manager',
             icon:'fal fa-users',
-            label:'User List'
+            label:'Managers List'
             },
+
             {
-                routeLink:'users/add',
-                icon:'fal fa-user-plus',
-                label:'Add User'
+                routeLink:'users/branch-admins',
+                icon:'fal fa-users',
+                label:'Branch Admin'
+                },
+
+            {
+                routeLink:'users/customer',
+                icon:'fal fa-user',
+                label:'Customers List'
+                },
+            // {
+            //     routeLink:'users/add',
+            //     icon:'fal fa-user-plus',
+            //     label:'Add User'
+            // },
+            {
+                routeLink:'users/trash',
+                icon:'fal fa-trash',
+                label:'Trash'
             }
         ]
     },
@@ -111,7 +128,14 @@ export const navbarData:INavbarData[]=[
     {
         routeLink:'order',
         icon:'far fa-cart-plus',
-        label:'Order '
+        label:'Order ',
+        items:[
+            {
+                routeLink:'order/list',
+                icon:'fal fa-list',
+                label:'Order List'
+            },
+        ]
     },
 
     {
@@ -120,14 +144,14 @@ export const navbarData:INavbarData[]=[
         label:'Category ',
         items:[
             {
-            routeLink:'category/list',
+            routeLink:'category/cat-list',
             icon:'fal fa-list',
             label:'Category List'
             },
             {
-                routeLink:'category/add',
-                icon:'fal fa-plus-circle',
-                label:'Add Category'
+                routeLink:'category/sub-list',
+                icon:'fal fa-list',
+                label:'SubCategory List'
             }
         ]
     },
@@ -153,7 +177,7 @@ export const navbarData:INavbarData[]=[
                 label:'Add Media'
             }
         ]
-        
+
     },
 
     {

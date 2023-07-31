@@ -44,6 +44,14 @@ $josefin: 'Josefin Sans', sans-serif;
     box-sizing: border-box;
 }
 
+.hide-scroll-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scroll-bar::-webkit-scrollbar {
+    display: none;
+  }
+
 body {
     position: relative;
     background: #f4f7fa;
@@ -61,7 +69,7 @@ body {
     border-color: #0E483F !important;
   }
 
-  
+
 .card{
     display: flex;
     flex-direction: column;

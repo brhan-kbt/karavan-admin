@@ -28,7 +28,11 @@ import { RevenueAnalysisComponent } from './setup/auth/analytics/revenue-analysi
 import { NgChartsConfiguration, NgChartsModule } from 'ng2-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ChartComponent } from './setup/auth/chart/chart.component';
-
+import { VerifyDeleteOrRestoreComponent } from './shared/verify-delete-or-restore/verify-delete-or-restore.component';
+import { ChartModule } from 'primeng/chart';
+import { BarComponent } from './setup/dashboard/bar/bar.component';
+import { TableModule } from 'primeng/table';
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +45,8 @@ import { ChartComponent } from './setup/auth/chart/chart.component';
     LayoutComponent,
     RevenueAnalysisComponent,
     ChartComponent,
+    VerifyDeleteOrRestoreComponent,
+    BarComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +64,11 @@ import { ChartComponent } from './setup/auth/chart/chart.component';
     MatProgressSpinnerModule,
     CanvasJSAngularChartsModule,
     NgChartsModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    ChartModule,
+    TableModule,
+    DatePipe
+
   ],
   providers: [
     {

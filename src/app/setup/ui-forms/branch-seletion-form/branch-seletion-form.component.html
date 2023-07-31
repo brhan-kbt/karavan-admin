@@ -1,0 +1,30 @@
+
+<div class="flex flex-col">
+    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} User</h2>
+    <mat-dialog-content class="mat-typography" >
+        <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
+         <div class="flex flex-col gap-4">
+             <div  >
+               <mat-form-field class="w-full" appearance="outline">
+                 <mat-label>Select Branch</mat-label>
+                 <mat-select formControlName="branchId" placeholder="Select Branch">
+                   <ng-container *ngFor="let branch of branches">
+                     <mat-option [value]="branch.id">{{branch.branchName}}</mat-option>
+                   </ng-container>
+
+                 </mat-select>
+               </mat-form-field>
+             </div>
+           </div>
+
+
+
+         <button
+          class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+         (click)="onSave()"
+       >
+         Save
+       </button>
+       </form>
+    </mat-dialog-content>
+  </div>

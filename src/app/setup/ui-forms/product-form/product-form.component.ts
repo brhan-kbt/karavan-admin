@@ -13,21 +13,17 @@ import { SubCategoryService } from 'src/app/services/sub-category/sub-category.s
 export class ProductFormComponent {
   @Input() isEdit = false;
   @Input() product: any = {
-    active: '',
+    isActive: false,
     averageQueueDay: '',
-    averageQueueTime: {
-      hour: '',
-      minute: '',
-    },
-    categoryId: '',
+    averageQueueTimeHour: '',
+    averageQueueTineMinute: '',
+    orderable:false,
     discount: '',
     image: '',
-    mainIngredients: '',
-    orderable: '',
-    productCode: '',
-    productDescription: '',
-    productName: '',
-    productPoint: '',
+    description: '',
+    name: '',
+    code: '',
+    point: '',
     subCategoryId: '',
     tag: '',
     unitPrice: '',
@@ -40,6 +36,7 @@ export class ProductFormComponent {
   selectedCategoriesField: any;
   selectedSubCategoriesField: any;
   selectedCat: number = 0;
+  categoryIdFound:any;
 
   selectedImage: File | string | null = null;
   // @Output() save = new EventEmitter<any>();
@@ -52,52 +49,50 @@ export class ProductFormComponent {
     private subcat: SubCategoryService
   ) {
     this.isEdit = data.isEdit;
-  
+
     if (this.isEdit) {
       this.product = data.product; // Access the candidate from the passed data
     } else {
       this.product = null;
     }
-  
+
     console.log('Product:', this.product);
-  
+
     this.form = this.formBuilder.group({
-      active: [this.product?.active || false],
+      isActive: [this.product?.active || false],
       averageQueueDay: [this.product?.averageQueueDay || null],
-      averageQueueTime: this.formBuilder.group({
-        hour: [this.product?.averageQueueTime?.hour || null],
-        minute: [this.product?.averageQueueTime?.minute || null],
-      }),
-      categoryId: [this.product?.categoryId || null, [Validators.required]],
+      averageQueueTimeHour: [this.product?.averageQueueTimeHour || null],
+      averageQueueTimeMinute: [this.product?.averageQueueTimeMinute || null],
+      categoryId: [null, [Validators.required]],
       discount: [this.product?.discount || null],
-      rating: [this.product?.rating || 3],
       image: [this.product?.image || ''],
-      mainIngredients: [this.product?.mainIngredients || ''],
       orderable: [this.product?.orderable || false],
-      productCode: [this.product?.productCode || '', [Validators.required]],
-      productDescription: [this.product?.productDescription || '', [Validators.required]],
-      productName: [this.product?.productName || '', [Validators.required]],
-      productPoint: [this.product?.productPoint || null],
+      code: [this.product?.code || '', [Validators.required]],
+      description: [this.product?.description || '', [Validators.required]],
+      name: [this.product?.name || '', [Validators.required]],
+      point: [this.product?.point || null],
       subCategoryId: [this.product?.subCategoryId || null, [Validators.required]],
-      tag: [this.product?.tag || ''],
+      tag: [this.product?.tag || '', [Validators.required]],
       unitPrice: [this.product?.unitPrice || '', [Validators.required]],
     });
-  
+
     this.getCategories();
     this.getSubCategories();
   }
-  
-  
+
+
   async getCategories() {
     try {
       let subcategories = await this.category.getAll();
       this.categories = subcategories;
 
+
+
       // Create a new array with only categoryName and categoryId
       this.selectedCategoriesField = this.categories.map((category: any) => {
         return {
-          categoryName: category.categoryName,
-          id: category.categoryId
+          categoryName: category.name,
+          id: category.id
         };
       });
 
@@ -123,8 +118,8 @@ export class ProductFormComponent {
       // Create a new array with only categoryName and categoryId
       this.selectedSubCategoriesField = this.subCategories.map((subCategory: any) => {
         return {
-          subCategoryName: subCategory.subCategoryName,
-          id: subCategory.subCategoryId
+          subCategoryName: subCategory.name,
+          id: subCategory.id
         };
       });
 
@@ -133,51 +128,72 @@ export class ProductFormComponent {
       console.error(error);
     }
   }
-
   async getSubCategories() {
     try {
       let subcategory = await this.subcat.getAll();
       this.subCategories = subcategory;
-      console.log('Categories:', this.subCategories);
+      const subCategoryId = this.form.value.subCategoryId;
+      const foundCategory = this.subCategories.find((sub: any) => sub.id === subCategoryId);
+      this.categoryIdFound = foundCategory?.categoryId || null;
+      console.log('Sub Categories:', this.categoryIdFound, this.subCategories);
+
+      // Filter subcategories based on the found categoryId
+      this.selectedSubCategoriesField = this.subCategories
+        .filter((subCategory: any) => subCategory.categoryId === this.categoryIdFound)
+        .map((subCategory: any) => {
+          return {
+            subCategoryName: subCategory.name,
+            id: subCategory.id
+          };
+        });
+
+      console.log('Selected Sub Categories:', this.selectedSubCategoriesField);
+
+      // Update the categoryId form control value
+      this.form.patchValue({
+        categoryId: this.categoryIdFound
+      });
     } catch (error) {
       console.error(error);
     }
   }
 
+
   onSave(): void {
     console.log(this.form.value)
-    if (this.form.valid) {
-      const formData = new FormData();
-      formData.append('active', this.form.get('active')?.value);
-      formData.append('averageQueueDay', this.form.get('averageQueueDay')?.value);
-      formData.append('averageQueueTime.hour', this.form.get('averageQueueTime.hour')?.value);
-      formData.append('averageQueueTime.minute', this.form.get('averageQueueTime.minute')?.value);
-      formData.append('categoryId', this.form.get('categoryId')?.value);
-      formData.append('discount', this.form.get('discount')?.value);
-      formData.append('image', this.selectedImage as Blob);
-      formData.append('mainIngredients', this.form.get('mainIngredients')?.value);
-      formData.append('orderable', this.form.get('orderable')?.value);
-      formData.append('productCode', this.form.get('productCode')?.value);
-      formData.append('productDescription', this.form.get('productDescription')?.value);
-      formData.append('productName', this.form.get('productName')?.value);
-      formData.append('productPoint', this.form.get('productPoint')?.value);
-      formData.append('subCategoryId', this.form.get('subCategoryId')?.value);
-      formData.append('tag', this.form.get('tag')?.value);
-      formData.append('unitPrice', this.form.get('unitPrice')?.value);
-      if (this.isEdit) {
-        this.save.emit({ formData, id: this.product.productId });
-      } else {
-        this.save.emit({ formData });
-      }
-      console.log('Form Data: Valid');
+    this.form.markAllAsTouched();
+     if (this.form.valid) {
+      console.log(this.form.get('code')?.value, this.form.get('name')?.value, this.form.get('subCategoryId')?.value)
+       const formData = new FormData();
+       formData.append('isActive', this.form.get('isActive')?.value);
+       formData.append('averageQueueDay', this.form.get('averageQueueDay')?.value);
+       formData.append('averageQueueTimeHour', this.form.get('averageQueueTimeHour')?.value);
+       formData.append('averageQueueTimeMinute', this.form.get('averageQueueTimeMinute')?.value);
+      //  formData.append('categoryId', this.form.get('categoryId')?.value);
+       formData.append('discount', this.form.get('discount')?.value);
+       formData.append('image', this.selectedImage as Blob);
+      //  formData.append('mainIngredients', this.form.get('mainIngredients')?.value);
+       formData.append('orderable', this.form.get('orderable')?.value);
+       formData.append('code', this.form.get('code')?.value);
+       formData.append('description', this.form.get('description')?.value);
+       formData.append('name', this.form.get('name')?.value);
+       formData.append('point', this.form.get('point')?.value);
+       formData.append('subCategoryId', this.form.get('subCategoryId')?.value);
+       formData.append('tag', this.form.get('tag')?.value);
+       formData.append('unitPrice', this.form.get('unitPrice')?.value);
+       if (this.isEdit) {
+        console.log('Update')
+         this.save.emit({ formData, id: this.product.id });
+       } else {
+        console.log('Save')
 
-
-
-      // this.dialogRef.close();
-    } else {
-      // Handle invalid form
-      console.log('Form is invalid');
-    }
+         this.save.emit( formData );
+       }
+       console.log('Form Data: Valid');
+        // this.dialogRef.close();
+     } else {
+       console.log('Form is invalid');
+     }
   }
 
   validateInput(inputElement: HTMLInputElement) {
