@@ -1,29 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {  map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private token!: string ;
-  baseUrl:string=`http://196.189.119.123`;
 
-  constructor(private http: HttpClient) {}
 
-  login(data:any): Observable<any> {
-    const url = this.baseUrl + '/admin/auth/login'
+  private token!: string;
+  private loggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  loggedIn$ = this.loggedInSubject.asObservable();
+
+  baseUrl: string = `http://196.189.119.123`;
+
+  constructor(private http: HttpClient) {
+    // Initialize loggedIn status from local storage
+    this.loggedInSubject.next(this.isAuthenticated());
+  }
+
+  login(data: any): Observable<any> {
+    const url = this.baseUrl + '/admin/auth/login';
     return this.http.post<any>(url, data);
   }
 
   saveToken(token: string): void {
     localStorage.setItem('karavanToken', token);
+    this.loggedInSubject.next(true); // Update loggedIn status
   }
 
   saveRefreshToken(token: string): void {
     localStorage.setItem('karavanRefreshToken', token);
   }
+
   saveUser(user: any): void {
     const userJson = JSON.stringify(user);
     localStorage.setItem('karavan-user', userJson);
@@ -32,16 +42,23 @@ export class AuthService {
     console.log('====================================');
   }
 
-
   getToken(): string {
-      this.token = localStorage.getItem('karavanToken') as string;
-      return this.token;
+    this.token = localStorage.getItem('karavanToken') as string;
+    return this.token;
   }
 
-   isAuthenticated(): boolean {
-     const token = this.getToken();
-     return !!token;
-   }
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    return !!token;
+  }
+
+
+
+
+
+
+
+
 
 saveAdminUser(data: any) {
     const url = this.baseUrl + '/admin/auth/create'; // Replace '/admin-users' with the appropriate endpoint

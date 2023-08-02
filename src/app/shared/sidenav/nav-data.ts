@@ -95,11 +95,7 @@ export const navbarData:INavbarData[]=[
                 icon:'fal fa-user',
                 label:'Customers List'
                 },
-            // {
-            //     routeLink:'users/add',
-            //     icon:'fal fa-user-plus',
-            //     label:'Add User'
-            // },
+
             {
                 routeLink:'users/trash',
                 icon:'fal fa-trash',
@@ -118,11 +114,7 @@ export const navbarData:INavbarData[]=[
             icon:'fal fa-list',
             label:'Product List'
             },
-            {
-                routeLink:'products/add',
-                icon:'fal fa-plus-circle',
-                label:'Add Product'
-            }
+
         ]
     },
     {
@@ -158,7 +150,14 @@ export const navbarData:INavbarData[]=[
     {
         routeLink:'reward',
         icon:'fal fa-gift',
-        label:'Reward '
+        label:'Reward ',
+        items:[
+            {
+                routeLink:'reward/list',
+                icon:'fal fa-list',
+                label:'User List'
+            },
+        ]
     },
 
     {
@@ -171,11 +170,7 @@ export const navbarData:INavbarData[]=[
             icon:'fal fa-list',
             label:'Media List'
             },
-            {
-                routeLink:'gallery/add',
-                icon:'fal fa-plus-circle',
-                label:'Add Media'
-            }
+
         ]
 
     },
@@ -190,11 +185,7 @@ export const navbarData:INavbarData[]=[
             icon:'fal fa-list',
             label:'Branch List'
             },
-            {
-                routeLink:'branch/add',
-                icon:'fal fa-plus-circle',
-                label:'Add Branch'
-            }
+
         ]
     },
 
@@ -209,7 +200,7 @@ export const navbarData:INavbarData[]=[
             label:'Profile'
             },
             {
-                routeLink:'settings/customize',
+                routeLink:'logout',
                 icon:'fal fa-power-off',
                 label:'Logout'
             }

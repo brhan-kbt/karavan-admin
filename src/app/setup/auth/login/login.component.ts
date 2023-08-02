@@ -16,10 +16,17 @@ export class LoginComponent implements OnInit{
 
   }
   ngOnInit(): void {
+
     this.loginForm=this.fb.group({
       phoneNumber:['',[Validators.required]],
       password:['',[Validators.required]]
     })
+
+    this.auth.loggedIn$.subscribe(loggedIn => {
+      if (loggedIn) {
+        this.router.navigate(['/dashboard']);
+      }
+    });
   }
 
 
@@ -34,7 +41,6 @@ export class LoginComponent implements OnInit{
           this.router.navigate(['/dashboard']);
         },
         (error) => {
-          // Error handling for unsuccessful login
           if (error && error.error && error.error.message) {
             this.errors=error.error.message;
           } else {

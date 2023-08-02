@@ -33,6 +33,8 @@ import { ChartModule } from 'primeng/chart';
 import { BarComponent } from './setup/dashboard/bar/bar.component';
 import { TableModule } from 'primeng/table';
 import { DatePipe } from '@angular/common';
+import { ProductFormComponent } from './setup/ui-forms/product-form/product-form.component';
+import { LogoutComponent } from './shared/logout/logout.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +48,9 @@ import { DatePipe } from '@angular/common';
     RevenueAnalysisComponent,
     ChartComponent,
     VerifyDeleteOrRestoreComponent,
-    BarComponent
+    BarComponent,
+    ProductFormComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

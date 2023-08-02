@@ -14,6 +14,8 @@ import { AppCommonModule } from 'src/app/app.common.module';
 import { SubCategoryListComponent } from './sub-category-list/sub-category-list.component';
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 import { CategorySubcategoryDetailComponent } from './category-subcategory-detail/category-subcategory-detail.component';
+import { CategoryFormComponent } from '../ui-forms/category-form/category-form.component';
+import { SubCategoryFormComponent } from '../ui-forms/sub-category-form/sub-category-form.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { CategorySubcategoryDetailComponent } from './category-subcategory-detai
     CategoryListComponent,
     SubCategoryListComponent,
     CategoryDetailComponent,
-    CategorySubcategoryDetailComponent
+    CategorySubcategoryDetailComponent,
+    CategoryFormComponent,
+    SubCategoryFormComponent
   ],
   imports: [
     MatPaginatorModule,
@@ -33,7 +37,7 @@ import { CategorySubcategoryDetailComponent } from './category-subcategory-detai
     AppCommonModule,
     MatProgressSpinnerModule,
     CommonModule,
-    CategoryRoutingModule
-  ]
+    CategoryRoutingModule,
+  ],
 })
 export class CategoryModule { }

@@ -7,13 +7,13 @@ import { Product } from '../models/product';
   providedIn: 'root'
 })
 export class ProductService {
-  baseUrl: string = `http://196.189.119.123/api/Product `;
+  baseUrl: string = `http://196.189.119.123/api/Product`;
   cache: { [key: string]: Product | undefined } = {}; // Internal cache object
 
   constructor(private http: HttpClient) { }
 
   async getProducts() {
-    const url = this.baseUrl + 'list'
+    const url = this.baseUrl + '/list'
     const cacheKey = 'products';
     if (this.cache[cacheKey]) {
       console.log('From Cache');

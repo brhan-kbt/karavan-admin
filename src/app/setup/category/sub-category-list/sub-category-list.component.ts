@@ -8,6 +8,8 @@ import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product/product.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { Router } from '@angular/router';
+import { CategoryService } from 'src/app/services/category/category.service';
+import { SubCategoryFormComponent } from '../../ui-forms/sub-category-form/sub-category-form.component';
 @Component({
   selector: 'app-sub-category-list',
   templateUrl: './sub-category-list.component.html',
@@ -15,18 +17,29 @@ import { Router } from '@angular/router';
 })
 export class SubCategoryListComponent {
 
-  displayedColumns: string[] = ['orderCode', 'orderType', 'totalItems', 'orderPrice','orderDate','pickUpDate','status', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'description', 'status','actions'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   products:any | undefined;
   orders:any | undefined;
+  sub_categories:any | undefined;
   isLoading: boolean = true;
 
-  constructor(private dialog:MatDialog, private product:ProductService, private router:Router, private order:OrderService,   private changeDetectorRef: ChangeDetectorRef,
+  constructor(private dialog:MatDialog,
+    private cat:CategoryService,
+    private product:ProductService, private router:Router, private order:OrderService,   private changeDetectorRef: ChangeDetectorRef,
     ) {
-    this.getOrders();
+    // this.getOrders();
+    this.subCategory();
+  }
+
+
+  showCategorySubCategoryDetails(data:any){
+    console.log(data)
+    this.cat.setSelectedCategorySubCategory(data);
+    this.router.navigate([`category/subcategory/detail/${data.id}`]);
   }
 
   async getOrders(){
@@ -37,6 +50,36 @@ export class SubCategoryListComponent {
        this.dataSource = new MatTableDataSource<any>(this.orders);
        this.dataSource.paginator = this.paginator;
        this.dataSource.sort = this.sort;
+    } catch (error) {
+      console.error(error);
+    }finally {
+      this.isLoading = false; // Move isLoading assignment inside the finally block
+    }
+  }
+
+  // async subCategory(){
+  //   try {
+  //     let subCategory = await this.cat.getAllSubC();
+  //     this.sub_categories=subCategory;
+  //     console.log('Sub Categories:',this.sub_categories);
+  //       this.dataSource = new MatTableDataSource<any>(this.sub_categories);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }finally {
+  //     this.isLoading = false; // Move isLoading assignment inside the finally block
+  //   }
+  // }
+
+  async subCategory(){
+    try {
+      let subCategory = await this.cat.getSubCat();
+      this.sub_categories=subCategory;
+      console.log('Sub Categories2:',this.sub_categories);
+         this.dataSource = new MatTableDataSource<any>(this.sub_categories);
+         this.dataSource.paginator = this.paginator;
+         this.dataSource.sort = this.sort;
     } catch (error) {
       console.error(error);
     }finally {
@@ -72,7 +115,7 @@ updateOrderableStatus(row:any){
 }
 
 openDialog(): void {
-  const dialogRef = this.dialog.open(ProductFormComponent, {
+  const dialogRef = this.dialog.open(SubCategoryFormComponent, {
      width: '75%',
     data: { candidate: {} }
   });
@@ -93,7 +136,7 @@ openDialog(): void {
 
 openEditDialog(row: any): void {
 
-  const dialogRef = this.dialog.open(ProductFormComponent, {
+  const dialogRef = this.dialog.open(SubCategoryFormComponent, {
      width: '75%',
     data: {
       product:row,

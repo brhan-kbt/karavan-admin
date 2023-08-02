@@ -1,0 +1,44 @@
+
+<div class="flex flex-col">
+    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Media</h2>
+    <mat-dialog-content class="mat-typography" >
+     <ng-container >
+       <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
+         <div class="flex flex-col md:flex-row gap-4">
+             <mat-form-field class="w-full" appearance="outline">
+               <mat-label>Media Title</mat-label>
+               <input matInput placeholder="John Doe" formControlName="title" required>
+               <mat-error *ngIf="form.get('title')?.touched && form.get('title')?.invalid">Product Name is required</mat-error>
+
+             </mat-form-field>
+         </div>
+
+
+         <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea formControlName="description" matInput></textarea>
+            <mat-error *ngIf="form.get('description')?.touched && form.get('description')?.invalid">Product Description is required</mat-error>
+
+          </mat-form-field>
+
+
+         <div class="w-full">
+            <div class="flex">
+              <input type="file" (change)="handleImageUpload($event)" accept="image/*">
+              <div  *ngIf="selectedImage">
+                <img class="w-32 h-auto" [src]="selectedImage" alt="Selected Image">
+              </div>
+            </div>
+
+          </div>
+         <button
+          class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+         (click)="onSave()"
+       >
+         Save
+       </button>
+       </form>
+     </ng-container>
+
+    </mat-dialog-content>
+  </div>

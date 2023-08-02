@@ -1,10 +1,11 @@
 <div class="flex justify-between items-center py-5">
     <h2 class="font-bold font-cormorant text-3xl">Sub Category Detail</h2>
-    <button
+    <!-- <button
+    (click)="openDialog()"
       class="bg-[#0E483F] border text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform hover:scale-105"
     >
       Add
-    </button>
+    </button> -->
 
 
   </div>
@@ -12,7 +13,7 @@
   <div class="border p-5 space-y-3">
     <h2 class="text-2xl font-bold font-cormorantInfant">{{selectedCategory.name}}</h2>
     <p class="text-xl font-cormorantInfant md:pr-16">Lorem, ipsum dolor sit amet consectetur adipisicing elit. At blanditiis aperiam id magni consequuntur itaque perspiciatis culpa ex nihil nesciunt ab consectetur autem, vero cupiditate? Perspiciatis nostrum odit et necessitatibus?</p>
-    <p class="text-xl font-cormorantInfant md:pr-16 font-semibold">Total of {{selectedCategory.products.length}} Products under this Sub Category</p>
+    <p class="text-xl font-cormorantInfant md:pr-16 font-semibold">Total of {{totalProduct}} Products under this Sub Category</p>
   </div>
 
   <mat-form-field appearance="outline" class="w-full mt-4">
@@ -21,7 +22,7 @@
     <mat-icon matPrefix>search</mat-icon>
   </mat-form-field>
 
-  <ng-container *ngIf="selectedCategory.products.length>0">
+  <ng-container *ngIf="totalProduct>0">
     <div
     class="mat-elevation-z8 example-table-container"
     style="width: 100%; overflow-x: auto; position: relative;"
@@ -130,8 +131,7 @@
     ></mat-paginator>
   </div>
   </ng-container>
-
-  <ng-container *ngIf="selectedCategory.products.length<=0">
+  <ng-container *ngIf="totalProduct<=0">
     <h2 class="font-cormorantInfant text-2xl font-bold">Sorry, No product found under this sub category</h2>
   </ng-container>
 

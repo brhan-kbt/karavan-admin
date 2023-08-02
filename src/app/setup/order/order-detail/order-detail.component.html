@@ -5,7 +5,7 @@
 <div class="flex gap-8 justify-between">
     <div class="border p-5 w-full">
         <h2 class="font-bold font-cormorantInfant text-3xl">Order Information</h2>
-        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Order Code </span> : <span class="font-semibold">#0E483F </span></p>
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Order Code </span> : <span class="font-semibold">{{selectedOrder.orderCode}} </span></p>
         <p class="text-xl font-cormorantInfant"> <span class="px-1"> Order Type </span> : <span class="font-semibold">{{selectedOrder.orderType}} </span></p>
         <p class="text-xl font-cormorantInfant"> <span class="px-1">  Total Items </span> : <span class="font-semibold"> {{selectedOrder.orderDetails.length}} </span></p>
         <p class="text-xl font-cormorantInfant"> <span class="px-1"> Order Date and Time </span> : <span class="font-semibold">{{selectedOrder.orderDateTime | date:'short'}} </span></p>

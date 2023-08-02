@@ -82,8 +82,17 @@
                 style="color: green;"
                 class="small-button edit"
               >
-                <mat-icon aria-label="Edit">visibility</mat-icon>
+                <mat-icon aria-label="View">visibility</mat-icon>
               </button>
+
+              <button
+              mat-icon-button
+              (click)="openEditDialog(row)"
+              style="color: green;"
+              class="small-button edit"
+            >
+              <mat-icon aria-label="Edit">edit</mat-icon>
+            </button>
               <!-- <button
                 mat-icon-button
                 style="color: red;"

@@ -9,6 +9,7 @@ import { ProductService } from 'src/app/services/product/product.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category/category.service';
+import { CategoryFormComponent } from '../../ui-forms/category-form/category-form.component';
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
@@ -89,28 +90,26 @@ updateOrderableStatus(row:any){
 }
 
 openDialog(): void {
-  const dialogRef = this.dialog.open(ProductFormComponent, {
+  const dialogRef = this.dialog.open(CategoryFormComponent, {
      width: '75%',
     data: { candidate: {} }
   });
   console.log('Logged')
-  dialogRef.componentInstance.save.subscribe(product => {
+  dialogRef.componentInstance.save.subscribe(data => {
     console.log('====================================');
     console.log('Here');
     console.log('====================================');
-    this.product.saveProduct(product).then(res=>{
+    this.cat.saveCategory(data).then(res=>{
       console.log(res)
     })
-
     },err=>{
       console.log(err);
-
   });
 }
 
 openEditDialog(row: any): void {
 
-  const dialogRef = this.dialog.open(ProductFormComponent, {
+  const dialogRef = this.dialog.open(CategoryFormComponent, {
      width: '75%',
     data: {
       product:row,

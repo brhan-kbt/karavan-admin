@@ -20,15 +20,18 @@ export class AppComponent implements OnInit{
   constructor(private router:Router, private auth:AuthService){
 
   }
-  
+
   ngOnInit() {
-    const loggedIn = this.auth.isAuthenticated();
-    if (loggedIn) {
+    this.auth.loggedIn$.subscribe(logged=>{
+      this.loggedIn=logged;
+    })
+    if (this.loggedIn) {
       this.loggedIn = true;
     } else {
       this.router.navigate(['/login']);
     }
     console.log('Logged:', this.loggedIn);
+    if(!this.loggedIn){
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isLoginPage = event.url === '/login';
@@ -36,10 +39,11 @@ export class AppComponent implements OnInit{
       }
     });
   }
-  
-  
-  
-  
+  }
+
+
+
+
   onToggleSideNav(data:SideNavToggle){
     this.screenWidth=data.screenWidth;
     this.isSideNavCollapsed=data.collapsed;
