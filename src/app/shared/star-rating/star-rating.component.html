@@ -1,0 +1,11 @@
+<div class="star-rating">
+    <div
+      class="star"
+      *ngFor="let star of stars; let i = index"
+      (mouseenter)="hover(i + 1)"
+      (mouseleave)="unhover()"
+      (click)="rate(i + 1)"
+    >
+      <span [class.full]="isFullStar(i)" [class.half]="isHalfStar(i)">&#9733;</span>
+    </div>
+  </div>

@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 export class OrderListComponent {
 
   displayedColumns: string[] = ['orderCode', 'orderType', 'totalItems', 'orderPrice','orderDate','pickUpDate','status', 'actions'];
+  displayedColumns2: string[] = ['orderCode', 'branch', 'totalItems', 'orderPrice','approvedBy','pstatus','status', 'actions'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

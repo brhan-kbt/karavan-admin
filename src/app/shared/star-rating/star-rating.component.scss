@@ -1,0 +1,38 @@
+.star-rating {
+    display: flex;
+    align-items: center;
+  }
+
+  .star {
+    cursor: pointer;
+    font-size: 24px;
+    margin-right: 4px;
+    transition: transform 0.2s, font-size 0.2s;
+  }
+
+  .star span {
+    display: inline-block;
+    transition: color 0.2s;
+  }
+
+  .star:hover {
+    transform: scale(1.2);
+  }
+
+  .star span.full {
+    color: gold;
+  }
+
+  .star span.half {
+    position: relative;
+    overflow: hidden;
+    width: 0.5em;
+    color: gold;
+  }
+  .custom-filled-star .ui-rating-star.ui-rating-star-on {
+    color: gold;
+  }
+  .p-rating-icon {
+    color: gold !important;
+
+}

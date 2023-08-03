@@ -35,11 +35,14 @@ import { TableModule } from 'primeng/table';
 import { DatePipe } from '@angular/common';
 import { ProductFormComponent } from './setup/ui-forms/product-form/product-form.component';
 import { LogoutComponent } from './shared/logout/logout.component';
+import { RatingModule } from 'primeng/rating';
+import { DonoutComponent } from './setup/dashboard/donout/donout.component';
 @NgModule({
   declarations: [
     AppComponent,
     SidenavComponent,
     BodyComponent,
+    DonoutComponent,
     DashboardComponent,
     SublevelMenuComponent,
     HeaderComponent,
@@ -50,7 +53,7 @@ import { LogoutComponent } from './shared/logout/logout.component';
     VerifyDeleteOrRestoreComponent,
     BarComponent,
     ProductFormComponent,
-    LogoutComponent
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +74,8 @@ import { LogoutComponent } from './shared/logout/logout.component';
     NgApexchartsModule,
     ChartModule,
     TableModule,
-    DatePipe
+    DatePipe,
+    RatingModule
 
   ],
   providers: [

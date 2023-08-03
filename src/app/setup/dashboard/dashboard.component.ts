@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ApexChart, ApexDataLabels, ApexNonAxisChartSeries, ApexTitleSubtitle } from 'ng-apexcharts';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -32,10 +33,18 @@ export class DashboardComponent {
 
   options: any;
   products!: any;
+  formGroup!:FormGroup;
+  value!:number;
 
   constructor(private product: ProductService) {}
-
+  getStarStyleClass(): string {
+    return this.value > 0 ? 'custom-filled-star' : '';
+  }
   ngOnInit() {
+    this.value = 3;
+    this.formGroup = new FormGroup({
+        value: new FormControl(4)
+    });
       const documentStyle = getComputedStyle(document.documentElement);
       const textColor = 'black';
 
