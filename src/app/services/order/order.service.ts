@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class OrderService {
   private selectedOrderSubject = new BehaviorSubject<any | null>(null);
   selectedOrder$ = this.selectedOrderSubject.asObservable();
 
-  baseUrl: string = `http://196.189.119.123/api/Order`;
+  baseUrl: string = `${environment.apiUrl}/api/Order`;
   cache: { [key: string]: any | undefined } = {}; // Internal cache object
   constructor( private http:HttpClient) { }
 

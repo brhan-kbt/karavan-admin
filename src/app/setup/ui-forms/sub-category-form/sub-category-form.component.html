@@ -1,6 +1,6 @@
 
 <div class="flex flex-col">
-    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Category</h2>
+    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Sub Category</h2>
     <mat-dialog-content class="mat-typography" >
       <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
         <div class="flex flex-col md:flex-row gap-4">
@@ -24,13 +24,24 @@
             <mat-error *ngIf="form.get('description')?.touched && form.get('description')?.invalid">Product Description is required</mat-error>
         </mat-form-field>
 
-        <div class="w-full">
-            <div class="flex">
+        <div class="w-full flex gap-4 items-center justify-between">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Select a Category</mat-label>
+            <mat-select formControlName="categoryId" >
+              <ng-container *ngFor="let category of selectedCategoriesField">
+                <mat-option [value]="category.id">{{category.categoryName}} </mat-option>
+              </ng-container>
+            </mat-select>
+          <mat-error *ngIf="form.get('categoryId')?.touched && form.get('categoryId')?.invalid">Select Category</mat-error>
+
+          </mat-form-field>
+            <div >
               <input type="file" (change)="handleImageUpload($event)" accept="image/*">
               <div  *ngIf="selectedImage">
-                <img class="w-32 h-auto" [src]="selectedImage" alt="Selected Image">
+                <img class="w-32 h-auto" [src]="selectedImagePreview" alt="Selected Image">
               </div>
             </div>
+
 
           </div>
         <!-- <div class="flex flex-col md:flex-row gap-4">

@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { Product } from 'src/app/models/product';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubCategoryService {
-  baseUrl: string = `http://196.189.119.123/api/SubCategory`;
+  baseUrl: string = `${environment.apiUrl}/api/SubCategory`;
   cache: { [key: string]: any | undefined } = {}; // Internal cache object
 
   constructor(private http: HttpClient) { }

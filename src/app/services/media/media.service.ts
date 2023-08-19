@@ -1,7 +1,15 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class MediaService {
+
+  baseUrl: string = `${environment.apiUrl}/api/Gallery`;
+
+  constructor(private http:HttpClient){
+
+  }
     getData() {
         return [
             {
@@ -100,4 +108,17 @@ export class MediaService {
     getImages() {
         return Promise.resolve(this.getData());
     }
+
+
+    async saveGallery(data: any) {
+        const url = this.baseUrl + '/create'
+        console.log(data);
+        const res = await this.http.post<any>(url, data).toPromise();
+        return res;
+      }
+      async updateGallery(data: any, id: number) {
+        const url = this.baseUrl + '/update'
+        const res = await this.http.put<any>(`${url}/${id}`, data).toPromise();
+        return res;
+      }
 };

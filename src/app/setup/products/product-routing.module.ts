@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductsComponent } from './products.component';
 import { ProductsListComponent } from './products-list/products-list.component';
+import { AvailablityComponent } from './availablity/availablity.component';
+import { IngredeintComponent } from './ingredeint/ingredeint.component';
+import { ProductIngredientComponent } from './product-ingredient/product-ingredient.component';
 
 const routes: Routes = [
   {
@@ -11,6 +14,18 @@ const routes: Routes = [
   {
     path:'list',
     component:ProductsListComponent
+  },
+  {
+    path:'ingredients-list',
+    component:IngredeintComponent
+  },
+  {
+    path:'availability',
+    component:AvailablityComponent
+  },
+  {
+    path:'select-ingredient',
+    component:ProductIngredientComponent
   }
 ];
 

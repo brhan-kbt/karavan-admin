@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BranchService {
-  baseUrl: string = `http://196.189.119.123/api/Branch`;
+  baseUrl: string = `${environment.apiUrl}/api/Branch`;
   cache: { [key: string]: any | undefined } = {}; // Internal cache object
 
   constructor(private http: HttpClient) { }
@@ -49,9 +50,9 @@ export class BranchService {
     return this.http.delete<any>(`${url}/${id}`).pipe(
       map((res: any) => {
         return res;
-        
+
       })
     );
    }
- 
+
 }

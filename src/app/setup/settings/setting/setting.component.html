@@ -1,0 +1,126 @@
+
+
+    <div>
+     <div >
+       <div class=" gap-2  py-16 px-2 md:px-24 ">
+         <div class="overflow-x-auto hide-scroll-bar">
+           <ul class="list-none  w-full font-bold flex justify-start gap-8">
+             <li class="border-b border-gray-300 whitespace-nowrap">
+               <input [(ngModel)]="currentTab" type="radio" value="general" name="tab-group" id="general" class="hidden" />
+               <label class="cursor-pointer block py-2" for="general"
+                      [ngClass]="{'border-b-2 border-blue-500': currentTab === 'general'}">General Settings</label>
+             </li>
+             <li class="border-b border-gray-300 whitespace-nowrap">
+               <input [(ngModel)]="currentTab" type="radio" value="howItWorks" name="tab-group" id="howItWorks" class="hidden" />
+               <label class="cursor-pointer block py-2" for="howItWorks"
+                      [ngClass]="{'border-b-2 border-blue-500': currentTab === 'howItWorks'}">How it Works?</label>
+             </li>
+             <li class="border-b border-gray-300 whitespace-nowrap">
+               <input [(ngModel)]="currentTab" type="radio" value="privacy" name="tab-group" id="privacy" class="hidden" />
+               <label class="cursor-pointer block py-2" for="privacy"
+                      [ngClass]="{'border-b-2 border-blue-500': currentTab === 'privacy'}">Privacy Policy</label>
+             </li>
+
+             <li class="border-b border-gray-300 whitespace-nowrap">
+              <input [(ngModel)]="currentTab" type="radio" value="terms&condition" name="tab-group" id="terms&condition" class="hidden" />
+              <label class="cursor-pointer block py-2" for="terms&condition"
+                     [ngClass]="{'border-b-2 border-blue-500': currentTab === 'terms&condition'}">Terms & Conditions</label>
+            </li>
+
+             <li class="border-b border-gray-300 whitespace-nowrap">
+               <input [(ngModel)]="currentTab" type="radio" value="faq" name="tab-group" id="faq" class="hidden" />
+               <label class="cursor-pointer block py-2" for="faq"
+                      [ngClass]="{'border-b-2 border-blue-500': currentTab === 'faq'}">FAQ</label>
+             </li>
+           </ul>
+         </div>
+
+
+
+         <div class="tab-content py-8">
+          <ng-container *ngIf="currentTab === 'howItWorks'">
+            <!-- Content for How It Works tab -->
+            <ng-container *ngFor="let data of howItWorks">
+              <div *ngIf="!editingContent">
+                <div class="font-cormorantInfant font-medium text-xl " [innerHTML]="formatText(data.description)"></div>
+                <h2 class="cursor-pointer text-right">
+                  <i class="fa text-[#0E483F] text-bold text-2xl px-3 fa-edit" (click)="editContent(data)">
+                    Edit
+                  </i>
+                </h2>
+              </div>
+              <div *ngIf="editingContent" [formGroup]="settingForm">
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Edit Content</mat-label>
+                  <textarea matInput formControlName="description" rows="{{ calculateTextareaRows() }}"></textarea>
+                </mat-form-field>
+                <div class="flex justify-end space-x-2 mt-2">
+                  <button mat-button color="primary" (click)="saveEditedContent()">Save</button>
+                  <button mat-button (click)="cancelEdit()">Cancel</button>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+
+
+           <ng-container *ngIf="currentTab === 'privacy'">
+             <!-- Content for Manage Password tab -->
+             <ng-container *ngFor="let data of howItWorks">
+              <div class="font-cormorantInfant font-medium text-xl py-8" [innerHTML]="formatText(data.description)"></div>
+            </ng-container>
+
+           </ng-container>
+
+           <ng-container *ngIf="currentTab === 'general'">
+             <!-- Content for Order History tab -->
+             <h5 class="py-8 text-2xl font-cormorantInfant text-center md:text-start font-bold text-primaryColor">
+              Company Profile
+             </h5>
+
+             <div class="font-cormorantInfant text-xl space-y-5 flex justify-start ">
+              <table>
+                <tr>
+                  <td class="font-bold pt-10">Company Logo</td>
+                  <td class="pl-10 pt-10"> <div>
+                    <img src="assets/navbar/logogreen.svg" alt="">
+                    <img src="assets/navbar/textgreen.svg" alt="">
+                   </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="font-bold pt-10">Company Name</td>
+                  <td class="pl-10 pt-10">Karavan Coffee </td>
+                </tr>
+                <tr>
+                  <td class="font-bold pt-10 ">Founded </td>
+                  <td class="pl-10 pt-10">June 21, 2000</td>
+                </tr>
+                <tr>
+                  <td class="font-bold pt-10 ">Total Employees </td>
+                  <td class="pl-10 pt-10">500</td>
+                </tr>
+                <tr>
+                  <td class="font-bold pt-10 ">Total Customer </td>
+                  <td class="pl-10 pt-10">2000</td>
+                </tr>
+              </table>
+            </div>
+           </ng-container>
+
+           <ng-container *ngIf="currentTab === 'faq'">
+            <!-- Content for Manage Password tab -->
+            <ng-container *ngFor="let data of howItWorks">
+             <div class="font-cormorantInfant font-medium text-xl py-8" [innerHTML]="formatText(data.description)"></div>
+           </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="currentTab === 'terms&condition'">
+            <!-- Content for Manage Password tab -->
+            <ng-container *ngFor="let data of howItWorks">
+             <div class="font-cormorantInfant font-medium text-xl py-8" [innerHTML]="formatText(data.description)"></div>
+           </ng-container>
+
+          </ng-container>
+
+
+        </div>

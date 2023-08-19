@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {  map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,10 @@ export class AuthService {
   private loggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedInSubject.asObservable();
 
-  baseUrl: string = `http://196.189.119.123`;
+  private userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  user$ = this.userSubject.asObservable();
+
+  baseUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) {
     // Initialize loggedIn status from local storage
@@ -35,11 +39,21 @@ export class AuthService {
   }
 
   saveUser(user: any): void {
-    const userJson = JSON.stringify(user);
-    localStorage.setItem('karavan-user', userJson);
-    console.log('====================================');
-    console.log(user);
-    console.log('====================================');
+    this.userSubject.next(user);
+    localStorage.setItem('karavan-user', JSON.stringify(user));
+  }
+
+  getSavedUser(): any {
+    if (this.userSubject.value) {
+      return this.userSubject.value;
+    }
+
+    const savedUserJson = localStorage.getItem('karavan-user');
+    if (savedUserJson) {
+      return JSON.parse(savedUserJson);
+    }
+
+    return null;
   }
 
   getToken(): string {

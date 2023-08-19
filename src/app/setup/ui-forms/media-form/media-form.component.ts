@@ -17,6 +17,7 @@ export class MediaFormComponent {
   @Input() mediaData: any = {
     title: '',
     description: '',
+    type: 1,
     image: '',
   };
 
@@ -31,7 +32,7 @@ export class MediaFormComponent {
   selectedCat: number = 0;
   branches:any;
 
-  selectedImage: File | string | null = null;
+  selectedImage!: File ;
   // @Output() save = new EventEmitter<any>();
   @Output() save = new EventEmitter<any>();
   @Output() saveEdit = new EventEmitter<any>();
@@ -55,9 +56,9 @@ export class MediaFormComponent {
     console.log('user:', this.user);
 
     this.form = this.formBuilder.group({
-      id: [this.mediaData?.id || null],
       title: [this.mediaData?.title || ''],
-      description: [this.mediaData?.alt || null, [Validators.required]],
+      description: [this.mediaData?.description || null, [Validators.required]],
+      type: [this.mediaData?.type || null, [Validators.required]],
     });
 
     this.getBranches();
@@ -131,23 +132,20 @@ handleRole(event: any): void {
   }
 
   onSave(): void {
-    console.log(this.form.value)
+    console.log(this.form.value);
+    console.log(this.selectedImage);
     const formData = new FormData();
     if(this.form.value){
-      console.log('valid')
       formData.append('title', this.form.get('title')?.value);
-      formData.append('alt', this.form.get('description')?.value);
-      formData.append('image', this.selectedImage as Blob);
+      formData.append('type', this.form.get('type')?.value);
+      formData.append('description', this.form.get('description')?.value);
+      formData.append('image', this.selectedImage );
       if(!this.isEdit){
-        console.log('sA');
-
         this.save.emit(formData)
         }
         else{
-          console.log('====================================');
-          console.log('eD');
-          console.log('====================================');
-          this.saveEdit.emit({formData, id:1})
+          console.log('eDit');
+          this.save.emit({formData, id:1});
 
         }
     }
@@ -156,6 +154,21 @@ handleRole(event: any): void {
     }
 
   }
+  selectedImagePreview: string | undefined;
+
+  handleImageUpload(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.selectedImage = file;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.selectedImagePreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
 
   validateInput(inputElement: HTMLInputElement) {
     const value = parseInt(inputElement.value);
@@ -166,16 +179,5 @@ handleRole(event: any): void {
     }
   }
 
-  handleImageUpload(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      this.selectedImage = file;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.selectedImage = e.target?.result as string  | null;
-      };
-      reader.readAsDataURL(file);
-    }
-    console.log(this.selectedImage)
-  }
+
 }

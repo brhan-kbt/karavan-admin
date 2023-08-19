@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  baseUrl: string = `http://196.189.119.123/admin/user/list`;
+  baseUrl: string = `${environment.apiUrl}/admin/user/list`;
   cache: { [key: string]: any | undefined } = {}; // Internal cache object
 
   constructor(private http: HttpClient) { }

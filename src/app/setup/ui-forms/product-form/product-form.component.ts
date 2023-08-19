@@ -38,7 +38,7 @@ export class ProductFormComponent {
   selectedCat: number = 0;
   categoryIdFound:any;
 
-  selectedImage: File | string | null = null;
+  selectedImage!: File;
   // @Output() save = new EventEmitter<any>();
   @Output() save = new EventEmitter<any>();
   constructor(
@@ -205,16 +205,18 @@ export class ProductFormComponent {
     }
   }
 
+  selectedImagePreview: string | undefined;
+
   handleImageUpload(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this.selectedImage = file;
+
       const reader = new FileReader();
       reader.onload = (e) => {
-        this.selectedImage = e.target?.result as string  | null;
+        this.selectedImagePreview = e.target?.result as string;
       };
       reader.readAsDataURL(file);
     }
-    console.log(this.selectedImage)
   }
 }

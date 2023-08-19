@@ -3,6 +3,7 @@ import { navbarData } from './nav-data';
 import { style, transition, trigger,animate, keyframes } from '@angular/animations';
 import { INavbarData, fadeInOut } from './helper';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 interface SideNavToggle{
   screenWidth:number;
@@ -27,7 +28,7 @@ interface SideNavToggle{
   ]
 })
 export class SidenavComponent implements OnInit{
- 
+
 
   @Output() onToggleSideNav:EventEmitter<SideNavToggle> = new EventEmitter();
   collapsed=false;
@@ -35,7 +36,14 @@ export class SidenavComponent implements OnInit{
   navData=navbarData;
   multiple:boolean=false;
 
-  constructor(private router:Router){
+  user:any;
+  userRole = ''; // Example user role
+
+  constructor(private router:Router, private auth:AuthService){
+    this.user = this.auth.getSavedUser();
+    console.log(this.user)
+    this.userRole=this.user.role
+
 
   }
   @HostListener('window:resize',['$event'])
@@ -49,6 +57,12 @@ export class SidenavComponent implements OnInit{
   ngOnInit(): void {
    this.screenWidth=window.innerWidth;
   }
+
+  canShowItem(roles: string[]) {
+    // Replace this with actual code to get the user's role
+     return roles.includes(this.userRole);
+}
+
 toggleCollapse(){
   this.collapsed=!this.collapsed;
   this.onToggleSideNav.emit({collapsed:this.collapsed, screenWidth:this.screenWidth})
@@ -71,7 +85,7 @@ shrinkItems(item:INavbarData){
     for (let modelItem of this.navData) {
      if(item !== modelItem && modelItem.expanded){
       modelItem.expanded=false
-     }      
+     }
     }
   }
 }

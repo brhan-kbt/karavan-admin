@@ -4,7 +4,9 @@ export const navbarData:INavbarData[]=[
     {
         routeLink:'dashboard',
         icon:'fal fa-home',
-        label:'Dashboard'
+        label:'Dashboard',
+        roles:['Admin','Branch_Admin','Finance'],
+
     },
     // {
     //     routeLink:'products',
@@ -77,6 +79,7 @@ export const navbarData:INavbarData[]=[
         routeLink:'users',
         icon:'fal fa-user',
         label:'User ',
+        roles: ['Admin'],
         items:[
             {
             routeLink:'users/manager',
@@ -108,12 +111,24 @@ export const navbarData:INavbarData[]=[
         routeLink:'products',
         icon:'far fa-box-open',
         label:'Product ',
+        roles:['Admin','Branch_Admin','Finance'],
         items:[
             {
             routeLink:'products/list',
             icon:'fal fa-list',
             label:'Product List'
             },
+            {
+                routeLink:'products/ingredients-list',
+                icon:'fal fa-list',
+                label:'Ingredient List'
+                },
+
+            {
+                routeLink:'products/availability',
+                icon:'fal fa-list',
+                label:'Availability'
+                },
 
         ]
     },
@@ -121,6 +136,7 @@ export const navbarData:INavbarData[]=[
         routeLink:'order',
         icon:'far fa-cart-plus',
         label:'Order ',
+        roles:['Admin','Branch_Admin','Finance'],
         items:[
             {
                 routeLink:'order/list',
@@ -134,6 +150,7 @@ export const navbarData:INavbarData[]=[
         routeLink:'category',
         icon:'fal fa-folder-open',
         label:'Category ',
+        roles:['Admin','Branch_Admin','Finance'],
         items:[
             {
             routeLink:'category/cat-list',
@@ -151,6 +168,8 @@ export const navbarData:INavbarData[]=[
         routeLink:'reward',
         icon:'fal fa-gift',
         label:'Reward ',
+        roles:['Admin','Branch_Admin','Finance'],
+
         items:[
             {
                 routeLink:'reward/list',
@@ -164,6 +183,7 @@ export const navbarData:INavbarData[]=[
         routeLink:'gallery',
         icon:'fal fa-camera',
         label:'Media ',
+        roles:['Admin'],
         items:[
             {
             routeLink:'gallery/list',
@@ -179,6 +199,7 @@ export const navbarData:INavbarData[]=[
         routeLink:'branch',
         icon:'fal fa-user',
         label:'Branch ',
+        roles:['Admin','Branch_Admin','Finance'],
         items:[
             {
             routeLink:'branch/list',
@@ -193,12 +214,19 @@ export const navbarData:INavbarData[]=[
         routeLink:'settings',
         icon:'fal fa-cog',
         label:'Settings',
+        roles:['Admin','Branch_Admin','Finance'],
+
         items:[
             {
             routeLink:'settings/profile',
             icon:'fal fa-user',
             label:'Profile'
             },
+            {
+                routeLink:'settings/karavan',
+                icon:'fal fa-user',
+                label:'Settings'
+                },
             {
                 routeLink:'logout',
                 icon:'fal fa-power-off',
@@ -207,3 +235,4 @@ export const navbarData:INavbarData[]=[
         ]
     },
 ]
+

@@ -34,6 +34,7 @@ const routes: Routes = [
     path:'settings',
     loadChildren:()=>import('./setup/settings/setting.module').then(m=>m.SettingModule),
   },
+
   {
     path:'order',
     loadChildren:()=>import('./setup/order/order.module').then(m=>m.OrderModule),
@@ -51,9 +52,7 @@ const routes: Routes = [
   {
     path:'gallery',
     loadChildren:()=>import('./setup/media/media.module').then(m=>m.MediaModule),
-  }
-
-
+  },
 ];
 
 @NgModule({

@@ -6,6 +6,7 @@ export interface INavbarData{
     label:string;
     expanded?:boolean;
     items?:INavbarData[];
+    roles?:any
 }
 
 export const fadeInOut= trigger('fadeInOut',[
@@ -22,5 +23,5 @@ export const fadeInOut= trigger('fadeInOut',[
       animate('350ms',
       style({opacity:0})
       )
-    ])    
+    ])
   ])

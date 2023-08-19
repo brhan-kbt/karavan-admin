@@ -1,0 +1,57 @@
+
+<div class="flex flex-col">
+    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Profile</h2>
+    <mat-dialog-content class="mat-typography" >
+     <ng-container >
+       <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
+         <div class="flex flex-col md:flex-row gap-4">
+
+             <mat-form-field class="w-full md:w-2/3 " appearance="outline">
+               <mat-label>Full Name</mat-label>
+               <input matInput placeholder="John Doe" formControlName="fullName" required>
+               <mat-error *ngIf="form.get('fullName')?.touched && form.get('fullName')?.invalid">Full Name is required</mat-error>
+             </mat-form-field>
+
+             <mat-form-field class="w-full md:w-2/3 " appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="example@karavan.com" formControlName="email" required readonly>
+                <mat-error *ngIf="form.get('email')?.touched && form.get('email')?.invalid">Email is required</mat-error>
+              </mat-form-field>
+
+
+         </div>
+
+
+         <mat-form-field class="w-full md:w-2/3 " appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput placeholder="+251911121314" formControlName="phoneNumber" required readonly="readonly">
+            <mat-error *ngIf="form.get('phoneNumber')?.touched && form.get('phoneNumber')?.invalid">Phone Number is required</mat-error>
+          </mat-form-field>
+
+
+          <mat-form-field class="w-full md:w-2/3 " appearance="outline">
+            <mat-label>Branch </mat-label>
+            <input matInput placeholder="Summit" formControlName="branch" required readonly="readonly">
+            <mat-error *ngIf="form.get('branch')?.touched && form.get('branch')?.invalid"> Branch is required</mat-error>
+          </mat-form-field>
+
+         <div class="w-full">
+            <div class="flex">
+              <input type="file" (change)="handleImageUpload($event)" accept="image/*">
+              <div  *ngIf="selectedImage">
+                <img class="w-32 h-auto" [src]="selectedImagePreview" alt="Selected Image">
+              </div>
+            </div>
+
+          </div>
+         <button
+          class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+         (click)="onSave()"
+       >
+         Save
+       </button>
+       </form>
+     </ng-container>
+
+    </mat-dialog-content>
+  </div>

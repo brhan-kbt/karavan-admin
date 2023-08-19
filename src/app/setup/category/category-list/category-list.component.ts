@@ -73,15 +73,15 @@ export class CategoryListComponent {
   }
 
 
-updateOrderableStatus(row:any){
+  updateCategoryStatus(row:any){
   console.log(row)
   const productData={
     id:row.id,
-    orderable:!row.orderable
+    isActive:!row.isActive
   }
   console.log(productData)
 
-  this.product.updateOrderable(productData).then(res=>{
+  this.cat.updateCatStatus(productData).then(res=>{
     console.log(res)
     this.fetchAndUpdateProducts();
   }).catch(err=>{
@@ -120,7 +120,7 @@ openEditDialog(row: any): void {
 
  dialogRef.componentInstance.save.subscribe((event: { formData: any, id?:any }) => {
   console.log('Update Id:', event.id)
-  this.product.updateProduct(event.formData, event.id).then(res=>{
+  this.cat.updateCategory(event.formData, event.id).then(res=>{
     console.log(res)
   })
 }, (err:any) => {

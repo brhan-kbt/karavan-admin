@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { Product } from 'src/app/models/product';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  baseUrl: string = `http://196.189.119.123/api/Category`;
-  baseSubUrl: string = `http://196.189.119.123/api/SubCategory`;
+  baseUrl: string = `${environment.apiUrl}/api/Category`;
+  baseSubUrl: string = `${environment.apiUrl}/api/SubCategory`;
   cache: { [key: string]: any | undefined } = {}; // Internal cache object
   private selectedCategorySubject = new BehaviorSubject<any | null>(null);
   selectedCategory$ = this.selectedCategorySubject.asObservable();
@@ -69,19 +70,12 @@ export class CategoryService {
   setSelectedCategory(category: any | null) {
     this.selectedCategorySubject.next(category);
   }
-
-
   setSelectedCategorySubCategory(category: any | null) {
     this.selectedCategorySubCategorySubject.next(category);
   }
 
 
-  async saveCategory(data: any) {
-    const url = this.baseUrl + '/create'
-    console.log(data);
-    const res = await this.http.post<any>(url, data).toPromise();
-    return res;
-  }
+
 
   async getById(id: number) {
     const cacheKey = `category_${id}`;
@@ -94,11 +88,49 @@ export class CategoryService {
     }
   }
 
-  async updateProduct(data: any, id: number) {
-    const res = await this.http.put<any>(`${this.baseUrl}/${id}`, data).toPromise();
+  async saveCategory(data: any) {
+    const url = this.baseUrl + '/create'
+    console.log(data);
+    const res = await this.http.post<any>(url, data).toPromise();
+    return res;
+  }
+  async updateCategory(data: any, id: number) {
+    const url = this.baseUrl + '/update'
+    const res = await this.http.put<any>(`${url}/${id}`, data).toPromise();
     return res;
   }
 
+  async saveSubCategory(data: any) {
+    const url = this.baseSubUrl + '/create'
+    console.log(data);
+    const res = await this.http.post<any>(url, data).toPromise();
+    return res;
+  }
+  async updateSubCategory(data: any, id: number) {
+    const url = this.baseSubUrl + '/update'
+    const res = await this.http.put<any>(`${url}/${id}`, data).toPromise();
+    return res;
+  }
+
+  async updateCatStatus(data: any) {
+    const url = this.baseUrl + '/update-status'
+    if(data && data.id){
+    const res = await this.http.put<any>(`${url}/${data.id}`, data).toPromise();
+    return res;
+    }else{
+      return 'Failed to update Status';
+    }
+  }
+
+  async updateSubCatStatus(data: any) {
+    const url = this.baseSubUrl + '/update-status'
+    if(data && data.id){
+    const res = await this.http.put<any>(`${url}/${data.id}`, data).toPromise();
+    return res;
+    }else{
+      return 'Failed to update Status';
+    }
+  }
   // deleteProduct(id:number){
   //   return this.http.delete<Product>("http://localhost:3000/products"+id)
   //           .pipe(map((res:Product)=>{

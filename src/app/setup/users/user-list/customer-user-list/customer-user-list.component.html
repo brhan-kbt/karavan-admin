@@ -102,24 +102,22 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let row">
-            <div class="button-group">
-              <!-- <button
-                mat-icon-button
-                (click)="openEditDialog(row)"
-                style="color: green;"
-                class="small-button edit"
-              >
-                <mat-icon aria-label="Edit">edit</mat-icon>
-              </button> -->
-              <button
-                mat-icon-button
-                style="color: red; opacity: 0.8;"
-                (click)="deleteData(row)"
-                class="small-button delete"
-              >
-                <mat-icon aria-label="Delete">delete</mat-icon>
-              </button>
-            </div>
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+            <button
+            mat-menu-item
+            style="color: red;"
+            (click)="deleteData(row)"
+            class="small-button delete"
+          >
+            <mat-icon             style="color: red;"
+            aria-label="Delete">delete</mat-icon> Delete
+          </button>
+          <hr>
+            </mat-menu>
+
           </td>
         </ng-container>
 

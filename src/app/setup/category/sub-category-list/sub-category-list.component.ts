@@ -98,15 +98,15 @@ export class SubCategoryListComponent {
   }
 
 
-updateOrderableStatus(row:any){
+  updateSubCatStatus(row:any){
   console.log(row)
   const productData={
     id:row.id,
-    orderable:!row.orderable
+    isActive:!row.isActive
   }
   console.log(productData)
 
-  this.product.updateOrderable(productData).then(res=>{
+  this.cat.updateSubCatStatus(productData).then(res=>{
     console.log(res)
     this.fetchAndUpdateProducts();
   }).catch(err=>{
@@ -124,7 +124,7 @@ openDialog(): void {
     console.log('====================================');
     console.log('Here');
     console.log('====================================');
-    this.product.saveProduct(product).then(res=>{
+    this.cat.saveSubCategory(product).then(res=>{
       console.log(res)
     })
 
@@ -147,7 +147,7 @@ openEditDialog(row: any): void {
 
  dialogRef.componentInstance.save.subscribe((event: { formData: any, id?:any }) => {
   console.log('Update Id:', event.id)
-  this.product.updateProduct(event.formData, event.id).then(res=>{
+  this.cat.updateSubCategory(event.formData, event.id).then(res=>{
     console.log(res)
   })
 }, (err:any) => {

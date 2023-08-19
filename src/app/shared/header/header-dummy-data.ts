@@ -43,13 +43,18 @@ export const userItems=[
     {
         icon:'far fa-user',
         label:'Profile',
+        routeLink:'settings/profile',
     },
     {
         icon:'far fa-cog',
-        label:'Setting'
+        label:'Setting',
+        routeLink:'settings/karavan',
+
     },
     {
         icon:'far fa-power-off',
-        label:'Logout'
+        label:'Logout',
+        routeLink:'logout',
+
     }
 ]

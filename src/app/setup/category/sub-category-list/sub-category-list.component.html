@@ -50,23 +50,23 @@
         <!-- Orderable Column -->
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-          <td (click)="updateOrderableStatus(row)" mat-cell *matCellDef="let row">
-            <button
+          <td (click)="updateSubCatStatus(row)" class="cursor-pointer font-bold" mat-cell *matCellDef="let row">
+            <p
               mat-raised-button
-              color="primary"
+              style="color: green;"
               *ngIf="row.isActive"
               class="order-button"
             >
-              Done
-            </button>
-            <button
+              Active
+            </p>
+            <p
               mat-raised-button
-              color="warn"
+              style="color: rgb(192, 31, 31);"
               *ngIf="!row.isActive"
               class="order-button"
             >
               Pending
-            </button>
+            </p>
           </td>
         </ng-container>
 

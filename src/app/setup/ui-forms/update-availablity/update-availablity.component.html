@@ -1,0 +1,39 @@
+
+<div class="flex flex-col">
+    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Availability</h2>
+    <mat-dialog-content class="mat-typography" >
+     <ng-container >
+       <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Select Type</mat-label>
+            <mat-select formControlName="type"  >
+                <mat-option [value]="0"> By Availability </mat-option>
+                <mat-option [value]="1"> By Max Threshold </mat-option>
+            </mat-select>
+          <mat-error *ngIf="form.get('type')?.touched && form.get('type')?.invalid">Select Type</mat-error>
+
+          </mat-form-field>
+          <div class="flex flex-col md:flex-row gap-4" *ngIf="form.get('type')?.value === 0">
+            <mat-checkbox formControlName="isAvailable">Is Available</mat-checkbox>
+          </div>
+
+          <div class="flex flex-col md:flex-row gap-4 " *ngIf="form.get('type')?.value === 1">
+            <mat-form-field class="w-full " appearance="outline">
+              <mat-label>Max Threshold</mat-label>
+              <input matInput type="number" formControlName="maxThreshold">
+              <mat-error *ngIf="form.get('maxThreshold')?.touched && form.get('maxThreshold')?.invalid">Invalid Max Threshold</mat-error>
+            </mat-form-field>
+          </div>
+
+
+         <button
+          class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+         (click)="onSave()"
+       >
+         Save
+       </button>
+       </form>
+     </ng-container>
+
+    </mat-dialog-content>
+  </div>

@@ -23,18 +23,18 @@
 
                 <div class="head-menu-item">
                     <button class="head-menu-item-btn ripple">
-                      <i class="far fa-expand menu-icon"></i>    
+                      <i class="far fa-expand menu-icon"></i>
                     </button>
                 </div> -->
 
                 <div class="head-menu-item">
                     <button class="head-menu-item-btn ripple" [cdkMenuTriggerFor]="notificationOverlay">
-                      <i class="far fa-bell menu-icon"></i>    
+                      <i class="far fa-bell menu-icon"></i>
                     </button>
                 </div>
                 <div class="head-menu-item">
                     <button class="head-menu-item-btn ripple">
-                      <i class="far fa-comment-alt menu-icon"></i>    
+                      <i class="far fa-comment-alt menu-icon"></i>
                     </button>
                 </div>
             </div>
@@ -100,7 +100,11 @@
     <div class="overlay overlay-user overlay-fall" cdkMenu>
         <ul>
             <li *ngFor="let item of userItems" cdkMenuItem>
-                <a >
+                <a
+                    [routerLink]="[item.routeLink]"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact:true}"
+                >
                     <i class="icon" [ngClass]="item.icon"></i>
                     <span>{{item.label}}</span>
                 </a>

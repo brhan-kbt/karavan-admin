@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { Product } from '../models/product';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  baseUrl: string = `http://196.189.119.123/api/Product`;
+  baseUrl: string = `${environment.apiUrl}/api/Product`;
   cache: { [key: string]: Product | undefined } = {}; // Internal cache object
 
   constructor(private http: HttpClient) { }

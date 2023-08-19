@@ -145,7 +145,7 @@
           <div class="flex">
             <input type="file" (change)="handleImageUpload($event)" accept="image/*">
             <div  *ngIf="selectedImage">
-              <img class="w-32 h-auto" [src]="selectedImage" alt="Selected Image">
+              <img class="w-32 h-auto" [src]="selectedImagePreview" alt="Selected Image">
             </div>
           </div>
 

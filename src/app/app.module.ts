@@ -37,6 +37,12 @@ import { ProductFormComponent } from './setup/ui-forms/product-form/product-form
 import { LogoutComponent } from './shared/logout/logout.component';
 import { RatingModule } from 'primeng/rating';
 import { DonoutComponent } from './setup/dashboard/donout/donout.component';
+import { IngredientFormComponent } from './setup/ui-forms/ingredient-form/ingredient-form.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { UpdateAvailablityComponent } from './setup/ui-forms/update-availablity/update-availablity.component';
+import { ProfileFormComponent } from './setup/ui-forms/profile-form/profile-form.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +60,9 @@ import { DonoutComponent } from './setup/dashboard/donout/donout.component';
     BarComponent,
     ProductFormComponent,
     LogoutComponent,
+    IngredientFormComponent,
+    UpdateAvailablityComponent,
+    ProfileFormComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +84,9 @@ import { DonoutComponent } from './setup/dashboard/donout/donout.component';
     ChartModule,
     TableModule,
     DatePipe,
-    RatingModule
+    RatingModule,
+    MatSelectModule,
+    MatChipsModule,
 
   ],
   providers: [

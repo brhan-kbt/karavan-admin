@@ -13,11 +13,22 @@ import { ProductFormComponent } from '../ui-forms/product-form/product-form.comp
 import { MaterialModule } from 'src/app/app.material.module';
 import { AppCommonModule } from 'src/app/app.common.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AvailablityComponent } from './availablity/availablity.component';
+import { IngredeintComponent } from './ingredeint/ingredeint.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FormsModule } from '@angular/forms';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatSelectModule } from '@angular/material/select';
+import { ProductIngredientComponent } from './product-ingredient/product-ingredient.component';
 
 
 @NgModule({
   declarations: [
     ProductsListComponent,
+    AvailablityComponent,
+    IngredeintComponent,
+    ProductIngredientComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +41,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatIconModule,
     AppCommonModule,
     MatProgressSpinnerModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    FormsModule,
+    MatSelectModule,
+    NgxMatSelectSearchModule,
+    MatChipsModule,
+    MatAutocompleteModule
+
   ]
 })
 export class ProductModule { }

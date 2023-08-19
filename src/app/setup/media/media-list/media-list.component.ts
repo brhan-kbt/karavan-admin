@@ -8,6 +8,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { VerifyDeleteOrRestoreComponent } from 'src/app/shared/verify-delete-or-restore/verify-delete-or-restore.component';
 import { MediaFormComponent } from '../../ui-forms/media-form/media-form.component';
+import { GalleryService } from 'src/app/services/Gallery/gallery.service';
 
 @Component({
   selector: 'app-media-list',
@@ -20,8 +21,12 @@ export class MediaListComponent {
   dataSource!: MatTableDataSource<any>;
   constructor(private dialog:MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
+    private media: GalleryService,
     private auth:AuthService, private product:ProductService, private user:UserService) {
     this.getUsers();
+     media.getAll().then(res=>{
+      console.log('Gallery', res)
+     })
   }
   images: any[] | undefined;
 
@@ -200,10 +205,11 @@ onGalleriaClick(event: Event) {
     });
      dialogRef.componentInstance.save.subscribe(media => {
        console.log('Media',media);
-      //  this.auth.saveAdminUser(media).subscribe(res=>{
-      //   this.fetchAndUpdateUsers()
-      //    console.log(res)
-      //  })
+
+        this.media.saveGallery(media).then(res=>{
+        //  this.fetchAndUpdateUsers()
+          console.log(res)
+        })
 
        },err=>{
          console.log(err);
@@ -225,9 +231,9 @@ onGalleriaClick(event: Event) {
 
     dialogRef.componentInstance.saveEdit.subscribe((event: { formData: any, id?:any }) => {
       console.log('Update Id:', event.id)
-      // this.product.updateProduct(event.formData, event.id).then(res=>{
-      //   console.log(res)
-      // })
+       this.media.updateGallery(event.formData, event.id).then(res=>{
+         console.log(res)
+       })
     }, (err:any) => {
       console.log(err);
   });

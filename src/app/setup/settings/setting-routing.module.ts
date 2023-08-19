@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SettingsComponent } from './settings.component';
 import { CustomizeComponent } from './customize/customize.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SettingComponent } from './setting/setting.component';
 
 const routes: Routes = [
   {
     path:'profile',
-    component:SettingsComponent
+    component:ProfileComponent
   },
   {
-    path:'customize',
-    component:CustomizeComponent
+    path:'karavan',
+    component:SettingComponent
   }
 ];
 

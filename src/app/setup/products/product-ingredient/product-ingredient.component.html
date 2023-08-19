@@ -1,0 +1,33 @@
+
+
+<mat-form-field class="example-chip-list" appearance="outline">
+    <mat-label>Select Product</mat-label>
+
+<mat-chip-grid #chipGrid aria-label="Product selection">
+    <mat-chip-row *ngFor="let product of products" (removed)="remove(product)">
+      {{ product }}
+      <button matChipRemove [attr.aria-label]="'remove ' + product">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+  </mat-chip-grid>
+
+
+    <input
+      placeholder="Search and select products"
+      #productInput
+      [formControl]="productCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipGrid"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)"
+      value="Cake"
+    />
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+          {{ product }}
+        </mat-option>
+      </mat-autocomplete>
+
+</mat-form-field>
+  <button (click)="displaySelectedIds()">Display Selected IDs</button>

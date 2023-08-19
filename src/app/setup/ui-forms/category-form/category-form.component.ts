@@ -29,7 +29,7 @@ export class CategoryFormComponent {
   selectedCat: number = 0;
   branches:any;
 
-  selectedImage: File | string | null = null;
+  selectedImage!: File ;
   @Output() save = new EventEmitter<any>();
   constructor(
     public dialogRef: MatDialogRef<CategoryFormComponent>,
@@ -61,18 +61,17 @@ export class CategoryFormComponent {
     const formData = new FormData();
 
     this.form.markAllAsTouched();
-     if (this.form.valid) {
-       formData.append('isActive', this.form.get('isActive')?.value);
-       formData.append('name', this.form.get('name')?.value);
-       formData.append('description', this.form.get('description')?.value);
-       formData.append('image', this.selectedImage as Blob);
-     }
+    //  if (this.form.valid) {
+    //    formData.append('isActive', this.form.get('isActive')?.value);
+    //    formData.append('name', this.form.get('name')?.value);
+    //    formData.append('description', this.form.get('description')?.value);
+    //    formData.append('image', this.selectedImage as Blob);
+    //  }
      if (this.form.valid) {
       formData.append('isActive', this.form.get('isActive')?.value);
       formData.append('name', this.form.get('name')?.value);
       formData.append('description', this.form.get('description')?.value);
       formData.append('image', this.selectedImage as Blob);
-      console.log(this.form.value, this.categoryData.id)
        if(this.isEdit){
          this.save.emit({formData, id:this.categoryData.id});
        }
@@ -87,16 +86,18 @@ export class CategoryFormComponent {
 
   }
 
+  selectedImagePreview: string | undefined;
+
   handleImageUpload(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this.selectedImage = file;
+
       const reader = new FileReader();
       reader.onload = (e) => {
-        this.selectedImage = e.target?.result as string  | null;
+        this.selectedImagePreview = e.target?.result as string;
       };
       reader.readAsDataURL(file);
     }
-    console.log(this.selectedImage)
   }
 }
