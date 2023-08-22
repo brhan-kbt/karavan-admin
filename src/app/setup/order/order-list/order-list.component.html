@@ -8,7 +8,7 @@
     </button> -->
   </div>
 
-<ng-container >
+<ng-container *ngIf="userRole ==='Branch_Admin'">
 
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Outline form field</mat-label>
@@ -66,25 +66,13 @@
         <!-- Orderable Column -->
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-          <td (click)="updateOrderableStatus(row)" mat-cell *matCellDef="let row">
-            <button
-              mat-raised-button
-              color="primary"
-              *ngIf="row.status"
-              class="order-button"
-            >
-              Done
-            </button>
-            <button
-              mat-raised-button
-              color="warn"
-              *ngIf="!row.status"
-              class="order-button"
-            >
-              Pending
-            </button>
+          <td mat-cell *matCellDef="let row">
+            <mat-select disableRipple class="order-button px-10" [(value)]="row.orderStatus" (selectionChange)="updateOrderStatus(row)">
+              <mat-option *ngFor="let status of orderStats" [value]="status.value" [ngStyle]="getSelectStyle(status.value, row.orderStatus)">{{ status.label }}</mat-option>
+            </mat-select>
           </td>
         </ng-container>
+
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
@@ -131,8 +119,7 @@
 
 </ng-container>
 
-<div class="py-8"></div>
-<ng-container class="mt-5">
+<ng-container *ngIf="userRole === 'Admin'" >
 
   <mat-form-field appearance="outline" class="w-full">
     <mat-label>Outline form field</mat-label>
@@ -144,7 +131,6 @@
     class="mat-elevation-z8 example-table-container"
     style="width: 100%; overflow-x: auto; position: relative;"
   >
-
 
     <table
       mat-table
@@ -179,34 +165,39 @@
       <!-- Discount Column -->
       <ng-container matColumnDef="approvedBy">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Approved By: </th>
-        <td mat-cell *matCellDef="let row"> - </td>
-      </ng-container>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="row.systemAdmin">
+            {{ row.systemAdmin.fullName }}
+          </ng-container>
+          <ng-container *ngIf="!row.systemAdmin">
+            -
+          </ng-container>
+        </td>
+              </ng-container>
 
       <ng-container matColumnDef="pstatus">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Status </th>
-          <td mat-cell *matCellDef="let row">{{ row.payment.status  }}</td>
-        </ng-container>
+          <td mat-cell *matCellDef="let row" [ngClass]="{'text-green-700 ': row.payment.status === 0, 'text-red-500 font-bold': row.payment.status === 1}">
+           <p class="font-bold"> {{ row.payment.status === 0 ? 'Success' : 'Pending' }} </p>
+          </td>
+      </ng-container>
 
       <!-- Orderable Column -->
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Status </th>
-        <td (click)="updateOrderableStatus(row)" mat-cell *matCellDef="let row">
-          <button
-            mat-raised-button
-            color="primary"
-            *ngIf="row.status"
-            class="order-button"
+        <td  mat-cell *matCellDef="let row">
+          <p
+            *ngIf="row.orderStatus"
+            class="order-button text-green-700 font-bold"
           >
             Done
-          </button>
-          <button
-            mat-raised-button
-            color="warn"
-            *ngIf="!row.status"
-            class="order-button"
+          </p>
+          <p
+            *ngIf="!row.orderStatus"
+            class="order-button text-red-700 font-bold"
           >
             Pending
-          </button>
+        </p>
         </td>
       </ng-container>
 

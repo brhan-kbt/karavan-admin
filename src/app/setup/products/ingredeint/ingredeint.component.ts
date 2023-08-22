@@ -16,17 +16,20 @@ import { IngredientService } from 'src/app/services/ingredient/ingredient.servic
 })
 export class IngredeintComponent {
 
-  displayedColumns: string[] = ['id', 'productName', 'productCode', 'productPrice','discount','orderable', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'code', 'unitPrice','discount','maxThreshold', 'actions'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   products:any | undefined;
+  ingredients:any;
   isLoading: boolean = true;
 
-  constructor(private dialog:MatDialog, private product:ProductService,  private ingredient:IngredientService,   private changeDetectorRef: ChangeDetectorRef,
+  constructor(private dialog:MatDialog,
+    private product:ProductService,  private ingredient:IngredientService,   private changeDetectorRef: ChangeDetectorRef,
     ) {
-    this.getProducts();
+    // this.getProducts();
+    this.getIngredients();
   }
 
   async getProducts() {
@@ -37,6 +40,22 @@ export class IngredeintComponent {
       this.dataSource = new MatTableDataSource<any>(this.products);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    } catch (error) {
+      console.error(error);
+    }finally {
+      this.isLoading = false; // Move isLoading assignment inside the finally block
+    }
+
+  }
+
+  async getIngredients() {
+    try {
+      let ingredient = await this.ingredient.getIngredients();
+      this.ingredients=ingredient.data
+      console.log('Ingredients:',this.ingredients);
+       this.dataSource = new MatTableDataSource<any>(this.ingredients);
+       this.dataSource.paginator = this.paginator;
+       this.dataSource.sort = this.sort;
     } catch (error) {
       console.error(error);
     }finally {
@@ -97,12 +116,19 @@ export class IngredeintComponent {
 
   }
 
-  deleteData(candidate:any){
-    if (confirm(`Are you sure you want to delete ${candidate.name}?`)) {
-    console.log('====================================');
-    console.log('Send Delete Request');
-    console.log('====================================');
+  deleteData(ingredeint:any){
+    if (confirm(`Are you sure you want to delete ${ingredeint.name}?`)) {
+      this.deleteUser(ingredeint.id)
   }
+}
+
+ deleteUser(id: any) {
+  console.log(id);
+  this.ingredient.deleteIngredient(id).subscribe(res=>{
+    console.log('====================================');
+    console.log(res);
+    console.log('====================================');
+  })
 }
 
 updateOrderableStatus(row:any){

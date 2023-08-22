@@ -1,5 +1,10 @@
+<div class="loading-overlay" *ngIf="!reportData">
+       <mat-spinner diameter="50"></mat-spinner>
+    <p class="mt-5">Loading, stay tuned...</p>
 
-<div class="flex flex-col gap-10">
+</div>
+
+<div *ngIf="reportData" class="flex flex-col gap-10">
         <div class="grid grid-cols-12 px-5 gap-6 mt-5">
             <a class=" custom-card transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
                 href="#">
@@ -21,7 +26,7 @@
                     </div>
                     <div class="ml-2 w-full flex-1">
                         <div>
-                            <div class="mt-3 text-3xl font-bold leading-8">50</div>
+                            <div class="mt-3 text-3xl font-bold leading-8">{{reportData.totalMenus}}</div>
 
                             <div class="mt-1 text-base text-gray-600">Total Menus</div>
                         </div>
@@ -46,7 +51,7 @@
                     </div>
                     <div class="ml-2 w-full flex-1">
                         <div>
-                            <div class="mt-3 text-3xl font-bold leading-8">$ 5100 </div>
+                            <div class="mt-3 text-3xl font-bold leading-8">ETB {{reportData.totalRevenue}} </div>
 
                             <div class="mt-1 text-base text-gray-600">Total Revenue</div>
                         </div>
@@ -71,7 +76,7 @@
                     </div>
                     <div class="ml-2 w-full flex-1">
                         <div>
-                            <div class="mt-3 text-3xl font-bold leading-8">510</div>
+                            <div class="mt-3 text-3xl font-bold leading-8">{{reportData.totalOrders}}</div>
 
                             <div class="mt-1 text-base text-gray-600">Total Orders</div>
                         </div>
@@ -95,7 +100,7 @@
                     </div>
                     <div class="ml-2 w-full flex-1">
                         <div>
-                            <div class="mt-3 text-3xl font-bold leading-8">4.510</div>
+                            <div class="mt-3 text-3xl font-bold leading-8">{{reportData.totalCustomers}}</div>
 
                             <div class="mt-1 text-base text-gray-600">Total Customers</div>
                         </div>
@@ -111,40 +116,55 @@
                     <h2 class="font-bold text-2xl">Order Summary</h2>
                 </div>
                 <div class="menus space-x-2 ">
-                    <a class="cursor-pointer" href="#">Monthly</a>
-                    <a class="cursor-pointer" href="#">Weekly</a>
-                    <a class="cursor-pointer font-bold border-b-2 border-gray-700" href="#">Today</a>
-                </div>
+                    <a class="cursor-pointer"
+               (click)="updateOrderSummary('montly')"
+               [ngClass]="{'font-bold border-b-2 border-gray-700': selectedOrderSummary === reportData.orderSummary.montly}">
+                Monthly
+            </a>
+            <a class="cursor-pointer"
+               (click)="updateOrderSummary('weekly')"
+               [ngClass]="{'font-bold border-b-2 border-gray-700': selectedOrderSummary === reportData.orderSummary.weekly}">
+                Weekly
+            </a>
+            <a class="cursor-pointer font-bold border-b-2 border-gray-700"
+               (click)="updateOrderSummary('today')"
+               [ngClass]="{'font-bold border-b-2 border-gray-700': selectedOrderSummary === reportData.orderSummary.today}">
+                Today
+            </a>
+        </div>
             </div>
 
-            <div class="flex custom-cont bg-green-100 p-3 rounded-md justify-between items-center">
-                <div class="flex space-x-2 items-center">
-                    <h2 class="bg-green-600 custom-x text-white px-8 py-1 rounded-md">25</h2>
-                    <div class="flex items-center justify-center">
-                        <h2 class="font-bold flex menus2">New Orders </h2>
-                        <i class="fa fa-circle-fill"></i>
+            <ng-container *ngIf="selectedOrderSummary">
+                <div class="flex custom-cont bg-green-100 p-3 rounded-md justify-between items-center">
+                    <div class="flex space-x-2 items-center">
+                        <h2 class="bg-green-600 custom-x text-white px-8 py-1 rounded-md">{{selectedOrderSummary.pendingOrders}}</h2>
+                        <div class="flex items-center justify-center">
+                            <h2 class="font-bold flex menus2">New Orders </h2>
+                            <i class="fa fa-circle-fill"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <h2  class=" menus2 text-blue-500 font-bold  border-b border-blue-300">
+                            Manage Orders
+                        </h2>
                     </div>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <h2  class=" menus2 text-blue-500 font-bold  border-b border-blue-300">
-                        Manage Orders
-                    </h2>
+                <div class="flex items-end custom-cont space-y-4 justify-between px-3 py-5">
+                    <div class="space-y-1 text-red-600">
+                        <h2 class="text-4xl font-bold">{{selectedOrderSummary.pendingOrders}}</h2>
+                        <h2>Pending</h2>
+                    </div>
+                    <div class="text-green-700">
+                        <h2 class="text-4xl font-bold">{{selectedOrderSummary.completedOrders}}</h2>
+                        <h2>Completed</h2>
+                    </div>
+                    <div class="text-red-400">
+                        <h2 class="text-4xl font-bold">{{selectedOrderSummary.cancelledOrders}}</h2>
+                        <h2>Cancelled</h2>
+                    </div>
                 </div>
-            </div>
-            <div class="flex custom-cont space-y-4 justify-between px-3 py-5">
-                <div class="space-y-1 text-red-600">
-                    <h2 class="text-4xl font-bold">25</h2>
-                    <h2>Pending</h2>
-                </div>
-                <div class="text-green-700">
-                    <h2 class="text-4xl font-bold">60</h2>
-                    <h2>Completed</h2>
-                </div>
-                <div class="text-red-400">
-                    <h2 class="text-4xl font-bold">7</h2>
-                    <h2>Cancelled</h2>
-                </div>
-            </div>
+
+            </ng-container>
 
         </div>
         <app-bar class="w-full lg:w-1/2 2xl:w-2/3"></app-bar>
@@ -172,82 +192,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="bg-white border-b">
-                    <th scope="row" class="customPadding px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        2KG TORTA
-                    </th>
-                    <td class="customPadding px-6 py-4">
-                        110
-                    </td>
-                    <td class="customPadding px-6 py-4">
-                        <p-rating [(ngModel)]="value" [readonly]="true" [cancel]="false" style="color: goldenrod !important;"></p-rating>
+                <ng-container *ngFor="let prod of reportData.trendingProducts">
+                    <tr class="bg-white border-b">
+                        <th scope="row" class="customPadding px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {{prod.productName}}
+                        </th>
+                        <td class="customPadding px-6 py-4">
+                            {{prod.totalOrders}}
+                        </td>
+                        <td class="customPadding px-6 py-4">
+                            <p-rating [(ngModel)]="prod.rating" [readonly]="true" [cancel]="false" style="color: goldenrod !important;"></p-rating>
 
-                    </td>
-                </tr>
-                <tr class="bg-white border-b">
-                    <th scope="row" class="customPadding px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        2KG TORTA
-                    </th>
-                    <td class="customPadding px-6 py-4">
-                        110
-                    </td>
-                    <td class="customPadding px-6 py-4">
-                        <p-rating
-                        [(ngModel)]="value"
-                        [readonly]="true"
-                        [cancel]="false"
-                        style="color: goldenrod !important;"
-                      ></p-rating>
-
-                    </td>
-                </tr>
-                <tr class="bg-white border-b">
-                    <th scope="row" class="customPadding px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        2KG TORTA
-                    </th>
-                    <td class="customPadding px-6 py-4">
-                        110
-                    </td>
-                    <td class="customPadding px-6 py-4">
-                        <p-rating [(ngModel)]="value" [readonly]="true" [cancel]="false" style="color: goldenrod !important;"></p-rating>
-
-                    </td>
-                </tr>
-                <tr class="bg-white border-b">
-                    <th scope="row" class="customPadding px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        2KG TORTA
-                    </th>
-                    <td class="customPadding px-6 py-4">
-                        110
-                    </td>
-                    <td class="customPadding px-6 py-4">
-                        <p-rating [(ngModel)]="value" [readonly]="true" [cancel]="false" style="color: goldenrod !important;"></p-rating>
-
-                    </td>
-                </tr>
-                <tr class="bg-white border-b">
-                    <th scope="row" class="customPadding px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        2KG TORTA
-                    </th>
-                    <td class="customPadding px-6 py-4">
-                        110
-                    </td>
-                    <td class="customPadding px-6 py-4">
-                        <p-rating [(ngModel)]="value" [readonly]="true" [cancel]="false" style="color: goldenrod !important;"></p-rating>
-
-                    </td>
-                </tr>
-                <tr class="bg-white border-b">
-                    <th scope="row" class="customPadding px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        2KG TORTA
-                    </th>
-                    <td class="customPadding px-6 py-4">
-                        110
-                    </td>
-                    <td class="customPadding px-6 py-4">
-                        <p-rating [(ngModel)]="value" [readonly]="true" [cancel]="false" style="color: goldenrod !important;"></p-rating>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
     </div>

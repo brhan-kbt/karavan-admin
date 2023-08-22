@@ -14,7 +14,7 @@ export class IngredientFormComponent {
   @Input() isEdit = false;
   @Input() product: any = {
     isActive: false,
-    maximumThreshold: '',
+    maxThreshold: '',
     discount: '',
     image: '',
     description: '',
@@ -54,7 +54,7 @@ export class IngredientFormComponent {
 
     this.form = this.formBuilder.group({
       isActive: [this.product?.active || false],
-      maximumThreshold: [this.product?.maximumThreshold || null],
+      maxThreshold: [this.product?.maxThreshold || null],
       discount: [this.product?.discount || null],
       image: [this.product?.image || ''],
       code: [this.product?.code || '', [Validators.required]],
@@ -152,7 +152,7 @@ export class IngredientFormComponent {
      if (this.form.valid) {
        const formData = new FormData();
        formData.append('isActive', this.form.get('isActive')?.value);
-       formData.append('maximumThreshold', this.form.get('maximumThreshold')?.value);
+       formData.append('maxThreshold', this.form.get('maxThreshold')?.value);
        formData.append('discount', this.form.get('discount')?.value);
        formData.append('image', this.selectedImage as Blob);
        formData.append('code', this.form.get('code')?.value);

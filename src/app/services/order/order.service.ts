@@ -59,4 +59,15 @@ export class OrderService {
     return res;
   }
 
+
+
+  async updateOrder(data: any) {
+    const url = this.baseUrl + '/update'
+    if(data && data.id){
+    const res = await this.http.put<any>(`${url}/${data.id}`, data).toPromise();
+    return res;
+    }else{
+      return 'Failed to update Status';
+    }
+  }
 }

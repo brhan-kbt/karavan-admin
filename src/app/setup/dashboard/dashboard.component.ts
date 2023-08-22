@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ApexChart, ApexDataLabels, ApexNonAxisChartSeries, ApexTitleSubtitle } from 'ng-apexcharts';
 import { ProductService } from 'src/app/services/product.service';
+import { ReportService } from 'src/app/services/report/report.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,12 +36,20 @@ export class DashboardComponent {
   products!: any;
   formGroup!:FormGroup;
   value!:number;
+  reportData:any;
 
-  constructor(private product: ProductService) {}
+  constructor(private product: ProductService, private report:ReportService) {
+    report.getReport().then(res=>{
+      this.reportData=res;
+      this.selectedOrderSummary = this.reportData.orderSummary['today'];
+      console.log(this.reportData);
+    })
+  }
   getStarStyleClass(): string {
     return this.value > 0 ? 'custom-filled-star' : '';
   }
   ngOnInit() {
+
     this.value = 3;
     this.formGroup = new FormGroup({
         value: new FormControl(4)
@@ -75,7 +84,11 @@ export class DashboardComponent {
     });
 
   }
-
+  selectedOrderSummary:any;
+  updateOrderSummary(type: string): void {
+    this.selectedOrderSummary = this.reportData.orderSummary[type];
+    console.log(this.selectedOrderSummary)
+  }
 
 
 

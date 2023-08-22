@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class IngredientService {
   constructor(private http: HttpClient) { }
 
   async getIngredients() {
-    const url = this.baseUrl + '/list'
+    const url = this.baseUrl;
     const cacheKey = 'ingredients';
     if (this.cache[cacheKey]) {
       console.log('From Cache');
@@ -85,6 +86,17 @@ export class IngredientService {
       return 'Failed to update Status';
     }
   }
+
+  deleteIngredient(id:any){
+    const url = this.baseUrl + '/delete';
+    return this.http.delete<any>(`${url}/${id}`).pipe(
+      map((res: any) => {
+        console.log('====================================');
+        return res;
+
+      })
+    );
+   }
 
 }
 
