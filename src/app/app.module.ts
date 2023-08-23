@@ -42,7 +42,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { UpdateAvailablityComponent } from './setup/ui-forms/update-availablity/update-availablity.component';
 import { ProfileFormComponent } from './setup/ui-forms/profile-form/profile-form.component';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,6 +87,7 @@ import { ProfileFormComponent } from './setup/ui-forms/profile-form/profile-form
     RatingModule,
     MatSelectModule,
     MatChipsModule,
+    ProgressSpinnerModule
 
   ],
   providers: [

@@ -141,10 +141,21 @@
 
             <div>
               <button
-                (click)="login()"
-                class="w-full flex justify-center bg-[#0E483F] text-xl  hover:bg-[#0E483F]/90 text-gray-100 p-4  rounded-lg  font-semibold  shadow-lg cursor-pointer ease-in duration-500">
+              (click)="login()"
+              class="w-full flex justify-center bg-[#0E483F] text-xl hover:bg-[#0E483F]/90 text-gray-100 p-4 rounded-lg font-semibold shadow-lg cursor-pointer ease-in duration-500"
+              [disabled]="loggingIn"
+            >
+              <ng-container *ngIf="!loggingIn; else loadingAnimation">
                 Sign in
-              </button>
+              </ng-container>
+              <ng-template #loadingAnimation>
+                <div class="flex items-center justify-center">
+                  <div class="animate-spin rounded-full mr-3 h-8 w-8 border-t-2 border-b-2 border-[#9e6207]"></div>
+                  <span>Signing in...</span>
+                </div>
+              </ng-template>
+            </button>
+
             </div>
 
           </form>

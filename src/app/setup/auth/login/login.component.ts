@@ -28,9 +28,11 @@ export class LoginComponent implements OnInit{
       }
     });
   }
-
+  loggingIn = false; // Initialize loggingIn as false
 
   login() {
+    this.loggingIn = true; // Start the loading animation
+
     this.loginForm.markAllAsTouched();
     if (this.loginForm.valid) {
       this.auth.login(this.loginForm.value).subscribe(
@@ -39,11 +41,13 @@ export class LoginComponent implements OnInit{
           this.auth.saveRefreshToken(res.data.refereshToken);
           this.auth.saveUser(res.data);
           this.router.navigate(['/dashboard']);
+          this.loggingIn = false; // Start the loading animation
         },
         (error) => {
           if (error && error.error && error.error.message) {
-            this.errors=error.error.message;
-          } else {
+            this.errors = error.error.message;
+            this.loggingIn = false; // Start the loading animation
+
           }
         }
       );
