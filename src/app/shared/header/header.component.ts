@@ -1,5 +1,7 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { languages, notifications, userItems } from './header-dummy-data';
+import { OrderService } from 'src/app/services/order/order.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -15,10 +17,19 @@ export class HeaderComponent implements OnInit{
   languages=languages;
   notifications=notifications;
   userItems=userItems;
+  pendingData:any;
 
   @HostListener('window:resize',['$event'])
   onResize(event:any){
     this.checkCanShowSearchAsOverlay(window.innerWidth)
+  }
+
+  constructor( private order:OrderService, private router:Router){
+    order.getBranchOrders().then(res=>{
+      console.log("Pending: ",res)
+      this.pendingData=res.data;
+    })
+
   }
   ngOnInit(): void {
     this.checkCanShowSearchAsOverlay(window.innerWidth)
@@ -41,5 +52,24 @@ export class HeaderComponent implements OnInit{
     else{
       this.canShowSearchAsOverlay=false;
     }
+  }
+
+  formatDateTime(dateTime: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    };
+  
+    return new Date(dateTime).toLocaleString('en-US', options);
+  }
+  
+
+  showProductDetails(data:any){
+    this.order.setSelectedOrder(data);
+    this.router.navigate([`order/detail/${data.id}`]);
   }
 }

@@ -317,3 +317,20 @@ $josefin: 'Josefin Sans', sans-serif;
 .ripple:focus{
     background: #eff2f3 radial-gradient(circle, transparent 1%, #eff2f3 1%) center/15000%;
 }
+
+
+.head-menu-item {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px; /* Adjust this value to position the badge */
+  right: -5px; /* Adjust this value to position the badge */
+  color: crimson;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+  
+}

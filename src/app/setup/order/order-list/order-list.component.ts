@@ -51,6 +51,7 @@ export class OrderListComponent {
       this.getOrders();
       this.orderStats=orderStatuses;
       console.log(this.orderStats)
+      
   }
 
   async getOrders(){

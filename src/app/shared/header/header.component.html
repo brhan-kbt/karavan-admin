@@ -30,8 +30,10 @@
                 <div class="head-menu-item">
                     <button class="head-menu-item-btn ripple" [cdkMenuTriggerFor]="notificationOverlay">
                       <i class="far fa-bell menu-icon"></i>
+                      <span class="font-josefin notification-badge">{{pendingData.length}}</span>
                     </button>
-                </div>
+                  </div>
+                  
                 <div class="head-menu-item">
                     <button class="head-menu-item-btn ripple">
                       <i class="far fa-comment-alt menu-icon"></i>
@@ -74,20 +76,20 @@
             <li class="notification-head-container">
                 <div class="notification-head">Notifications</div>
                 <span class="view-all-link">
-                    <a href="#">View All</a>
+                    <a [routerLink]="'/order/list'">View All</a>
                 </span>
             </li>
-            <li *ngFor="let notification of notifications"
+            <li *ngFor="let notification of pendingData"
             cdkMenuItem
             class="notification-message-container"
             >
              <i [class]="notification.icon"></i>
-             <div>
+             <div (click)="showProductDetails(notification)">
                 <div class="notification-subject">
-                    {{notification.subject}}
+                   New Order from {{notification.customer.fullName}}
                 </div>
                 <p class="notification-desc">
-                    {{notification.description}}
+                    Pick Up Date: {{ formatDateTime(notification.pickupDateTime) }}
                 </p>
              </div>
             </li>
