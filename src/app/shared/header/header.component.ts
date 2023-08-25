@@ -2,6 +2,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { languages, notifications, userItems } from './header-dummy-data';
 import { OrderService } from 'src/app/services/order/order.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit{
- 
+
   @Input() collapsed=false;
   @Input() screenWidth =0;
   canShowSearchAsOverlay=false;
@@ -18,13 +19,19 @@ export class HeaderComponent implements OnInit{
   notifications=notifications;
   userItems=userItems;
   pendingData:any;
+  user:any;
+  userRole:any;
 
   @HostListener('window:resize',['$event'])
   onResize(event:any){
     this.checkCanShowSearchAsOverlay(window.innerWidth)
   }
 
-  constructor( private order:OrderService, private router:Router){
+  constructor( private order:OrderService,private auth:AuthService, private router:Router){
+    this.user = this.auth.getSavedUser();
+    console.log(this.user)
+    this.userRole=this.user.role
+
     order.getBranchOrders().then(res=>{
       console.log("Pending: ",res)
       this.pendingData=res.data;
@@ -63,10 +70,10 @@ export class HeaderComponent implements OnInit{
       minute: 'numeric',
       hour12: true
     };
-  
+
     return new Date(dateTime).toLocaleString('en-US', options);
   }
-  
+
 
   showProductDetails(data:any){
     this.order.setSelectedOrder(data);

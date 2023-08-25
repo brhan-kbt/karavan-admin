@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ProductFormComponent } from '../../ui-forms/product-form/product-form.component';
 import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product/product.service';
+import { IngredientFormComponent } from '../../ui-forms/ingredient-form/ingredient-form.component';
+import { IngredientProductComponent } from '../../ui-forms/ingredient-product/ingredient-product.component';
 
 @Component({
   selector: 'app-products-list',
@@ -52,6 +54,25 @@ export class ProductsListComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  addIngredient(row:any):void{
+    const dialogRef = this.dialog.open(IngredientProductComponent, {
+      width: '75%',
+     data: { candidate: {} }
+   });
+   console.log('Logged')
+  //  dialogRef.componentInstance.save.subscribe(product => {
+  //    console.log('====================================');
+  //    console.log('Here');
+  //    console.log('====================================');
+  //    this.product.saveProduct(product).then(res=>{
+  //      console.log(res)
+  //    })
+
+  //    },err=>{
+  //      console.log(err);
+
+  //  });
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ProductFormComponent, {

@@ -177,8 +177,8 @@
 
       <ng-container matColumnDef="pstatus">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Status </th>
-          <td mat-cell *matCellDef="let row" [ngClass]="{'text-green-700 ': row.payment.status === 0, 'text-red-500 font-bold': row.payment.status === 1}">
-           <p class="font-bold"> {{ row.payment.status === 0 ? 'Success' : 'Pending' }} </p>
+          <td mat-cell *matCellDef="let row" > <!-- [ngClass]="{'text-green-700 ': row.payment.status === 0, 'text-red-500 font-bold': row.payment.status === 1}" -->
+           <p class="font-bold"> Done </p> <!-- {{ row.payment.status === 0 ? 'Success' : 'Pending' }} -->
           </td>
       </ng-container>
 

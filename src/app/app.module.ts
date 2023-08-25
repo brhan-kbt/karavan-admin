@@ -43,6 +43,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { UpdateAvailablityComponent } from './setup/ui-forms/update-availablity/update-availablity.component';
 import { ProfileFormComponent } from './setup/ui-forms/profile-form/profile-form.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { IngredientProductComponent } from './setup/ui-forms/ingredient-product/ingredient-product.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +63,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     LogoutComponent,
     IngredientFormComponent,
     UpdateAvailablityComponent,
-    ProfileFormComponent
+    ProfileFormComponent,
+    IngredientProductComponent
   ],
   imports: [
     BrowserModule,
