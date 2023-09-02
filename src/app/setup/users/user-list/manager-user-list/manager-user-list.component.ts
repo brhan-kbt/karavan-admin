@@ -26,6 +26,10 @@ export class ManagerUserListComponent {
   isLoading: boolean = true;
   deleteRestoreAction!: string;
   deleteRestoreData: any;
+  dataLoaded:boolean=false;
+  errors:any;
+  serverErrors:any;
+  isSaving:boolean=false;
 
   constructor(private dialog:MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
@@ -38,8 +42,11 @@ export class ManagerUserListComponent {
       this.users = user.data.filter((res:any) => res.isDeleted === false && (res.role ==='Admin' || res.role ==='Finance'));
       console.log('users:',this.users);
       this.dataSource = new MatTableDataSource<any>(this.users);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 0);
+      this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {
@@ -63,14 +70,24 @@ export class ManagerUserListComponent {
        width: '75%',
       data: { candidate: {} }
     });
-     dialogRef.componentInstance.saveAdmin.subscribe(user => {
+    dialogRef.componentInstance.saveAdmin.subscribe(user => {
        console.log('ADMIN',user);
        this.auth.saveAdminUser(user).subscribe(res=>{
-        this.fetchAndUpdateUsers()
-         console.log(res)
-       })
+        this.fetchAndUpdateUsers().then(res=>{
+          dialogRef.close(); // Close the dialog here
+          dialogRef.componentInstance.isSaving=false
+        });
+        console.log(res)
 
        },err=>{
+        this.serverErrors = err.error.data; // Assuming the server returns error messages in the "error" property
+        dialogRef.componentInstance.serverErrors = err.error.data;
+        dialogRef.componentInstance.isSaving=false;
+        console.log(this.serverErrors)
+      })
+
+       },err=>{
+
          console.log(err);
 
      });
@@ -78,8 +95,17 @@ export class ManagerUserListComponent {
      dialogRef.componentInstance.saveFinanceAdmin.subscribe(user => {
       console.log('FINANCE ADMIN',user);
       this.auth.saveFinanceAdminUser(user).then(res=>{
-        this.fetchAndUpdateUsers();
+        this.fetchAndUpdateUsers().then(res=>{
+          dialogRef.close(); // Close the dialog here
+        });
         console.log(res)
+      },err=>
+      {
+        this.serverErrors = err.error.data; // Assuming the server returns error messages in the "error" property
+        dialogRef.componentInstance.serverErrors = err.error.data;
+        dialogRef.componentInstance.isSaving=false;
+
+        console.log(this.serverErrors)
       })
 
       },err=>{
@@ -90,14 +116,30 @@ export class ManagerUserListComponent {
     dialogRef.componentInstance.saveBranchAdmin.subscribe(user => {
       console.log('BRANCH ADMIN',user);
       this.auth.saveBranchAdminUser(user).subscribe(res=>{
-        this.fetchAndUpdateUsers();
+        this.fetchAndUpdateUsers().then(res=>{
+          dialogRef.close(); // Close the dialog here
+        })
         console.log(res)
+
+      },err=>
+      {
+        this.serverErrors = err.error.data; // Assuming the server returns error messages in the "error" property
+        dialogRef.componentInstance.serverErrors = err.error.data;
+        dialogRef.componentInstance.isSaving=false;
+
+        console.log(this.serverErrors)
       })
 
       },err=>{
         console.log(err);
 
     });
+
+
+
+    dialogRef.componentInstance.serverErrors = this.serverErrors;
+
+    console.log("INSIDE MANAGER COMPONENT",dialogRef.componentInstance.serverErrors)
   }
 
   openEditDialog(row: any): void {
@@ -181,6 +223,7 @@ async fetchAndUpdateUsers() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.changeDetectorRef.detectChanges(); // Manually trigger change detection
+
   } catch (error) {
     console.error(error);
   } finally {

@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/app.material.module';
 import { GalleriaModule } from 'primeng/galleria';
 import { MediaFormComponent } from '../ui-forms/media-form/media-form.component';
+import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { MediaFormComponent } from '../ui-forms/media-form/media-form.component'
     MaterialModule,
     FormsModule,
     GalleriaModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
 
 })

@@ -8,6 +8,7 @@ import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product/product.service';
 import { IngredientFormComponent } from '../../ui-forms/ingredient-form/ingredient-form.component';
 import { IngredientProductComponent } from '../../ui-forms/ingredient-product/ingredient-product.component';
+import { IngredientService } from 'src/app/services/ingredient/ingredient.service';
 
 @Component({
   selector: 'app-products-list',
@@ -23,31 +24,48 @@ export class ProductsListComponent {
   @ViewChild(MatSort) sort!: MatSort;
   products:any | undefined;
   isLoading: boolean = true;
+  dataLoaded:boolean=false;
+  errors:any;
+  serverErrors:any;
+  isSaving:boolean=false;
 
-  constructor(private dialog:MatDialog, private product:ProductService,     private changeDetectorRef: ChangeDetectorRef,
+  constructor(private dialog:MatDialog,
+    private product:ProductService, private ing:IngredientService,    private changeDetectorRef: ChangeDetectorRef,
     ) {
     this.getProducts();
+    ing.getIngredients().then(res=>{
+      console.log();
+    })
   }
 
   async getProducts() {
     try {
       let product = await this.product.getProducts();
-      this.products=product.data
-      console.log('Products:',this.products);
+      this.products = product.data;
+      console.log('Products:', this.products);
       this.dataSource = new MatTableDataSource<any>(this.products);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+       setTimeout(() => {
+         this.dataSource.paginator = this.paginator;
+         this.dataSource.sort = this.sort;
+       }, 0);
+
+      console.log(this.dataSource)
+      this.dataLoaded = true;
     } catch (error) {
       console.error(error);
-    }finally {
-      this.isLoading = false; // Move isLoading assignment inside the finally block
+    } finally {
+      this.isLoading = false;
     }
+  }
+  // ngAfterViewInit() {
+  //   console.log('Paginator:', this.paginator); // Check if paginator is defined
+  //   console.log('Sort:', this.sort); // Check if sort is defined
 
-  }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+
+  //   console.log('DataSource:', this.dataSource); // Check if dataSource is correctly assigned
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -57,7 +75,9 @@ export class ProductsListComponent {
   addIngredient(row:any):void{
     const dialogRef = this.dialog.open(IngredientProductComponent, {
       width: '75%',
-     data: { candidate: {} }
+      data: {
+        product:row,
+      }
    });
    console.log('Logged')
   //  dialogRef.componentInstance.save.subscribe(product => {
@@ -85,7 +105,16 @@ export class ProductsListComponent {
       console.log('Here');
       console.log('====================================');
       this.product.saveProduct(product).then(res=>{
-        console.log(res)
+        console.log(res);
+        this.fetchAndUpdateProducts().then(res=>{
+          dialogRef.close(); // Close the dialog here
+          dialogRef.componentInstance.isSaving=false
+        })
+      },err=>{
+        this.serverErrors = err.error.data; // Assuming the server returns error messages in the "error" property
+        dialogRef.componentInstance.serverErrors = err.error.data;
+        dialogRef.componentInstance.isSaving=false;
+        console.log(this.serverErrors)
       })
 
       },err=>{
@@ -154,6 +183,7 @@ async fetchAndUpdateProducts() {
   } catch (error) {
     console.error(error);
   } finally {
+    this.dataLoaded=true;
     this.isLoading = false;
   }
 }

@@ -23,6 +23,7 @@ export class CustomerUserListComponent {
   @ViewChild(MatSort) sort!: MatSort;
   users:any | undefined;
   isLoading: boolean = true;
+  dataLoaded:boolean=false;
 
   constructor(private dialog:MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
@@ -35,8 +36,12 @@ export class CustomerUserListComponent {
       this.users = user.data.filter((res:any) => res.isDeleted === false && res.role==='Customer');
       console.log('users:',this.users);
       this.dataSource = new MatTableDataSource<any>(this.users);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 0);
+
+      this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {

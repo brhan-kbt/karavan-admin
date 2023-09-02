@@ -25,6 +25,7 @@ export class TrashedUserListComponent {
   isLoading: boolean = true;
   deleteRestoreAction!:string;
   deleteRestoreData!:any;
+  dataLoaded:boolean=true;
 
   constructor(private dialog:MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
@@ -39,6 +40,7 @@ export class TrashedUserListComponent {
       this.dataSource = new MatTableDataSource<any>(this.users);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {

@@ -1,6 +1,5 @@
 
-<div class="flex flex-col">
-    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} User</h2>
+<div class="flex flex-col" >
     <mat-dialog-content class="mat-typography" >
      <ng-container *ngIf="!isEdit">
        <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
@@ -9,17 +8,19 @@
              <mat-form-field class="w-full" appearance="outline">
                <mat-label>Full Name</mat-label>
                <input matInput placeholder="John Doe" formControlName="fullName" required>
-               <mat-error *ngIf="form.get('fullName')?.touched && form.get('fullName')?.invalid">Product Name is required</mat-error>
-
-             </mat-form-field>
+               <mat-error *ngIf=" !serverErrors  && form.get('fullName')?.touched && form.get('fullName')?.invalid">Full Name is required</mat-error>
+              </mat-form-field>
+              <mat-error class="-mt-5 text-xs" *ngIf="serverErrors && serverErrors['fullname']"> {{ serverErrors['fullname'] }}</mat-error>
            </div>
            <div class="md:w-1/2">
              <mat-form-field class="w-full" appearance="outline">
                <mat-label>Email</mat-label>
-               <input matInput placeholder="johnDoe@example.com" type="email" formControlName="email"  required>
-               <mat-error *ngIf="form.get('email')?.touched && form.get('email')?.invalid">Email is required</mat-error>
-
-             </mat-form-field>
+               <input matInput placeholder="johnDoe@example.com" type="email" formControlName="email" >
+               <mat-error *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched">
+                Please enter a valid email address.
+              </mat-error>
+            </mat-form-field>
+              <mat-error class="-mt-5 text-xs" *ngIf="serverErrors && serverErrors['email']">{{ serverErrors['email'] }}</mat-error>
            </div>
          </div>
 
@@ -27,16 +28,17 @@
            <div class="md:w-1/2">
 
 
-             <mat-form-field floatLabel="always" appearance="outline" class="w-full">
+             <mat-form-field  appearance="outline" class="w-full">
                <mat-label>Phone Number</mat-label>
-               <input matInput type="text"  placeholder="091123332" formControlName="phoneNumber" required>
-               <mat-error *ngIf="form.get('phoneNumber')?.touched && form.get('phoneNumber')?.invalid">Phone Number is required</mat-error>
+               <input matInput   placeholder="091123332" type="text" formControlName="phoneNumber" required>
+              </mat-form-field>
+              <mat-error  class="-mt-5 text-xs" *ngIf="!serverErrors && form.get('phoneNumber')?.touched && form.get('phoneNumber')?.invalid">Phone Number is required</mat-error>
+              <mat-error class="-mt-5 text-xs" *ngIf="serverErrors && serverErrors['phonenumber']"> {{ serverErrors['phonenumber'] }}</mat-error>
 
-             </mat-form-field>
            </div>
            <ng-container *ngIf="!isEdit">
              <div class="md:w-1/2">
-               <mat-form-field floatLabel="always" appearance="outline" class="w-full">
+               <mat-form-field  appearance="outline" class="w-full">
                  <mat-label>Password</mat-label>
                  <input matInput type="password"  placeholder="Password" formControlName="password"  required>
                  <mat-error *ngIf="form.get('password')?.touched && form.get('password')?.invalid">Password is required</mat-error>
@@ -83,9 +85,11 @@
                    <mat-option value="Finance">Finance Admin</mat-option>
                    <mat-option value="Admin">Admin</mat-option>
                  </mat-select>
-               <mat-error *ngIf="form.get('role')?.touched && form.get('role')?.invalid">Role is required</mat-error>
+               <mat-error *ngIf="!serverErrors  && form.get('role')?.touched && form.get('role')?.invalid">Role is required</mat-error>
 
-               </mat-form-field>
+              </mat-form-field>
+              <mat-error class="-mt-5 text-xs" *ngIf="serverErrors && serverErrors['role']"> {{ serverErrors['role'] }}</mat-error>
+
              </div>
              <div class="md:w-1/2" *ngIf="showBranchSelection">
                <mat-form-field class="w-full" appearance="outline">
@@ -102,12 +106,22 @@
 
 
 
-         <button
-          class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
-         (click)="onSave()"
-       >
-         Save
-       </button>
+           <button
+           class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+           [disabled]="isSaving"
+           (click)="onSave()"
+         >
+         <ng-container *ngIf="!isSaving; else loadingAnimation">
+          Save
+        </ng-container>
+         </button>
+
+         <ng-template #loadingAnimation>
+          <div class="flex items-center justify-center">
+            <div class="animate-spin rounded-full mr-3 h-8 w-8 border-t-2 border-b-2 border-[#9e6207]"></div>
+            <span>Saving...</span>
+          </div>
+        </ng-template>
        </form>
      </ng-container>
 

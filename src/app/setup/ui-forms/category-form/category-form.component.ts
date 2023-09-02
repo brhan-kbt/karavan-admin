@@ -29,6 +29,8 @@ export class CategoryFormComponent {
   selectedCat: number = 0;
   branches:any;
 
+  @Input() serverErrors:any;
+  @Input() isSaving!:boolean;
   selectedImage!: File ;
   @Output() save = new EventEmitter<any>();
   constructor(
@@ -50,7 +52,7 @@ export class CategoryFormComponent {
       name: [this.categoryData?.name || null, [Validators.required]],
       description: [this.categoryData?.description || null],
       image: [this.categoryData?.image || null],
-      isActive: [this.categoryData?.isActive || null],
+      isActive: [this.categoryData?.isActive || false],
     });
 
   }
@@ -67,7 +69,9 @@ export class CategoryFormComponent {
     //    formData.append('description', this.form.get('description')?.value);
     //    formData.append('image', this.selectedImage as Blob);
     //  }
-     if (this.form.valid) {
+      if (this.form.valid) {
+      this.serverErrors={};
+      this.isSaving=true;
       formData.append('isActive', this.form.get('isActive')?.value);
       formData.append('name', this.form.get('name')?.value);
       formData.append('description', this.form.get('description')?.value);
@@ -79,10 +83,10 @@ export class CategoryFormComponent {
         console.log(this.form.value)
          this.save.emit(formData);
        }
-   }
-   else{
-    console.log('Form is invalid');
-   }
+    }
+    else{
+     console.log('Form is invalid');
+    }
 
   }
 

@@ -44,6 +44,8 @@ import { UpdateAvailablityComponent } from './setup/ui-forms/update-availablity/
 import { ProfileFormComponent } from './setup/ui-forms/profile-form/profile-form.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IngredientProductComponent } from './setup/ui-forms/ingredient-product/ingredient-product.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,7 +91,9 @@ import { IngredientProductComponent } from './setup/ui-forms/ingredient-product/
     RatingModule,
     MatSelectModule,
     MatChipsModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    NgMultiSelectDropDownModule,
+
 
   ],
   providers: [

@@ -21,12 +21,14 @@ export class BranchAdminComponent {
   displayedColumns: string[] = ['id', 'fullName', 'email','role','branch', 'phoneNumber','status', 'actions'];
   dataSource!: MatTableDataSource<any>;
 
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   users:any | undefined;
   isLoading: boolean = true;
   deleteRestoreAction!: string;
   deleteRestoreData: any;
+  dataLoaded:boolean=false;
 
   constructor(private dialog:MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
@@ -39,8 +41,11 @@ export class BranchAdminComponent {
       this.users = user.data.filter((res:any) => res.isDeleted === false && (res.role ==='Branch_Admin'));
       console.log('users:',this.users);
       this.dataSource = new MatTableDataSource<any>(this.users);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 0);
+      this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {

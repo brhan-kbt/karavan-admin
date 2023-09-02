@@ -52,7 +52,7 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
           const productName = product.name;
           const productId=product.id;
           for (const branchProduct of product.branchProducts) {
-            // if (branchProduct.isAvailable || branchProduct.maxThreshold > 0) {
+             if (branchProduct.isAvailable || branchProduct.maxThreshold > 0) {
               const branchName = branchProduct.branch.branchName;
               const branchId = branchProduct.branch.id;
               const id=branchProduct.id;
@@ -61,7 +61,7 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
               const minThreshold=branchProduct.minThreshold
               const type= branchProduct.type
                productBranchPairs.push({id:id, isAvailable:isAvailable, maxThreshold:maxThreshold, minThreshold:minThreshold, type:type, productName: productName,branchId:branchId, branchName: branchName, productId:productId});
-            // }
+             }
           }
         }
          this.dataFiltered=productBranchPairs.filter(product=>product.branchId===this.user.branch)

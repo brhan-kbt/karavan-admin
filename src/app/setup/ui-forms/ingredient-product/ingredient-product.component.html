@@ -1,1 +1,42 @@
-<p>ingredient-product works!</p>
+
+<div class="flex flex-col">
+    <h2 class="font-cormorantInfant text-2xl pt-5  text-center">Add Addons to Product</h2>
+    <mat-form-field class="example-chip-list w-full py-5 px-2" appearance="outline">
+        <mat-label>Select Addons for Selected Product</mat-label>
+
+    <mat-chip-grid #chipGrid aria-label="Product selection">
+        <mat-chip-row *ngFor="let product of products" (removed)="remove(product)">
+          {{ product }}
+          <button matChipRemove [attr.aria-label]="'remove ' + product">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      </mat-chip-grid>
+
+
+        <input
+          placeholder="Enter at least two characters"
+          #productInput
+          [formControl]="productCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipGrid"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)"
+          value=""
+        />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+              {{ product }}
+            </mat-option>
+          </mat-autocomplete>
+
+        </mat-form-field>
+        <div class="error-message px-4 -mt-2 text-red-500 font-bold" *ngIf="isDuplicate">Addon already exists.</div>
+
+    <button
+    class="bg-[#0E483F] text-white py-2 mt-5 mb-2 mx-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+    (click)="displaySelectedIds()"
+ >
+   Save
+ </button>
+</div>

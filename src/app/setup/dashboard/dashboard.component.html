@@ -192,7 +192,7 @@
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let prod of reportData.trendingProducts">
+                <ng-container *ngFor="let prod of trendingProducts.slice(currentDisplayIndex, currentDisplayIndex + 5)">
                     <tr class="bg-white border-b">
                         <th scope="row" class="customPadding px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{prod.productName}}
@@ -202,11 +202,19 @@
                         </td>
                         <td class="customPadding px-6 py-4">
                             <p-rating [(ngModel)]="prod.rating" [readonly]="true" [cancel]="false" style="color: goldenrod !important;"></p-rating>
-
                         </td>
                     </tr>
                 </ng-container>
+
+
+
             </tbody>
+
         </table>
+
+        <div class="pagination customPadding px-6 flex justify-between">
+            <button  class="bg-green-950 px-4 py-1 text-white rounded-md"  (click)="showPrevious()" [disabled]="currentDisplayIndex === 0">Previous</button>
+            <button  class="bg-green-950 px-4 py-1 text-white rounded-md" (click)="showNext()" [disabled]="currentDisplayIndex + itemsPerPage >= trendingProducts.length">Next</button>
+        </div>
     </div>
 </div>

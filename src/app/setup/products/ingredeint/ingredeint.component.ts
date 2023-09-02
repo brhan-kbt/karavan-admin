@@ -24,7 +24,9 @@ export class IngredeintComponent {
   products:any | undefined;
   ingredients:any;
   isLoading: boolean = true;
-
+  dataLoaded:boolean=false;
+  serverErrors:any;
+  isSaving:boolean=false;
   constructor(private dialog:MatDialog,
     private product:ProductService,  private ingredient:IngredientService,   private changeDetectorRef: ChangeDetectorRef,
     ) {
@@ -38,8 +40,12 @@ export class IngredeintComponent {
       this.products=product.data
       console.log('Products:',this.products);
       this.dataSource = new MatTableDataSource<any>(this.products);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 0);
+
+      this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {
@@ -54,8 +60,12 @@ export class IngredeintComponent {
       this.ingredients=ingredient.data
       console.log('Ingredients:',this.ingredients);
        this.dataSource = new MatTableDataSource<any>(this.ingredients);
-       this.dataSource.paginator = this.paginator;
-       this.dataSource.sort = this.sort;
+       setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 0);
+
+      this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {
@@ -63,10 +73,10 @@ export class IngredeintComponent {
     }
 
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -86,6 +96,15 @@ export class IngredeintComponent {
       console.log('====================================');
       this.ingredient.saveIngredient(product).then(res=>{
         console.log("Here",res)
+        this.fetchAndUpdateIngredients().then(res=>{
+          dialogRef.close(); // Close the dialog here
+          dialogRef.componentInstance.isSaving=false
+        })
+      },err=>{
+        this.serverErrors = err.error.data; // Assuming the server returns error messages in the "error" property
+        dialogRef.componentInstance.serverErrors = err.error.data;
+        dialogRef.componentInstance.isSaving=false;
+       console.log(this.serverErrors)
       })
 
       },err=>{
@@ -141,20 +160,21 @@ updateOrderableStatus(row:any){
 
   this.product.updateOrderable(productData).then(res=>{
     console.log(res)
-    this.fetchAndUpdateProducts();
+    this.fetchAndUpdateIngredients();
   }).catch(err=>{
     console.log(err)
   })
 }
 
 
-async fetchAndUpdateProducts() {
+async fetchAndUpdateIngredients() {
   console.log('Here')
   try {
-    let product = await this.product.getProds();
-    this.products=product.data
-    console.log('Products:',this.products);
-    this.dataSource = new MatTableDataSource<any>(this.products);
+    let ingredient = await this.ingredient.getIngs();
+    this.ingredients=ingredient.data
+    console.log('Ingredients:',this.ingredients);
+    console.log('Ingredients:',this.products);
+    this.dataSource = new MatTableDataSource<any>(this.ingredients);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.changeDetectorRef.detectChanges(); // Manually trigger change detection

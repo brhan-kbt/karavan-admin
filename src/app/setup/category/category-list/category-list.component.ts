@@ -19,6 +19,9 @@ export class CategoryListComponent {
 
   displayedColumns: string[] = ['id', 'name', 'description', 'status','actions'];
   dataSource!: MatTableDataSource<any>;
+  errors:any;
+  serverErrors:any;
+  isSaving:boolean=false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -26,7 +29,7 @@ export class CategoryListComponent {
   categories:any;
   orders:any | undefined;
   isLoading: boolean = true;
-
+  dataLoaded:boolean=false;
   constructor(private dialog:MatDialog,private cat:CategoryService, private product:ProductService, private router:Router, private order:OrderService,   private changeDetectorRef: ChangeDetectorRef,
     ) {
     this.getCategories();
@@ -38,8 +41,11 @@ export class CategoryListComponent {
       this.categories=category;
       console.log('Categories:',this.categories);
         this.dataSource = new MatTableDataSource<any>(this.categories);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        setTimeout(() => {
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }, 0);
+        this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {
@@ -83,7 +89,7 @@ export class CategoryListComponent {
 
   this.cat.updateCatStatus(productData).then(res=>{
     console.log(res)
-    this.fetchAndUpdateProducts();
+    this.fetchAndUpdateCategories();
   }).catch(err=>{
     console.log(err)
   })
@@ -101,6 +107,15 @@ openDialog(): void {
     console.log('====================================');
     this.cat.saveCategory(data).then(res=>{
       console.log(res)
+      this.fetchAndUpdateCategories().then(res=>{
+        dialogRef.componentInstance.isSaving=false;
+        dialogRef.close();
+      })
+    },err=>{
+      this.serverErrors = err.error.data; // Assuming the server returns error messages in the "error" property
+      dialogRef.componentInstance.serverErrors = err.error.data;
+      dialogRef.componentInstance.isSaving=false;
+      console.log(this.serverErrors)
     })
     },err=>{
       console.log(err);
@@ -138,13 +153,13 @@ deleteData(candidate:any){
 }
 
 
-async fetchAndUpdateProducts() {
+async fetchAndUpdateCategories() {
   console.log('Here')
   try {
-    let product = await this.product.getProds();
-    this.products=product.data
-    console.log('Products:',this.products);
-    this.dataSource = new MatTableDataSource<any>(this.products);
+    let category = await this.cat.getAllCts();
+    this.categories=category;
+    console.log('Categories:',this.categories);
+    this.dataSource = new MatTableDataSource<any>(this.categories);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.changeDetectorRef.detectChanges(); // Manually trigger change detection

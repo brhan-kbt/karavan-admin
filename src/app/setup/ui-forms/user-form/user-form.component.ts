@@ -37,6 +37,9 @@ export class UserFormComponent {
   selectedSubCategoriesField: any;
   selectedCat: number = 0;
   branches:any;
+  @Input() serverErrors: any; // Input property to receive server errors from parent component
+  @Input() isSaving!:boolean; // Input property to receive server errors from parent component
+
 
   selectedImage: File | string | null = null;
   // @Output() save = new EventEmitter<any>();
@@ -67,9 +70,9 @@ export class UserFormComponent {
       id: [this.userData?.id || null],
       active: [this.userData?.active || false],
       fullName: [this.userData?.fullName || null, [Validators.required]],
-      email: [this.userData?.email || null],
+      email: [this.userData?.email || null, Validators.email],
       phoneNumber: [this.userData?.phoneNumber || null],
-      password: [this.userData?.password || 3],
+      password: [this.userData?.password || ''],
       branchId: [this.userData?.branchId || ''],
       role: [this.userData?.role || '', [Validators.required]],
       gender: [this.userData?.gender || ''],
@@ -158,10 +161,13 @@ handleRole(event: any): void {
     }
   }
 
+  load:any;
   onSave(): void {
     if(!this.isEdit){
       console.log(this.form.value)
       if (this.form.valid) {
+        this.isSaving=true;
+        this.serverErrors = {};
         console.log(this.form.value);
         if(this.form.value.role==='Branch_Admin'){
           this.saveBranchAdmin.emit(this.form.value);

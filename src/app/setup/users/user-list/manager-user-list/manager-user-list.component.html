@@ -8,13 +8,12 @@
     </button>
   </div>
 
-<ng-container >
-
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Search User</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Search User" #input />
-      <mat-icon matPrefix>search</mat-icon>
-    </mat-form-field>
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Search User</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search User" #input />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+<ng-container *ngIf="dataLoaded">
 
     <div
       class="mat-elevation-z8 example-table-container"
@@ -148,4 +147,8 @@
       ></mat-paginator>
     </div>
 
+</ng-container>
+
+<ng-container *ngIf="!dataLoaded">
+  <app-table-shimmer-effect></app-table-shimmer-effect>
 </ng-container>

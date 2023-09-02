@@ -11,6 +11,8 @@ import { ManagerUserListComponent } from './user-list/manager-user-list/manager-
 import { CustomerUserListComponent } from './user-list/customer-user-list/customer-user-list.component';
 import { BranchAdminComponent } from './user-list/branch-admin/branch-admin.component';
 import { BranchSeletionFormComponent } from '../ui-forms/branch-seletion-form/branch-seletion-form.component';
+import { TableShimmerEffectComponent } from 'src/app/shared/shimmer/table-shimmer-effect/table-shimmer-effect.component';
+import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
 
 
 @NgModule({
@@ -21,14 +23,15 @@ import { BranchSeletionFormComponent } from '../ui-forms/branch-seletion-form/br
     ManagerUserListComponent,
     CustomerUserListComponent,
     BranchAdminComponent,
-    BranchSeletionFormComponent
+    BranchSeletionFormComponent,
   ],
   imports: [
     CommonModule,
     UserRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class UserModule { }

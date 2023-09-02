@@ -26,6 +26,7 @@ export class SubCategoryListComponent {
   orders:any | undefined;
   sub_categories:any | undefined;
   isLoading: boolean = true;
+  dataLoaded:boolean=false;
 
   constructor(private dialog:MatDialog,
     private cat:CategoryService,
@@ -78,8 +79,11 @@ export class SubCategoryListComponent {
       this.sub_categories=subCategory;
       console.log('Sub Categories2:',this.sub_categories);
          this.dataSource = new MatTableDataSource<any>(this.sub_categories);
-         this.dataSource.paginator = this.paginator;
-         this.dataSource.sort = this.sort;
+         setTimeout(() => {
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }, 0);
+        this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {
@@ -87,10 +91,10 @@ export class SubCategoryListComponent {
     }
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

@@ -27,6 +27,7 @@ export class OrderListComponent {
   products:any | undefined;
   orders:any | undefined;
   isLoading: boolean = true;
+  dataLoaded:boolean=false;
   user:any;
   userRole:any;
 
@@ -51,27 +52,33 @@ export class OrderListComponent {
       this.getOrders();
       this.orderStats=orderStatuses;
       console.log(this.orderStats)
-      
+
   }
 
   async getOrders(){
     try {
-      let order = await this.order.getOrders();
-      this.orders=order.data;
-      let filteredOrder:any=[];
-      if(this.userRole==='Branch_Admin'){
-         filteredOrder = this.orders.filter((o:any)=>o.branch.id===this.user.branch);
-      }
+      await this.order.getOrders().then(order=>{
+        this.orders=order.data;
+        let filteredOrder:any=[];
+        if(this.userRole==='Branch_Admin'){
+           filteredOrder = this.orders.filter((o:any)=>o.branch.id===this.user.branch);
+        }
 
-      else if(this.userRole==='Admin'){
-         filteredOrder = this.orders;
-      }
+        else if(this.userRole==='Admin'){
+           filteredOrder = this.orders;
+        }
 
 
-      console.log('Orders:',this.orders);
-       this.dataSource = new MatTableDataSource<any>(filteredOrder);
-       this.dataSource.paginator = this.paginator;
-       this.dataSource.sort = this.sort;
+        console.log('Orders:',this.orders);
+         this.dataSource = new MatTableDataSource<any>(filteredOrder);
+         setTimeout(() => {
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }, 0);
+
+       console.log(this.dataSource)
+       this.dataLoaded = true;
+      })
     } catch (error) {
       console.error(error);
     }finally {
@@ -79,10 +86,10 @@ export class OrderListComponent {
     }
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

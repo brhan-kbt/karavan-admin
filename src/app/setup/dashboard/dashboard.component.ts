@@ -37,14 +37,46 @@ export class DashboardComponent {
   formGroup!:FormGroup;
   value!:number;
   reportData:any;
+  trendingProducts:any;
+  currentDisplayIndex = 0;
+  itemsPerPage = 5;
 
   constructor(private product: ProductService, private report:ReportService) {
     report.getReport().then(res=>{
       this.reportData=res;
       this.selectedOrderSummary = this.reportData.orderSummary['today'];
       console.log(this.reportData);
-    })
+      this.trendingProducts = this.reportData.trendingProducts.sort((a:any, b:any) => {
+        // Order by rating in descending order (higher ratings first)
+
+        // If ratings are the same, order by totalOrders in descending order
+        if (a.totalOrders > b.totalOrders) {
+          return -1;
+        }
+        if (a.totalOrders < b.totalOrders) {
+          return 1;
+        }
+
+        if (a.rating > b.rating) {
+          return -1;
+        }
+        if (a.rating < b.rating) {
+          return 1;
+        }
+        // If both rating and totalOrders are the same, maintain original order
+        return 0;
+      });    })
   }
+
+  showNext() {
+    this.currentDisplayIndex += this.itemsPerPage;
+}
+
+showPrevious() {
+    this.currentDisplayIndex -= this.itemsPerPage;
+}
+
+
   getStarStyleClass(): string {
     return this.value > 0 ? 'custom-filled-star' : '';
   }

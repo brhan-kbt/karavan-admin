@@ -8,13 +8,14 @@
     </button> -->
   </div>
 
-<ng-container *ngIf="userRole ==='Branch_Admin'">
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Outline form field</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+<ng-container *ngIf="dataLoaded && userRole ==='Branch_Admin'">
 
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Outline form field</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
-      <mat-icon matPrefix>search</mat-icon>
-    </mat-form-field>
+  <h2>Branch Admin</h2>
 
     <div
       class="mat-elevation-z8 example-table-container"
@@ -118,14 +119,14 @@
     </div>
 
 </ng-container>
+<!-- <mat-form-field appearance="outline" class="w-full">
+  <mat-label>Outline form field</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
+  <mat-icon matPrefix>search</mat-icon>
+</mat-form-field> -->
 
-<ng-container *ngIf="userRole === 'Admin'" >
-
-  <mat-form-field appearance="outline" class="w-full">
-    <mat-label>Outline form field</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
-    <mat-icon matPrefix>search</mat-icon>
-  </mat-form-field>
+<ng-container *ngIf=" dataLoaded && userRole === 'Admin'" >
+<h2>Admin</h2>
 
   <div
     class="mat-elevation-z8 example-table-container"
@@ -245,3 +246,8 @@
   </div>
 
 </ng-container>
+
+<ng-container *ngIf="!dataLoaded">
+  <app-table-shimmer-effect></app-table-shimmer-effect>
+</ng-container>
+

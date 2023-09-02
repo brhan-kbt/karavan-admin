@@ -8,13 +8,13 @@
     </button>
   </div>
 
-<ng-container >
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Outline form field</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+<ng-container *ngIf="dataLoaded">
 
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Outline form field</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
-      <mat-icon matPrefix>search</mat-icon>
-    </mat-form-field>
 
     <div
       class="mat-elevation-z8 example-table-container"
@@ -76,23 +76,31 @@
           <th mat-header-cell *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let row">
             <div class="button-group">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
               <button
-                mat-icon-button
-                (click)="showCategoryDetails(row)"
-                style="color: green;"
-                class="small-button edit"
-              >
-                <mat-icon aria-label="View">visibility</mat-icon>
-              </button>
-
-              <button
-              mat-icon-button
+              mat-menu-item
               (click)="openEditDialog(row)"
               style="color: green;"
               class="small-button edit"
             >
-              <mat-icon aria-label="Edit">edit</mat-icon>
+              <mat-icon   style="color: green;" aria-label="Edit">edit</mat-icon> Edit
+              </button>
+            <hr>
+            <button
+            mat-menu-item
+            style="color: green;"
+            (click)="showCategoryDetails(row)"
+            class="small-button delete"
+          >
+          <mat-icon  style="color: green;" aria-label="View">visibility</mat-icon>
+            Explore
             </button>
+          <hr>
+            </mat-menu>
+
               <!-- <button
                 mat-icon-button
                 style="color: red;"
@@ -123,4 +131,8 @@
       ></mat-paginator>
     </div>
 
+</ng-container>
+
+<ng-container *ngIf="!dataLoaded">
+  <app-table-shimmer-effect></app-table-shimmer-effect>
 </ng-container>

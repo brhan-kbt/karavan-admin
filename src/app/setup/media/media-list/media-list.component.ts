@@ -17,14 +17,25 @@ import { GalleryService } from 'src/app/services/Gallery/gallery.service';
 })
 export class MediaListComponent {
 
+  dataLoaded:boolean=false;
   displayedColumns: string[] = ['id', 'imageSrc', 'title','alt', 'actions'];
   dataSource!: MatTableDataSource<any>;
+  galleries:any;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   constructor(private dialog:MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
     private media: GalleryService,
     private auth:AuthService, private product:ProductService, private user:UserService) {
-    this.getUsers();
      media.getAll().then(res=>{
+      this.galleries=res.data;
+      console.log('Galleries:',this.galleries);
+      this.dataSource = new MatTableDataSource<any>(this.galleries);
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 0);
+      this.dataLoaded=true;
       console.log('Gallery', res)
      })
   }
@@ -164,33 +175,8 @@ onGalleriaClick(event: Event) {
       this.selectedImage=event;
 
     }
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  users:any | undefined;
-  isLoading: boolean = true;
-  deleteRestoreAction!: string;
-  deleteRestoreData: any;
 
 
-  async getUsers() {
-    try {
-      let user = await this.user.getUsers();
-      this.users = user.data.filter((res:any) => res.isDeleted === false && (res.role ==='Admin' || res.role ==='Finance'));
-      console.log('users:',this.users);
-      this.dataSource = new MatTableDataSource<any>(this.images);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    } catch (error) {
-      console.error(error);
-    }finally {
-      this.isLoading = false; // Move isLoading assignment inside the finally block
-    }
-
-  }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -249,57 +235,21 @@ onGalleriaClick(event: Event) {
     console.log(userData)
     this.user.updateStatus(userData).then(res=>{
       console.log('Success',res);
-      this.fetchAndUpdateUsers();
     })
   }
-  deleteData(user:any){
-    const data ={
-      isDeleted:!user.isDeleted,
-      id:user.id
-    }
-    this.deleteRestoreAction='delete';
-    this.deleteRestoreData=user;
-    const dialogRef = this.dialog.open(VerifyDeleteOrRestoreComponent, {
-      data: {
-        action: this.deleteRestoreAction,
-        data:this.deleteRestoreData
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-    if (result === true) {
-      this.deleteUser(data);
-    } else {
-      console.log(result)
-    }
-  });
-}
+  deleteData(data:any){
+    console.log(data)
+  }
 
  deleteUser(id: any) {
   console.log(id);
   this.user.deleteUser(id).subscribe(res=>{
     console.log('====================================');
     console.log(res);
-    this.fetchAndUpdateUsers();
     console.log('====================================');
   })
 }
 
-async fetchAndUpdateUsers() {
-  try {
-    let user = await this.user.getUsers();
-    this.users = user.data.filter((res:any) => res.isDeleted === false && (res.role ==='Admin' || res.role ==='Finance' ));
-    console.log('users:', this.users);
-    this.dataSource.data = this.users;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.changeDetectorRef.detectChanges(); // Manually trigger change detection
-  } catch (error) {
-    console.error(error);
-  } finally {
-    this.isLoading = false;
-  }
-}
 
 
 

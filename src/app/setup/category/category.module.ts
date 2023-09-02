@@ -16,6 +16,7 @@ import { CategoryDetailComponent } from './category-detail/category-detail.compo
 import { CategorySubcategoryDetailComponent } from './category-subcategory-detail/category-subcategory-detail.component';
 import { CategoryFormComponent } from '../ui-forms/category-form/category-form.component';
 import { SubCategoryFormComponent } from '../ui-forms/sub-category-form/sub-category-form.component';
+import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
 
 
 @NgModule({
@@ -25,7 +26,7 @@ import { SubCategoryFormComponent } from '../ui-forms/sub-category-form/sub-cate
     CategoryDetailComponent,
     CategorySubcategoryDetailComponent,
     CategoryFormComponent,
-    SubCategoryFormComponent
+    SubCategoryFormComponent,
   ],
   imports: [
     MatPaginatorModule,
@@ -38,6 +39,7 @@ import { SubCategoryFormComponent } from '../ui-forms/sub-category-form/sub-cate
     MatProgressSpinnerModule,
     CommonModule,
     CategoryRoutingModule,
+    SharedModule
   ],
 })
 export class CategoryModule { }

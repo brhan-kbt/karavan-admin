@@ -37,6 +37,9 @@ export class ProductFormComponent {
   selectedSubCategoriesField: any;
   selectedCat: number = 0;
   categoryIdFound:any;
+  @Input() serverErrors: any; // Input property to receive server errors from parent component
+  @Input() isSaving!:boolean; // Input property to receive server errors from parent component
+
 
   selectedImage!: File;
   // @Output() save = new EventEmitter<any>();
@@ -60,19 +63,19 @@ export class ProductFormComponent {
 
     this.form = this.formBuilder.group({
       isActive: [this.product?.active || false],
-      averageQueueDay: [this.product?.averageQueueDay || null],
-      averageQueueTimeHour: [this.product?.averageQueueTimeHour || null],
-      averageQueueTimeMinute: [this.product?.averageQueueTimeMinute || null],
-      categoryId: [null, [Validators.required]],
+      averageQueueDay: [this.product?.averageQueueDay || null,[Validators.required]],
+      averageQueueTimeHour: [this.product?.averageQueueTimeHour || null, [Validators.required]],
+      averageQueueTimeMinute: [this.product?.averageQueueTimeMinute || null, [Validators.required]],
+      categoryId: [null, []],
       discount: [this.product?.discount || null],
       image: [this.product?.image || ''],
       orderable: [this.product?.orderable || false],
       code: [this.product?.code || '', [Validators.required]],
-      description: [this.product?.description || '', [Validators.required]],
+      description: [this.product?.description || '', []],
       name: [this.product?.name || '', [Validators.required]],
       point: [this.product?.point || null],
       subCategoryId: [this.product?.subCategoryId || null, [Validators.required]],
-      tag: [this.product?.tag || '', [Validators.required]],
+      tag: [this.product?.tag || '', []],
       unitPrice: [this.product?.unitPrice || '', [Validators.required]],
     });
 
@@ -162,7 +165,9 @@ export class ProductFormComponent {
   onSave(): void {
     console.log(this.form.value)
     this.form.markAllAsTouched();
-     if (this.form.valid) {
+      if (this.form.valid) {
+        this.isSaving=true;
+        this.serverErrors = {};
       console.log(this.form.get('code')?.value, this.form.get('name')?.value, this.form.get('subCategoryId')?.value)
        const formData = new FormData();
        formData.append('isActive', this.form.get('isActive')?.value);
@@ -190,10 +195,10 @@ export class ProductFormComponent {
          this.save.emit( formData );
        }
        console.log('Form Data: Valid');
-        // this.dialogRef.close();
-     } else {
-       console.log('Form is invalid');
-     }
+        //  this.dialogRef.close();
+      } else {
+        console.log('Form is invalid');
+      }
   }
 
   validateInput(inputElement: HTMLInputElement) {

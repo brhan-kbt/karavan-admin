@@ -8,13 +8,22 @@
     </button>
   </div>
 
-<ng-container >
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Outline form field</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+<ng-container *ngIf="dataLoaded">
 
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Outline form field</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
-      <mat-icon matPrefix>search</mat-icon>
-    </mat-form-field>
+  <hr>
+  <div class="py-2">
+    <button class="shadow-lg" mat-button (click)="exporter.exportTable('csv')">
+      <span class="material-icons">
+        download
+      </span>
+      EXCEL
+    </button>
+  </div>
 
     <div
       class="mat-elevation-z8 example-table-container"
@@ -24,7 +33,9 @@
 
       <table
         mat-table
+        matTableExporter
         [dataSource]="dataSource"
+        #exporter="matTableExporter"
         matSort
       >
 
@@ -142,4 +153,8 @@
       ></mat-paginator>
     </div>
 
+</ng-container>
+
+<ng-container *ngIf="!dataLoaded">
+  <app-table-shimmer-effect></app-table-shimmer-effect>
 </ng-container>

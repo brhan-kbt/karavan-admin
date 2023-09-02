@@ -30,7 +30,7 @@
                     <div class="head-menu-item">
                         <button class="head-menu-item-btn ripple" [cdkMenuTriggerFor]="notificationOverlay">
                           <i class="far fa-bell menu-icon"></i>
-                          <span class="font-josefin notification-badge">{{pendingData.length}}</span>
+                          <span class="font-josefin notification-badge">{{pendingData? pendingData.length : 0}}</span>
                         </button>
                       </div>
                 </ng-container>
@@ -81,20 +81,23 @@
                     <a [routerLink]="'/order/list'">View All</a>
                 </span>
             </li>
-            <li *ngFor="let notification of pendingData"
-            cdkMenuItem
-            class="notification-message-container"
-            >
-             <i [class]="notification.icon"></i>
-             <div (click)="showProductDetails(notification)">
-                <div class="notification-subject">
-                   New Order from {{notification.customer.fullName}}
-                </div>
-                <p class="notification-desc">
-                    Pick Up Date: {{ formatDateTime(notification.pickupDateTime) }}
-                </p>
-             </div>
-            </li>
+            <ng-container *ngIf="pendingData">
+                <li *ngFor="let notification of pendingData"
+                cdkMenuItem
+                class="notification-message-container"
+                >
+                 <i [class]="notification.icon"></i>
+                 <div (click)="showProductDetails(notification)">
+                    <div class="notification-subject">
+                       New Order from {{notification.customer.fullName}}
+                    </div>
+                    <p class="notification-desc">
+                        Pick Up Date: {{ formatDateTime(notification.pickupDateTime) }}
+                    </p>
+                 </div>
+                </li>
+
+            </ng-container>
         </ul>
     </div>
 </ng-template>

@@ -6,18 +6,20 @@ import { BranchlistComponent } from './branch-list/branchlist/branchlist.compone
 import { MaterialModule } from 'src/app/app.material.module';
 import { BranchFormComponent } from '../ui-forms/branch-form/branch-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
 
 
 @NgModule({
   declarations: [
     BranchlistComponent,
-    BranchFormComponent
+    BranchFormComponent,
   ],
   imports: [
     CommonModule,
     BranchRoutingModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class BranchModule { }

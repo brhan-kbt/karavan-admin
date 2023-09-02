@@ -6,23 +6,28 @@
         <div class="flex flex-col md:flex-row gap-4">
           <div class="md:w-2/3">
             <mat-form-field class="w-full" appearance="outline">
-              <mat-label>Branch Name</mat-label>
+              <mat-label>Category Name</mat-label>
               <input matInput placeholder="Tulu Dimtu" formControlName="name" required>
-              <mat-error *ngIf="form.get('name')?.touched && form.get('name')?.invalid">Category Name is required</mat-error>
+              <mat-error *ngIf="!serverErrors && form.get('name')?.touched && form.get('name')?.invalid">Category Name is required</mat-error>
 
             </mat-form-field>
+            <mat-error class="-mt-5 text-xs" *ngIf="serverErrors && serverErrors['name']"> {{ serverErrors['name'] }}</mat-error>
+
           </div>
           <div class="md:w-1/3 flex items-baseline mt-3">
                 <mat-checkbox   type="isActive" formControlName="isActive" class="text-3xl text-purple-600"  class="example-margin">Activate this Category</mat-checkbox>
-
             </div>
+            <mat-error class="-mt-5 text-xs" *ngIf="serverErrors && serverErrors['isactive']"> {{ serverErrors['isactive'] }}</mat-error>
+
         </div>
 
         <mat-form-field appearance="outline">
             <mat-label>Description</mat-label>
             <textarea formControlName="description" matInput></textarea>
-            <mat-error *ngIf="form.get('description')?.touched && form.get('description')?.invalid">Product Description is required</mat-error>
+            <mat-error *ngIf="!serverErrors && form.get('description')?.touched && form.get('description')?.invalid">Product Description is required</mat-error>
         </mat-form-field>
+        <mat-error class="-mt-5 text-xs" *ngIf="serverErrors && serverErrors['description']"> {{ serverErrors['description'] }}</mat-error>
+
 
         <div class="w-full">
             <div class="flex">

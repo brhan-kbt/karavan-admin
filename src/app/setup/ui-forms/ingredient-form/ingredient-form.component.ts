@@ -32,6 +32,8 @@ export class IngredientFormComponent {
   selectedCat: number = 0;
   categoryIdFound:any;
 
+  @Input() serverErrors:any;
+  @Input() isSaving!:boolean;
   selectedImage!: File;
   // @Output() save = new EventEmitter<any>();
   @Output() save = new EventEmitter<any>();
@@ -54,11 +56,11 @@ export class IngredientFormComponent {
 
     this.form = this.formBuilder.group({
       isActive: [this.product?.active || false],
-      maxThreshold: [this.product?.maxThreshold || null],
-      discount: [this.product?.discount || null],
+      maxThreshold: [this.product?.maxThreshold || null,[Validators.required]],
+      discount: [this.product?.discount || null,[Validators.required]],
       image: [this.product?.image || ''],
       code: [this.product?.code || '', [Validators.required]],
-      description: [this.product?.description || '', [Validators.required]],
+      description: [this.product?.description || '', []],
       name: [this.product?.name || '', [Validators.required]],
       unitPrice: [this.product?.unitPrice || '', [Validators.required]],
     });
@@ -149,7 +151,9 @@ export class IngredientFormComponent {
   onSave(): void {
     console.log(this.form.value)
     this.form.markAllAsTouched();
-     if (this.form.valid) {
+      if (this.form.valid) {
+      this.serverErrors={};
+      this.isSaving=true;
        const formData = new FormData();
        formData.append('isActive', this.form.get('isActive')?.value);
        formData.append('maxThreshold', this.form.get('maxThreshold')?.value);
@@ -168,10 +172,10 @@ export class IngredientFormComponent {
          this.save.emit( formData );
        }
        console.log('Form Data: Valid');
-        // this.dialogRef.close();
-     } else {
-       console.log('Form is invalid');
-     }
+        //  this.dialogRef.close();
+      } else {
+        console.log('Form is invalid');
+      }
   }
 
   validateInput(inputElement: HTMLInputElement) {

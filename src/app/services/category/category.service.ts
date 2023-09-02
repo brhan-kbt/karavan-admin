@@ -34,6 +34,14 @@ export class CategoryService {
       return res.data;
     }
   }
+  async getAllCts() {
+    const url = this.baseUrl + '/admin-list'
+    const cacheKey = 'categories';
+      const res = await this.http.get<any>(url).toPromise();
+      this.cache[cacheKey] = res.data; // Store data in cache
+      console.log('Category From Api', res.data)
+      return res.data;
+  }
   async getSubCat() {
     try {
       const res = await this.getAll();
@@ -66,6 +74,15 @@ export class CategoryService {
       console.log('Category From Api', res.data)
       return res.data;
     }
+  }
+
+  async getAllSubCts() {
+    const url = this.baseSubUrl + '/list'
+    const cacheKey = 'sub_categories';
+      const res = await this.http.get<any>(url).toPromise();
+      this.cache[cacheKey] = res.data; // Store data in cache
+      console.log('Category From Api', res.data)
+      return res.data;
   }
   setSelectedCategory(category: any | null) {
     this.selectedCategorySubject.next(category);

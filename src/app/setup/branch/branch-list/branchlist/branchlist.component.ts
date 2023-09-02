@@ -20,7 +20,7 @@ export class BranchlistComponent {
 
   displayedColumns: string[] = ['id', 'branchName','openingHour','closingHour', 'branchAddress', 'actions'];
   dataSource!: MatTableDataSource<any>;
-
+  dataLoaded:boolean=false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   branches:any | undefined;
@@ -37,31 +37,34 @@ export class BranchlistComponent {
       this.branches=branch.data
       console.log('branches:',this.branches);
       this.dataSource = new MatTableDataSource<any>(this.branches);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 0);
+      this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {
       this.isLoading = false; // Move isLoading assignment inside the finally block
     }
-  
+
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-  
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  
+
   openDialog(): void {
     const dialogRef = this.dialog.open(BranchFormComponent, {
        width: '60%',
       data: { branch: {} }
-    }); 
+    });
      dialogRef.componentInstance.save.subscribe(branch => {
        console.log('Branch',branch);
        this.branch.saveBranch(branch).then(res=>{
@@ -69,18 +72,18 @@ export class BranchlistComponent {
          console.log(res)
          dialogRef.close();
        })
-        
+
        },err=>{
          console.log(err);
-        
+
      });
   }
 
   openEditDialog(row: any): void {
-    
+
     const dialogRef = this.dialog.open(BranchFormComponent, {
        width: '60%',
-      data: {   
+      data: {
         user:row,
         isEdit: !!row }
     });
@@ -98,7 +101,7 @@ export class BranchlistComponent {
 });
 
   }
-  
+
   deleteData(branch:any){
     if (confirm(`Are you sure you want to delete ${branch.branchName}?`)) {
       this.deleteBranch(branch.id)

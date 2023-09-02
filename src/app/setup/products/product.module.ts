@@ -21,6 +21,8 @@ import { FormsModule } from '@angular/forms';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductIngredientComponent } from './product-ingredient/product-ingredient.component';
+import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 
 @NgModule({
@@ -28,7 +30,7 @@ import { ProductIngredientComponent } from './product-ingredient/product-ingredi
     ProductsListComponent,
     AvailablityComponent,
     IngredeintComponent,
-    ProductIngredientComponent
+    ProductIngredientComponent,
   ],
   imports: [
     CommonModule,
@@ -47,8 +49,9 @@ import { ProductIngredientComponent } from './product-ingredient/product-ingredi
     MatSelectModule,
     NgxMatSelectSearchModule,
     MatChipsModule,
-    MatAutocompleteModule
-
+    MatAutocompleteModule,
+    SharedModule,
+    MatTableExporterModule,
   ]
 })
 export class ProductModule { }

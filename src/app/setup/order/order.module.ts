@@ -12,12 +12,13 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { AppCommonModule } from 'src/app/app.common.module';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
 
 
 @NgModule({
   declarations: [
     OrderListComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
   ],
   imports: [
     MatPaginatorModule,
@@ -30,7 +31,8 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
     MatProgressSpinnerModule,
     CommonModule,
     OrderRoutingModule,
-    DatePipe
+    DatePipe,
+    SharedModule
   ]
 })
 export class OrderModule { }
