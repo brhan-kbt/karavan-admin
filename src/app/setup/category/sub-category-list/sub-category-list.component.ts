@@ -10,6 +10,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category/category.service';
 import { SubCategoryFormComponent } from '../../ui-forms/sub-category-form/sub-category-form.component';
+import { AuthService } from 'src/app/services/auth/auth.service';
 @Component({
   selector: 'app-sub-category-list',
   templateUrl: './sub-category-list.component.html',
@@ -27,11 +28,16 @@ export class SubCategoryListComponent {
   sub_categories:any | undefined;
   isLoading: boolean = true;
   dataLoaded:boolean=false;
+  user:any;
+  userRole:any;
 
   constructor(private dialog:MatDialog,
     private cat:CategoryService,
-    private product:ProductService, private router:Router, private order:OrderService,   private changeDetectorRef: ChangeDetectorRef,
+    private product:ProductService,private auth:AuthService, private router:Router, private order:OrderService,   private changeDetectorRef: ChangeDetectorRef,
     ) {
+      this.user = this.auth.getSavedUser();
+      console.log(this.user)
+      this.userRole=this.user.role
     // this.getOrders();
     this.subCategory();
   }

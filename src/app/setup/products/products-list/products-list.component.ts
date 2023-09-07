@@ -9,6 +9,7 @@ import { ProductService } from 'src/app/services/product/product.service';
 import { IngredientFormComponent } from '../../ui-forms/ingredient-form/ingredient-form.component';
 import { IngredientProductComponent } from '../../ui-forms/ingredient-product/ingredient-product.component';
 import { IngredientService } from 'src/app/services/ingredient/ingredient.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-products-list',
@@ -28,10 +29,17 @@ export class ProductsListComponent {
   errors:any;
   serverErrors:any;
   isSaving:boolean=false;
+  user:any;
+  userRole:any;
 
   constructor(private dialog:MatDialog,
+    private auth:AuthService,
     private product:ProductService, private ing:IngredientService,    private changeDetectorRef: ChangeDetectorRef,
     ) {
+
+      this.user = this.auth.getSavedUser();
+      console.log(this.user)
+      this.userRole=this.user.role
     this.getProducts();
     ing.getIngredients().then(res=>{
       console.log();

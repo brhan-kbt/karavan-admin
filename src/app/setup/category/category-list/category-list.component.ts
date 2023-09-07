@@ -10,6 +10,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category/category.service';
 import { CategoryFormComponent } from '../../ui-forms/category-form/category-form.component';
+import { AuthService } from 'src/app/services/auth/auth.service';
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
@@ -30,8 +31,13 @@ export class CategoryListComponent {
   orders:any | undefined;
   isLoading: boolean = true;
   dataLoaded:boolean=false;
-  constructor(private dialog:MatDialog,private cat:CategoryService, private product:ProductService, private router:Router, private order:OrderService,   private changeDetectorRef: ChangeDetectorRef,
+  user:any;
+  userRole:any;
+  constructor(private dialog:MatDialog, private auth:AuthService, private cat:CategoryService, private product:ProductService, private router:Router, private order:OrderService,   private changeDetectorRef: ChangeDetectorRef,
     ) {
+      this.user = this.auth.getSavedUser();
+      console.log(this.user)
+      this.userRole=this.user.role
     this.getCategories();
   }
 

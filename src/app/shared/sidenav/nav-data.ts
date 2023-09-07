@@ -146,6 +146,20 @@ export const navbarData:INavbarData[]=[
         ]
     },
 
+     {
+        routeLink:'payment',
+        icon:'far fa-cart-plus',
+        label:'Payment ',
+        roles:['Admin','Finance'],
+        items:[
+            {
+                routeLink:'payment/list',
+                icon:'fal fa-list',
+                label:'Payment List'
+            },
+        ]
+    },
+
     {
         routeLink:'category',
         icon:'fal fa-folder-open',

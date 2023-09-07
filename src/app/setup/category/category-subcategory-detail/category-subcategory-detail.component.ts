@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CategoryService } from 'src/app/services/category/category.service';
 import { ProductFormComponent } from '../../ui-forms/product-form/product-form.component';
 import { ProductService } from 'src/app/services/product/product.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-category-subcategory-detail',
@@ -18,11 +19,15 @@ export class CategorySubcategoryDetailComponent {
   displayedColumns: string[] = ['id', 'productName', 'productCode', 'productPrice','discount','orderable', 'actions'];
   dataSource!: MatTableDataSource<any>;
   totalProduct:any;
+  userRole:any;
+  user:any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  constructor(private cat:CategoryService ,  private changeDetectorRef: ChangeDetectorRef, private product:ProductService, private dialog:Dialog, private route:ActivatedRoute){
-
+  constructor(private cat:CategoryService ,private auth:AuthService,  private changeDetectorRef: ChangeDetectorRef, private product:ProductService, private dialog:Dialog, private route:ActivatedRoute){
+    this.user = this.auth.getSavedUser();
+    console.log(this.user)
+    this.userRole=this.user.role
   }
 
 

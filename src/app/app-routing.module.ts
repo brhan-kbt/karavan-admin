@@ -50,6 +50,11 @@ const routes: Routes = [
   },
 
   {
+    path:'payment',
+    loadChildren:()=>import('./setup/payment/payment.module').then(m=>m.PaymentModule),
+  },
+
+  {
     path:'gallery',
     loadChildren:()=>import('./setup/media/media.module').then(m=>m.MediaModule),
   },

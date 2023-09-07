@@ -1,6 +1,7 @@
 <div class="flex justify-between items-center py-5">
     <h2 class="font-bold font-cormorant text-3xl">Lists of Product</h2>
     <button
+    *ngIf="userRole=='Admin'"
       class="bg-[#0E483F] border text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform hover:scale-105"
       (click)="openDialog()"
     >
@@ -9,7 +10,7 @@
   </div>
 
   <mat-form-field appearance="outline" class="w-full">
-    <mat-label>Outline form field</mat-label>
+    <mat-label>Search</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
     <mat-icon matPrefix>search</mat-icon>
   </mat-form-field>
@@ -101,16 +102,19 @@
             </button>
             <mat-menu #menu="matMenu">
               <button
+              *ngIf="userRole=='Admin'"
               mat-menu-item
               (click)="openEditDialog(row)"
               style="color: green;"
               class="small-button edit"
             >
-              <mat-icon   style="color: green;" aria-label="Edit">edit</mat-icon> Edit
+              <mat-icon   style="color: rgb(111, 114, 111);" aria-label="Edit">edit</mat-icon> Edit
               </button>
             <hr>
             <button
             mat-menu-item
+            *ngIf="userRole=='Admin'"
+
             style="color: red;"
             (click)="deleteData(row)"
             class="small-button delete"

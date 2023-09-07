@@ -3,6 +3,7 @@
     <button
       class="bg-[#0E483F] border text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform hover:scale-105"
       (click)="openDialog()"
+      *ngIf="userRole=='Admin'"
     >
       Add Category
     </button>
@@ -84,6 +85,8 @@
               mat-menu-item
               (click)="openEditDialog(row)"
               style="color: green;"
+              *ngIf="userRole=='Admin'"
+
               class="small-button edit"
             >
               <mat-icon   style="color: green;" aria-label="Edit">edit</mat-icon> Edit
@@ -93,6 +96,7 @@
             mat-menu-item
             style="color: green;"
             (click)="showCategoryDetails(row)"
+
             class="small-button delete"
           >
           <mat-icon  style="color: green;" aria-label="View">visibility</mat-icon>
