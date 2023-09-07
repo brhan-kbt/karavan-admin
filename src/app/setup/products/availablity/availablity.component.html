@@ -3,13 +3,13 @@
 
   </div>
 
-<ng-container >
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Outline form field</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+<ng-container  *ngIf="dataLoaded">
 
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Outline form field</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
-      <mat-icon matPrefix>search</mat-icon>
-    </mat-form-field>
 
     <div
       class="mat-elevation-z8 example-table-container"
@@ -79,16 +79,20 @@
             </button>
             <mat-menu #menu="matMenu">
               <button
+
               mat-menu-item
               (click)="openEditDialog(row)"
               style="color: green;"
               class="small-button edit"
+              [disabled]="!isButtonDisabled(userRole)"
+
             >
               <mat-icon   style="color: green;" aria-label="Edit">edit</mat-icon> Edit
               </button>
             <hr>
             <button
             mat-menu-item
+            [disabled]="!isButtonDisabled(userRole)"
             style="color: red;"
             (click)="deleteData(row)"
             class="small-button delete"
@@ -119,4 +123,8 @@
       ></mat-paginator>
     </div>
 
+</ng-container>
+
+<ng-container *ngIf="!dataLoaded">
+  <app-table-shimmer-effect></app-table-shimmer-effect>
 </ng-container>

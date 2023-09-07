@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ApexChart, ApexDataLabels, ApexNonAxisChartSeries, ApexTitleSubtitle } from 'ng-apexcharts';
+import { CategoryService } from 'src/app/services/category/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { ReportService } from 'src/app/services/report/report.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,10 +43,21 @@ export class DashboardComponent {
   currentDisplayIndex = 0;
   itemsPerPage = 5;
 
-  constructor(private product: ProductService, private report:ReportService) {
+  constructor(private product: ProductService,private user:UserService, private cat:CategoryService, private prod:ProductService, private report:ReportService) {
+
+    user.getUsers().then(res=>{
+      console.log('Users Loaded');
+    });
+    prod.getProducts().then(res=>{
+      console.log('Product Loaded');
+    });
+    cat.getAll().then(res=>{
+      console.log('Category Loaded')
+    })
     report.getReport().then(res=>{
       this.reportData=res;
       this.selectedOrderSummary = this.reportData.orderSummary['today'];
+
       console.log(this.reportData);
       this.trendingProducts = this.reportData.trendingProducts.sort((a:any, b:any) => {
         // Order by rating in descending order (higher ratings first)

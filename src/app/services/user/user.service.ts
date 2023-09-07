@@ -13,9 +13,16 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   async getUsers() {
+    const cacheKey = 'users';
+    if (this.cache[cacheKey]) {
+      console.log('From Cache');
+      return this.cache[cacheKey]; // Return cached data
+    } else {
       const res = await this.http.get<any>(this.baseUrl).toPromise();
+      this.cache[cacheKey] = res; // Store data in cache
       console.log('From Api', res)
       return res;
+    }
   }
 
   async updateCache() {

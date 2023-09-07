@@ -13,8 +13,10 @@ import { MatTableModule } from '@angular/material/table';
 import { AppCommonModule } from 'src/app/app.common.module';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
-
-
+import { MessageModule } from 'primeng/message'; // Import MessageModule
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast'
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   declarations: [
     OrderListComponent,
@@ -32,7 +34,15 @@ import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared
     CommonModule,
     OrderRoutingModule,
     DatePipe,
-    SharedModule
-  ]
+    MessageModule,
+    SharedModule,
+    ToastModule,
+    ProgressSpinnerModule
+  ],
+
+  providers: [
+    MessageService
+
+  ],
 })
 export class OrderModule { }

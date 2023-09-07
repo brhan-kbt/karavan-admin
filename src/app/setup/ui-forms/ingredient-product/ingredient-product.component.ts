@@ -75,6 +75,7 @@ export class IngredientProductComponent {
 
     this.ing.saveIngredients(data).then(res=>{
       console.log(res);
+      this.dialogRef.close();
     })
   }
 

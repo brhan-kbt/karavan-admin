@@ -10,14 +10,10 @@
         <p class="text-xl font-cormorantInfant"> <span class="px-1">  Total Items </span> : <span class="font-semibold"> {{selectedOrder.orderDetails.length}} </span></p>
         <p class="text-xl font-cormorantInfant"> <span class="px-1"> Order Date and Time </span> : <span class="font-semibold">{{selectedOrder.orderDateTime | date:'short'}} </span></p>
         <p class="text-xl font-cormorantInfant"> <span class="px-1"> Pick Up Date and Time </span> : <span class="font-semibold">{{selectedOrder.pickupDateTime | date:'short'}} </span></p>
-        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Status </span> : <span class="font-semibold">
+        <p class="text-xl font-cormorantInfant"> <span class="px-1"> Status </span> : <span class="font-semibold" [ngStyle]="getOrderStatusStyle(selectedOrder.orderStatus)">
 
-            <ng-container *ngIf="selectedOrder.status">
-                <span class="font-semibold text-green-500">Done </span>
-            </ng-container>
-            <ng-container *ngIf="!selectedOrder.status">
-                <span class="font-semibold text-red-500">Pending </span>
-            </ng-container>
+            {{ getOrderStatusLabel(selectedOrder.orderStatus) }}
+
 
         </span></p>
     </div>
@@ -36,54 +32,36 @@
 
     <div class="flex gap-4">
         <div class="w-full hide-scroll-bar overflow-y-auto md:w-3/5 h-96">
-            <ng-container *ngFor="let item of selectedOrder.orderDetails">
+            <ng-container *ngFor="let item of productNames">
                <div class="flex  gap-5 border p-3 my-1 rounded-md">
                    <div>
                     <img class="w-20 h-20" src="assets/cake1.svg" alt="">
                    </div>
 
                    <div>
-                    <p> {{item.product.name}}</p>
-                    <p>{{item.product.code}}</p>
+                    <p> {{formatTitle(item.product.name)}}</p>
+                    <p>{{item.product.unitPrice}}</p>
                     <p> x {{item.quantity}}</p>
                     </div>
                </div>
 
             </ng-container>
-            <div class="flex  gap-5 border p-3 my-1 rounded-md">
-                <div>
-                 <img class="w-20 h-20" src="assets/cake1.svg" alt="">
-                </div>
-
-                <div>
-                 <p> Product Name</p>
-                 <p>PL09jkhk</p>
-                 <p> x 10</p>
-                 </div>
-            </div>
-
-            <div class="flex  gap-5 border p-3 my-1 rounded-md">
-                <div>
-                 <img class="w-20 h-20" src="assets/cake1.svg" alt="">
-                </div>
-
-                <div>
-                 <p> Product Name</p>
-                 <p>PL09jkhk</p>
-                 <p> x 10</p>
-                 </div>
-            </div>
-
 
         </div>
 
-        <div class="border p-5 w-full md:w-2/5">
+        <div class="border p-5 w-full md:w-2/5" *ngIf="selectedOrder.payment">
             <h2 class="font-bold font-cormorantInfant text-3xl">Payment Information</h2>
             <p class="text-xl font-cormorantInfant"> <span class="px-1"> Total Amount </span> : <span class="font-semibold">{{selectedOrder.payment.amount}} </span></p>
             <p class="text-xl font-cormorantInfant"> <span class="px-1"> Charge </span> : <span class="font-semibold">{{selectedOrder.payment.charge}} </span></p>
             <p class="text-xl font-cormorantInfant"> <span class="px-1"> Txn Reference   </span> : <span class="font-semibold"> {{selectedOrder.payment.reference}} </span></p>
             <p class="text-xl font-cormorantInfant"> <span class="px-1"> Payment Date </span> : <span class="font-semibold px-1"> {{selectedOrder.payment.updated_AtChapa | date:'short'}}</span> </p>
         </div>
+
+        <div class="border p-5 w-full md:w-2/5" *ngIf="!selectedOrder.payment">
+            <h2 class="font-bold font-cormorantInfant text-3xl">Payment Information</h2>
+            <span class="font-semibold text-red-500">UnPaid </span>
+
+            </div>
     </div>
 
 </div>

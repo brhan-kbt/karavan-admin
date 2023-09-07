@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit{
 
     order.getBranchOrders().then(res=>{
       console.log("Pending: ",res)
-      this.pendingData=res.data;
+      this.pendingData=res.filter((data:any)=>data.orderStatus>2)
     })
 
   }

@@ -26,6 +26,8 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
     isLoading: boolean = true;
     user:any;
     userRole='';
+    dataLoaded:boolean=false;
+
     dataFiltered:any;
     constructor(private dialog:MatDialog,
       private auth:AuthService,
@@ -52,7 +54,6 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
           const productName = product.name;
           const productId=product.id;
           for (const branchProduct of product.branchProducts) {
-             if (branchProduct.isAvailable || branchProduct.maxThreshold > 0) {
               const branchName = branchProduct.branch.branchName;
               const branchId = branchProduct.branch.id;
               const id=branchProduct.id;
@@ -61,13 +62,22 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
               const minThreshold=branchProduct.minThreshold
               const type= branchProduct.type
                productBranchPairs.push({id:id, isAvailable:isAvailable, maxThreshold:maxThreshold, minThreshold:minThreshold, type:type, productName: productName,branchId:branchId, branchName: branchName, productId:productId});
-             }
           }
         }
-         this.dataFiltered=productBranchPairs.filter(product=>product.branchId===this.user.branch)
+        if(this.userRole=="Branch_Admin"){
+        this.dataFiltered=productBranchPairs.filter(product=>product.branchId===this.user.branch)
+        }
+        else{
+          this.dataFiltered=productBranchPairs;
+        }
         this.dataSource = new MatTableDataSource<any>(this.dataFiltered);
+      setTimeout(() => {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+      }, 0);
+
+      this.dataLoaded=true;
+
         console.log("Branch Products",productBranchPairs);
       } catch (error) {
         console.error(error);
@@ -75,6 +85,9 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
         this.isLoading = false; // Move isLoading assignment inside the finally block
       }
 
+    }
+    isButtonDisabled(userRole: string): boolean {
+      return userRole === 'Branch_Admin';
     }
 
     ngAfterViewInit() {
@@ -122,7 +135,7 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
       dialogRef.componentInstance.save.subscribe((data) => {
        console.log('Update Id:', data.id)
         this.availability.updateAvailability(data).then(res=>{
-          console.log(res)
+          dialogRef.close();
         })
       console.log(data)
      }, (err:any) => {

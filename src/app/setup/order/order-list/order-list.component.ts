@@ -10,6 +10,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { orderStatuses } from 'src/app/constants/orderStatus';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-order-list',
@@ -44,7 +45,10 @@ export class OrderListComponent {
 
   orderStats:any;
 
-  constructor(private dialog:MatDialog,private auth:AuthService, private product:ProductService, private router:Router, private order:OrderService,   private changeDetectorRef: ChangeDetectorRef,
+  constructor(private dialog:MatDialog,private auth:AuthService,
+
+    private messageService:MessageService,
+    private product:ProductService, private router:Router, private order:OrderService,   private changeDetectorRef: ChangeDetectorRef,
     ) {
       this.user = this.auth.getSavedUser();
       console.log(this.user)
@@ -95,23 +99,41 @@ export class OrderListComponent {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+  isUpdating: boolean = false;
 
 
-  updateOrderStatus(row:any){
-  console.log(row)
-  const orderStatus={
-    id:row.id,
-    orderStatus:!row.orderStatus,
-    approvedBy:this.user.id
+  updateOrderStatus(row: any) {
+    this.isUpdating = true; // Set isUpdating to true when update starts
+
+    console.log(row);
+    const orderStatus = {
+      id: row.id,
+      orderStatus: row.orderStatus,
+      approvedBy: this.user.id
+    };
+    console.log(orderStatus);
+
+    this.order.updateOrder(orderStatus).then(res => {
+      this.isUpdating = false; // Set isUpdating to false when update finishes
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Order Status Updated Successfully.',
+      });
+      console.log(res);
+    }).catch(err => {
+      this.isUpdating = false; // Set isUpdating to false on error
+
+      console.log(err);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Something Went Wrong.',
+      });
+    });
   }
-  console.log(orderStatus)
 
-  this.order.updateOrder(orderStatus).then(res=>{
-    console.log(res)
-  }).catch(err=>{
-    console.log(err)
-  })
-}
 
 
 async fetchAndUpdateProducts() {
@@ -164,6 +186,59 @@ getSelectStyle(orderStatus: number, selectedStatus: number): any {
       break;
     default:
       break;
+  }
+
+  return style;
+}
+
+getOrderStatusLabel(orderStatus: number): string {
+  const status = this.orderStats.find((status:any) => status.value === orderStatus);
+  return status ? status.label : 'Unknown'; // Default to 'Unknown' if the status is not found.
+}
+
+
+getPaymentStatusStyle(paymentStatus: boolean): any {
+  const style: any = {};
+
+  if (paymentStatus) {
+    style.color = 'green'; // Green for Success
+  } else {
+    style.color = 'red'; // Red for Pending
+  }
+
+  return style;
+}
+
+getOrderStatusStyle(orderStatus: number): any {
+  const style: any = {};
+  const status = orderStatuses.find(status => status.value === orderStatus);
+
+  if (status) {
+    switch (status.value) {
+      case 0:
+        style.color = '#f44336'; // Red color for Pending
+        break;
+      case 1:
+        style.color = '#4caf50'; // Green color for Confirmed
+        break;
+      case 2:
+        style.color = '#ffc107'; // Amber color for InProgress
+        break;
+      case 3:
+        style.color = '#3f51b5'; // Blue color for ReadyForPickUp
+        break;
+      case 4:
+        style.color = '#009688'; // Teal color for Completed
+        break;
+      case 5:
+        style.color = '#9e9e9e'; // Grey color for Cancelled
+        break;
+      case 26:
+        style.color = '#ff5722'; // Deep Orange color for Refunded
+        break;
+      default:
+        break;
+    }
   }
 
   return style;
