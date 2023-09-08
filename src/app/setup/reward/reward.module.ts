@@ -5,6 +5,7 @@ import { RewardRoutingModule } from './reward-routing.module';
 import { UserListComponent } from './user-list/user-list.component';
 import { MaterialModule } from 'src/app/app.material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RewardRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class RewardModule { }

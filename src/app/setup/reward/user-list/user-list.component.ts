@@ -24,70 +24,50 @@ export class UserListComponent {
   @ViewChild(MatSort) sort!: MatSort;
   // users:any | undefined;
   isLoading: boolean = true;
+  dataLoaded:boolean=false;
+
   deleteRestoreAction!: string;
   deleteRestoreData: any;
 
   users: any[] = [
     {
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      phoneNumber: '123-456-7890',
-      rewardPoints: 560
+      fullName: 'New Customer',
+      email: 'birhanu@example.com',
+      phoneNumber: '+25190528908',
+      rewardPoints: 0
     },
     {
-      fullName: 'Jane Smith',
-      email: 'jane.smith@example.com',
-      phoneNumber: '987-654-3210',
-      rewardPoints: 780
+      fullName: 'Zerubabel',
+      email: 'zeru@gmail.com',
+      phoneNumber: '+25192528908',
+      rewardPoints: 0
     },
     {
-      fullName: 'Alice Johnson',
-      email: 'alice.johnson@example.com',
-      phoneNumber: '555-123-4567',
-      rewardPoints: 320
+      fullName: 'Birhanu',
+      email: 'Birhanu@yahonn.com',
+      phoneNumber: '+25190522348',
+      rewardPoints: 0
     },
     {
-      fullName: 'Bob Anderson',
-      email: 'bob.anderson@example.com',
-      phoneNumber: '888-555-1234',
-      rewardPoints: 950
+      fullName: 'Customer C',
+      email: 'new@gmail.com',
+      phoneNumber: '+2519052890e8',
+      rewardPoints: 0
     },
     {
-      fullName: 'Emily Brown',
-      email: 'emily.brown@example.com',
-      phoneNumber: '444-789-1234',
-      rewardPoints: 180
+      fullName: 'Karavan Customer',
+      email: 'karavan@example.com',
+      phoneNumber: '+251768669867',
+      rewardPoints: 0
     },
+
     {
-      fullName: 'Michael Wilson',
-      email: 'michael.wilson@example.com',
-      phoneNumber: '666-999-5555',
-      rewardPoints: 720
+      fullName: 'Karavan C',
+      email: 'karavanc@example.com',
+      phoneNumber: '+2517683669867',
+      rewardPoints: 0
     },
-    {
-      fullName: 'Olivia Davis',
-      email: 'olivia.davis@example.com',
-      phoneNumber: '111-222-3333',
-      rewardPoints: 420
-    },
-    {
-      fullName: 'William Martinez',
-      email: 'william.martinez@example.com',
-      phoneNumber: '777-888-9999',
-      rewardPoints: 620
-    },
-    {
-      fullName: 'Sophia Rodriguez',
-      email: 'sophia.rodriguez@example.com',
-      phoneNumber: '222-333-4444',
-      rewardPoints: 280
-    },
-    {
-      fullName: 'James Taylor',
-      email: 'james.taylor@example.com',
-      phoneNumber: '999-666-5555',
-      rewardPoints: 810
-    }
+
   ];
 
   constructor(private dialog:MatDialog,
@@ -101,8 +81,11 @@ export class UserListComponent {
       // this.users = user.data.filter((res:any) => res.isDeleted === false && (res.role ==='Admin' || res.role ==='Finance'));
       console.log('users:',this.users);
       this.dataSource = new MatTableDataSource<any>(this.users);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 0);
+      this.dataLoaded=true;
     } catch (error) {
       console.error(error);
     }finally {

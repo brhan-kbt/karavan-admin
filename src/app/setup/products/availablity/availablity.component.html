@@ -4,8 +4,8 @@
   </div>
 
   <mat-form-field appearance="outline" class="w-full">
-    <mat-label>Outline form field</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Placeholder" #input />
+    <mat-label>Search</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input />
     <mat-icon matPrefix>search</mat-icon>
   </mat-form-field>
 <ng-container  *ngIf="dataLoaded">

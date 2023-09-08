@@ -74,7 +74,7 @@
 
 <ng-template #notificationOverlay>
     <div class="overlay overlay-notification overlay-fall" cdkMenu>
-        <ul>
+        <ul class="h-72 overflow-y-auto">
             <li class="notification-head-container">
                 <div class="notification-head">Notifications</div>
                 <span class="view-all-link">
@@ -84,7 +84,7 @@
             <ng-container *ngIf="pendingData">
                 <li *ngFor="let notification of pendingData"
                 cdkMenuItem
-                class="notification-message-container"
+                class="notification-message-container "
                 >
                  <i [class]="notification.icon"></i>
                  <div (click)="showProductDetails(notification)">

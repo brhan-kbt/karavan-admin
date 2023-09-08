@@ -148,7 +148,7 @@ export const navbarData:INavbarData[]=[
 
      {
         routeLink:'payment',
-        icon:'far fa-cart-plus',
+        icon:'far fa-dollar',
         label:'Payment ',
         roles:['Admin','Finance'],
         items:[
