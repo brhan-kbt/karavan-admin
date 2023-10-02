@@ -42,6 +42,7 @@ export class DashboardComponent {
   trendingProducts:any;
   currentDisplayIndex = 0;
   itemsPerPage = 5;
+  dataLoaded:boolean=false;
 
   constructor(private product: ProductService,private user:UserService, private cat:CategoryService, private prod:ProductService, private report:ReportService) {
 
@@ -59,6 +60,7 @@ export class DashboardComponent {
       this.selectedOrderSummary = this.reportData.orderSummary['today'];
 
       console.log(this.reportData);
+      this.dataLoaded=true;
       this.trendingProducts = this.reportData.trendingProducts.sort((a:any, b:any) => {
         // Order by rating in descending order (higher ratings first)
 

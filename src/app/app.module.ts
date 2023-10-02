@@ -45,6 +45,7 @@ import { ProfileFormComponent } from './setup/ui-forms/profile-form/profile-form
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IngredientProductComponent } from './setup/ui-forms/ingredient-product/ingredient-product.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { SharedModule } from './shared/shimmer/table-shimmer-effect/shared.module';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     MatChipsModule,
     ProgressSpinnerModule,
     NgMultiSelectDropDownModule,
+    SharedModule
 
 
   ],

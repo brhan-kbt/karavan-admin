@@ -1,10 +1,100 @@
-<div class="loading-overlay" *ngIf="!reportData">
+<!-- <div class="loading-overlay" *ngIf="!reportData">
        <mat-spinner diameter="50"></mat-spinner>
     <p class="mt-5">Loading, stay tuned...</p>
 
-</div>
+</div> -->
 
-<div *ngIf="reportData" class="flex flex-col gap-10">
+
+<ng-container *ngIf="!dataLoaded">
+    <div class=" w-full grid grid-cols-1 md:grid-cols-2 xmd:grid-cols-4   gap-4 ">
+       <div class="h-40 space-y-2 w-full">
+         <p class="h-12 w-12 rounded-full shimmer-line"></p>
+         <p class="h-16 w-full  shimmer-line"></p>
+         <p class="h-10 w-[70%]  shimmer-line"></p>
+       </div>
+
+       <div class="h-40 space-y-2 w-full">
+        <p class="h-12 w-12 rounded-full shimmer-line"></p>
+        <p class="h-16 w-full  shimmer-line"></p>
+        <p class="h-10 w-[70%]  shimmer-line"></p>
+      </div>
+
+      <div class="h-40 space-y-2 w-full">
+        <p class="h-12 w-12 rounded-full shimmer-line"></p>
+        <p class="h-16 w-full  shimmer-line"></p>
+        <p class="h-10 w-[70%]  shimmer-line"></p>
+      </div>
+
+      <div class="h-40 space-y-2 w-full">
+        <p class="h-12 w-12 rounded-full shimmer-line"></p>
+        <p class="h-16 w-full  shimmer-line"></p>
+        <p class="h-10 w-[70%]  shimmer-line"></p>
+      </div>
+    </div>
+
+    <div class="w-full py-16 flex flex-col md:flex-row  gap-5 ">
+        <div class="space-y-4 w-full md:w-1/2 ">
+            <div class="flex justify-between">
+              <p class="shimmer-line h-12 w-[20%] rounded-md"></p>
+              <p class="shimmer-line h-12 w-[20%] rounded-md"></p>
+            </div>
+            <div>
+              <p class="shimmer-line h-20 w-full rounded-md"></p>
+            </div>
+            <div class="flex justify-between">
+              <p class="shimmer-line h-12 w-[20%] rounded-md"></p>
+              <p class="shimmer-line h-12 w-[20%] rounded-md"></p>
+              <p class="shimmer-line h-12 w-[20%] rounded-md"></p>
+            </div>
+        </div>
+        <div class="w-full md:w-1/2 flex gap-2 ">
+            <div class="space-x-1 flex items-end">
+                <p class="shimmer-line h-44 w-4  md:w-6"></p>
+                <p class="shimmer-line h-20 w-4  md:w-6"></p>
+                <p class="shimmer-line h-12 w-4  md:w-6"></p>
+            </div>
+
+            <div class="space-x-1 flex items-end">
+                <p class="shimmer-line h-32 w-4  md:w-6"></p>
+                <p class="shimmer-line h-48 w-4  md:w-6"></p>
+                <p class="shimmer-line h-12 w-4  md:w-6"></p>
+            </div>
+
+            <div class="space-x-1 flex items-end">
+                <p class="shimmer-line h-32 w-4  md:w-6"></p>
+                <p class="shimmer-line h-20 w-4  md:w-6"></p>
+                <p class="shimmer-line h-12 w-4  md:w-6"></p>
+            </div>
+
+         <div class="space-x-1 flex items-end">
+                <p class="shimmer-line h-32 w-4  md:w-6"></p>
+                <p class="shimmer-line h-20 w-4  md:w-6"></p>
+                <p class="shimmer-line h-12 w-4  md:w-6"></p>
+            </div>
+
+            <div class="hidden md:flex space-x-1  items-end">
+                <p class="shimmer-line h-32 w-4  md:w-6"></p>
+                <p class="shimmer-line h-20 w-4  md:w-6"></p>
+                <p class="shimmer-line h-12 w-4  md:w-6"></p>
+            </div>
+
+            <div class="hidden space-x-1 md:flex items-end">
+                <p class="shimmer-line h-32 w-4  md:w-6"></p>
+                <p class="shimmer-line h-20 w-4  md:w-6"></p>
+                <p class="shimmer-line h-12 w-4  md:w-6"></p>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <app-table-shimmer-effect></app-table-shimmer-effect>
+</ng-container>
+
+
+
+<div *ngIf="dataLoaded && reportData" class="flex flex-col gap-10">
         <div class="grid grid-cols-12 px-5 gap-6 mt-5">
             <a class=" custom-card transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
                 href="#">
