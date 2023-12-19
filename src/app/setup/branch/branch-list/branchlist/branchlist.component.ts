@@ -29,9 +29,9 @@ export class BranchlistComponent {
   constructor(private dialog:MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
     private auth:AuthService, private product:ProductService, private branch:BranchService) {
-    this.getUsers();
+    this.getBranches();
   }
-  async getUsers() {
+  async getBranches() {
     try {
       let branch = await this.branch.getAll();
       this.branches=branch.data

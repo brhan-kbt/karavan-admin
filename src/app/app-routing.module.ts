@@ -58,6 +58,10 @@ const routes: Routes = [
     path:'gallery',
     loadChildren:()=>import('./setup/media/media.module').then(m=>m.MediaModule),
   },
+  {
+    path:'coupon',
+    loadChildren:()=>import('./setup/coupon/coupon.module').then(m=>m.CouponModule),
+  },
 ];
 
 @NgModule({

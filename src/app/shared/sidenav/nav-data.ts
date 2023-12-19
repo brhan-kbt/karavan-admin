@@ -5,7 +5,7 @@ export const navbarData:INavbarData[]=[
         routeLink:'dashboard',
         icon:'fal fa-home',
         label:'Dashboard',
-        roles:['Admin','Branch_Admin','Finance'],
+        roles:['Admin'],
 
     },
     // {
@@ -136,12 +136,26 @@ export const navbarData:INavbarData[]=[
         routeLink:'order',
         icon:'far fa-cart-plus',
         label:'Order ',
-        roles:['Admin','Branch_Admin','Finance'],
+        roles:['Admin','Branch_Admin'],
         items:[
             {
                 routeLink:'order/list',
                 icon:'fal fa-list',
                 label:'Order List'
+            },
+        ]
+    },
+
+    {
+        routeLink:'coupon',
+        icon:'far fa-tags',
+        label:'Coupon ',
+        roles:['Admin','Branch_Admin','Finance'],
+        items:[
+            {
+                routeLink:'coupon/list',
+                icon:'fal fa-list',
+                label:'Coupon List'
             },
         ]
     },
@@ -182,7 +196,7 @@ export const navbarData:INavbarData[]=[
         routeLink:'reward',
         icon:'fal fa-gift',
         label:'Reward ',
-        roles:['Admin','Branch_Admin','Finance'],
+        roles:['Admin','Branch_Admin'],
 
         items:[
             {
@@ -205,6 +219,12 @@ export const navbarData:INavbarData[]=[
             label:'Media List'
             },
 
+            {
+                routeLink:'gallery/promotion',
+                icon:'fal fa-list',
+                label:'Promotion List'
+            },
+
         ]
 
     },
@@ -213,7 +233,7 @@ export const navbarData:INavbarData[]=[
         routeLink:'branch',
         icon:'fal fa-user',
         label:'Branch ',
-        roles:['Admin','Branch_Admin','Finance'],
+        roles:['Admin','Branch_Admin'],
         items:[
             {
             routeLink:'branch/list',
@@ -239,7 +259,9 @@ export const navbarData:INavbarData[]=[
             {
                 routeLink:'settings/karavan',
                 icon:'fal fa-user',
-                label:'Settings'
+                label:'Settings',
+                roles:['Admin'],
+
                 },
             {
                 routeLink:'logout',

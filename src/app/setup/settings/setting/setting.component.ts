@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Editor } from 'ngx-editor';
-import { SortEvent } from 'primeng/api';
+import {  SortEvent } from 'primeng/api';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SettingService } from 'src/app/services/setting/setting.service';
@@ -29,22 +29,30 @@ export class SettingComponent {
   howItWorks:any;
 
 
+  text:String=''
   editor!: Editor;
   html = '';
   editingContent: boolean = false;
   editedContent: string = '';
+  formGroup: FormGroup;
 
-
+  isSaving:boolean =false;
 
   toggleExpanded(order:any){
    this.expanded = !this.expanded
    this.orderId=order.orderId;
   }
+
+  programDescription!: SafeHtml;
+
+
+
   constructor(
     private auth: AuthService,
     private setting: SettingService,
     private sanitizer: DomSanitizer,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    // private messageService:MessageService,
   ) {
     this.changePasswordForm = fb.group({
       old_password: ['', [Validators.required]],
@@ -52,6 +60,9 @@ export class SettingComponent {
       confirm_new_password: ['', [Validators.required]]
     });
 
+    this.formGroup = new FormGroup({
+      text: new FormControl()
+  });
     this.searchForm = new FormGroup({
       searchControl: new FormControl('')
     });
@@ -69,6 +80,8 @@ export class SettingComponent {
         });
       }
     });
+
+
   }
 
 
@@ -180,17 +193,33 @@ export class SettingComponent {
 
     editContent(data: any) {
       this.editingContent = true;
+      console.log(data);
       this.editedContent = data.description; // Initialize with the current content
       this.settingForm.get('description')?.setValue(this.editedContent); // Set form control value
     }
 
 
     saveEditedContent() {
+      this.isSaving=true;
       console.log(this.settingForm.value)
       this.setting.updateContent(this.settingForm.value).then(res=>{
         console.log(res);
         this.editingContent = false;
+        this.isSaving=false;
         this.editedContent = ''; // Clear the edited content placeholder
+        // this.messageService.add({
+        //   severity: 'success',
+        //   summary: 'Success',
+        //   detail: 'Content Updated Successfully!',
+        // });
+      },err=>{
+        // this.messageService.add({
+        //   severity: 'error',
+        //   summary: 'Error',
+        //   detail: 'Something went wrong, try again!',
+        // });
+        console.log(err);
+        this.isSaving=false;
       })
     }
 

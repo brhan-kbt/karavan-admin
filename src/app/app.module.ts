@@ -46,6 +46,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IngredientProductComponent } from './setup/ui-forms/ingredient-product/ingredient-product.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SharedModule } from './shared/shimmer/table-shimmer-effect/shared.module';
+import { WebsocketService } from './services/web-socket/web-socket.service';
+import { ProductService } from './services/product/product.service';
 
 @NgModule({
   declarations: [
@@ -94,7 +96,9 @@ import { SharedModule } from './shared/shimmer/table-shimmer-effect/shared.modul
     MatChipsModule,
     ProgressSpinnerModule,
     NgMultiSelectDropDownModule,
-    SharedModule
+    SharedModule,
+
+
 
 
   ],

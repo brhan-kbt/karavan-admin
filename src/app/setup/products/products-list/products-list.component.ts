@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -16,7 +16,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss']
 })
-export class ProductsListComponent {
+export class ProductsListComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'productName', 'productCode', 'productPrice','discount','orderable', 'actions'];
   dataSource!: MatTableDataSource<any>;
@@ -34,31 +34,43 @@ export class ProductsListComponent {
 
   constructor(private dialog:MatDialog,
     private auth:AuthService,
-    private product:ProductService, private ing:IngredientService,    private changeDetectorRef: ChangeDetectorRef,
+    private product:ProductService,
+    private ing:IngredientService,
+      private changeDetectorRef: ChangeDetectorRef,
     ) {
 
+      product.cachedProductListObservable$.subscribe(res=>{
+        console.log('New Product List : ', res);
+
+        this.products = res.data;
+        console.log('Products:', this.products);
+        this.dataSource = new MatTableDataSource<any>(this.products);
+         setTimeout(() => {
+           this.dataSource.paginator = this.paginator;
+           this.dataSource.sort = this.sort;
+         }, 0);
+
+        console.log(this.dataSource)
+        this.dataLoaded = true;
+      })
       this.user = this.auth.getSavedUser();
       console.log(this.user)
       this.userRole=this.user.role
     this.getProducts();
     ing.getIngredients().then(res=>{
       console.log();
-    })
+    });
+
+
   }
 
+  ngOnInit(){
+
+  }
   async getProducts() {
     try {
       let product = await this.product.getProducts();
-      this.products = product.data;
-      console.log('Products:', this.products);
-      this.dataSource = new MatTableDataSource<any>(this.products);
-       setTimeout(() => {
-         this.dataSource.paginator = this.paginator;
-         this.dataSource.sort = this.sort;
-       }, 0);
 
-      console.log(this.dataSource)
-      this.dataLoaded = true;
     } catch (error) {
       console.error(error);
     } finally {
@@ -114,10 +126,11 @@ export class ProductsListComponent {
       console.log('====================================');
       this.product.saveProduct(product).then(res=>{
         console.log(res);
-        this.fetchAndUpdateProducts().then(res=>{
-          dialogRef.close(); // Close the dialog here
-          dialogRef.componentInstance.isSaving=false
-        })
+        dialogRef.close();
+        // this.fetchAndUpdateProducts().then(res=>{
+        //   dialogRef.close(); // Close the dialog here
+        //   dialogRef.componentInstance.isSaving=false
+        // })
       },err=>{
         this.serverErrors = err.error.data; // Assuming the server returns error messages in the "error" property
         dialogRef.componentInstance.serverErrors = err.error.data;
@@ -146,6 +159,7 @@ export class ProductsListComponent {
     console.log('Update Id:', event.id)
     this.product.updateProduct(event.formData, event.id).then(res=>{
       console.log(res)
+      dialogRef.close();
     })
   }, (err:any) => {
     console.log(err);
@@ -171,7 +185,7 @@ updateOrderableStatus(row:any){
 
   this.product.updateOrderable(productData).then(res=>{
     console.log(res)
-    this.fetchAndUpdateProducts();
+    // this.fetchAndUpdateProducts();
   }).catch(err=>{
     console.log(err)
   })

@@ -33,6 +33,8 @@ export class UpdateAvailablityComponent {
   selectedCat: number = 0;
   branches:any;
   threshold:any;
+  @Input() isSaving!:boolean; // Input property to receive server errors from parent component
+
   selectedImage!: File ;
   // @Output() save = new EventEmitter<any>();
   @Output() save = new EventEmitter<any>();
@@ -74,6 +76,7 @@ export class UpdateAvailablityComponent {
   onSave(): void {
     console.log(this.form.value);
     if(this.form.value){
+      this.isSaving = true;
       if(!this.isEdit){
          this.save.emit(this.form.value)
         console.log('Save : ', this.form.value)
