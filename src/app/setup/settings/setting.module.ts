@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxEditorModule } from 'ngx-editor';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatInputModule } from '@angular/material/input';
+import { EditorModule } from 'primeng/editor';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     FormsModule,
     AngularEditorModule,
-    MatInputModule
+    MatInputModule,
+    EditorModule,
+    ToastModule
   ]
 })
 export class SettingModule { }

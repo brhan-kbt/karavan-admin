@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { filter, map } from 'rxjs';
+import { BehaviorSubject, Observable, filter, map } from 'rxjs';
 import { Product } from 'src/app/models/product';
 import { environment } from 'src/environments/environment';
+import { WebsocketService } from '../web-socket/web-socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,70 @@ import { environment } from 'src/environments/environment';
 export class ProductService {
   baseUrl: string = `${environment.apiUrl}/api/Product`;
   cache: { [key: string]: Product | undefined } = {}; // Internal cache object
+  private cachedProduct: any;
 
-  constructor(private http: HttpClient) { }
+  private cachedProductList$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
+  // Expose it as an observable
+  public cachedProductListObservable$: Observable<any> = this.cachedProductList$.asObservable();
+
+  constructor(private http: HttpClient, private webSocketService:WebsocketService) {
+    webSocketService.startConnection();
+    this.registerEventHandlers();
+
+  }
+
+  private registerEventHandlers() {
+    // Ensure that the hubConnection is initialized before calling 'on'
+    const hubConnection = this.webSocketService.getHubConnection();
+    console.log('Hub Connection Out: ', hubConnection);
+    if (hubConnection) {
+    console.log('Hub Connection In: ', hubConnection);
+
+      hubConnection.on('ProductUpdated', (product: any) => {
+        // Handle product updates here
+        // this.updateCachedProductList(product);
+        this.updateCachedProductList(product);
+
+        console.log('Received product update:', product);
+      });
+
+      hubConnection.on('ProductAvailabilityUpdated', (product: any) => {
+        // Handle product updates here
+        // this.updateCachedProductCat(product); // Call a function to update cachedProductCat
+        this.updateCachedProductListAvailablity(product);
+        console.log('ProductAvailability update:', product);
+      });
+
+      hubConnection.on('PaymentStatusUpdate', (product: any) => {
+        // Handle product updates here
+        console.log('PaymentStatusUpdate update:', product);
+      });
+
+
+      hubConnection.on('OrderableProduct', (product: any) => {
+        // Handle product updates here
+        this.updateCachedProductList(product);
+
+        console.log('OrderableProduct update add to category:', product);
+      });
+
+
+      hubConnection.on('NotOrderableProduct', (product: any) => {
+        this.updateCachedProductListNotOrderable(product);
+
+        // Handle product updates here
+
+        console.log('NotOrderableProduct update remove from category:', product);
+      });
+
+      hubConnection.on('ProductCreated', (product: any) => {
+        // Handle product creations here
+        this.updateCachedProductListAdd(product);
+        console.log('Received product creation:', product);
+      });
+    }
+  }
   async getProducts() {
     const url = this.baseUrl + '/list'
     const cacheKey = 'products';
@@ -22,6 +84,8 @@ export class ProductService {
     } else {
       const res = await this.http.get<any>(url).toPromise();
       this.cache[cacheKey] = res; // Store data in cache
+      this.cachedProduct=res;
+      this.cachedProductList$.next(res);
       console.log('From Api', res)
       return res;
     }
@@ -94,6 +158,96 @@ export class ProductService {
   //             return res;
   //           }))
   // }
+
+  private updateCachedProductList(updatedProduct: any): void {
+    console.log('Updated Product Cat:', updatedProduct);
+    console.log('Cached Product Cat:', this.cachedProduct.data);
+    if (this.cachedProduct) {
+      // Iterate through categories and subcategories to find and update the product
+          const updatedProductIndex = this.cachedProduct.data.findIndex((product: any) => product.id === updatedProduct.id);
+          console.log('Updated Product Index:', updatedProductIndex);
+          console.log('Updated Product:', updatedProduct);
+
+          if (updatedProductIndex !== -1) {
+            // Update the product in the subcategory
+            this.cachedProduct.data[updatedProductIndex] = updatedProduct;
+            console.log('Updated.');
+          }
+
+          this.cachedProductList$.next(this.cachedProduct);
+      // Notify subscribers about the update by emitting the entire cache[cacheKey]
+    }
+  }
+
+  private updateCachedProductListAvailablity(updatedProduct: any): void {
+    console.log('Updated Product Cat:', updatedProduct);
+    console.log('Cached Product Cat:', this.cachedProduct.data);
+    if (this.cachedProduct) {
+      // Iterate through categories and subcategories to find and update the product
+      for (const product of this.cachedProduct.data) {
+        if (product.id === updatedProduct.productId) {
+          const branchProduct = product.branchProducts.find((bp: any) => bp.id === updatedProduct.id && bp.branch.id==updatedProduct.branch.id);
+
+          console.log('Updated Product Index:', branchProduct);
+          console.log('Updated Product:', updatedProduct);
+
+          if (branchProduct) {
+            // Update maxThreshold and isAvailable for the branchProduct
+            branchProduct.maxThreshold = updatedProduct.maxThreshold;
+            branchProduct.isAvailable = updatedProduct.isAvailable;
+            console.log('Updated.');
+          }
+        }
+      }
+              this.cachedProductList$.next(this.cachedProduct);
+      // Notify subscribers about the update by emitting the entire cache[cacheKey]
+    }
+  }
+  private updateCachedProductListAdd(updatedProduct: any): void {
+    console.log('Updated Product Cat:', updatedProduct);
+    console.log('Cached Product Cat:', this.cachedProduct.data);
+    if (this.cachedProduct) {
+      // Iterate through categories and subcategories to find and update the product
+          const updatedProductIndex = this.cachedProduct.data.findIndex((product: any) => product.id === updatedProduct.id);
+          console.log('Updated Product Index:', updatedProductIndex);
+          console.log('Updated Product:', updatedProduct);
+
+          if (updatedProductIndex !== -1) {
+            // Update the product in the subcategory
+            console.log('Product Already Exist.');
+          }
+          else{
+            this.cachedProduct.data.push(updatedProduct);
+            console.log('Added Product:', updatedProduct);
+          }
+
+          this.cachedProductList$.next(this.cachedProduct);
+      // Notify subscribers about the update by emitting the entire cache[cacheKey]
+    }
+  }
+
+  private updateCachedProductListNotOrderable(updatedProductId: any): void {
+    console.log('Updated Product Cat:', updatedProductId);
+    console.log('Cached Product Cat:', this.cachedProduct.data);
+    if (this.cachedProduct) {
+      // Iterate through categories and subcategories to find and update the product
+          const updatedProductIndex = this.cachedProduct.data.findIndex((product: any) => product.id === updatedProductId);
+          const updatedProduct = this.cachedProduct.data.find((product: any) => product.id === updatedProductId);
+          console.log('Updated Product Index:', updatedProductIndex);
+          console.log('Updated Product:', updatedProductId);
+
+          if (updatedProductIndex !== -1) {
+            // Update the product in the subcategory
+            const data = { ...updatedProduct, orderable: !updatedProduct.orderable };
+            this.cachedProduct.data[updatedProductIndex] = data;
+            console.log('Updated.');
+          }
+
+          this.cachedProductList$.next(this.cachedProduct);
+      // Notify subscribers about the update by emitting the entire cache[cacheKey]
+    }
+  }
+
 
   getData() {
     return [

@@ -26,12 +26,23 @@
           </div>
 
 
-         <button
+          <button
           class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
-         (click)="onSave()"
-       >
+          [disabled]="isSaving"
+          (click)="onSave()"
+        >
+        <ng-container *ngIf="!isSaving; else loadingAnimation">
          Save
-       </button>
+       </ng-container>
+        </button>
+
+        <ng-template #loadingAnimation>
+         <div class="flex items-center justify-center">
+           <div class="animate-spin rounded-full mr-3 h-8 w-8 border-t-2 border-b-2 border-[#9e6207]"></div>
+           <span>Saving...</span>
+         </div>
+       </ng-template>
+
        </form>
      </ng-container>
 

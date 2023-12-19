@@ -1,0 +1,65 @@
+
+<div class="flex flex-col">
+    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Promotion</h2>
+    <mat-dialog-content class="mat-typography" >
+     <ng-container >
+       <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
+         <div class="flex flex-col md:flex-row gap-4">
+
+             <mat-form-field class="w-full md:w-2/3 " appearance="outline">
+               <mat-label>Media Title</mat-label>
+               <input matInput placeholder="John Doe" formControlName="title" required>
+               <mat-error *ngIf="form.get('title')?.touched && form.get('title')?.invalid">Product Name is required</mat-error>
+             </mat-form-field>
+
+             <mat-form-field appearance="outline" class="w-full md:w-1/3">
+              <mat-label>Select Type</mat-label>
+              <mat-select formControlName="type"  >
+                  <mat-option [value]="0"> Mobile </mat-option>
+                  <mat-option [value]="1"> Desktop </mat-option>
+                  <mat-option [value]="2"> Both </mat-option>
+              </mat-select>
+            <mat-error *ngIf="form.get('type')?.touched && form.get('type')?.invalid">Select Type</mat-error>
+
+            </mat-form-field>
+         </div>
+
+
+         <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea formControlName="description" matInput></textarea>
+            <mat-error *ngIf="form.get('description')?.touched && form.get('description')?.invalid">Product Description is required</mat-error>
+
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Select Product</mat-label>
+            <mat-select formControlName="productId" >
+                <div style="margin: 10px;">
+                    <input style="border: 2px solid #0E483F; border-radius: 5px; padding: 0 10px;"  matInput placeholder="Search Products" formControlName="searchControl" />
+                </div>
+              <mat-option *ngFor="let p of filteredProducts" [value]="p.id">{{ p.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('productId')?.touched && form.get('productId')?.invalid">Select Type</mat-error>
+          </mat-form-field>
+
+
+         <div class="w-full">
+            <div class="flex">
+              <input type="file" (change)="handleImageUpload($event)" accept="image/*">
+              <div  *ngIf="selectedImage">
+                <img class="w-32 h-auto" [src]="selectedImagePreview" alt="Selected Image">
+              </div>
+            </div>
+
+          </div>
+         <button
+          class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+         (click)="onSave()"
+       >
+         Save
+       </button>
+       </form>
+     </ng-container>
+
+    </mat-dialog-content>
+  </div>

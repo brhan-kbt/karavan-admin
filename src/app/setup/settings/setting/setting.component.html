@@ -1,5 +1,4 @@
 
-
     <div>
      <div >
        <div class=" gap-2  py-16 px-2 md:px-24 ">
@@ -41,8 +40,9 @@
           <ng-container *ngIf="currentTab === 'howItWorks'">
             <!-- Content for How It Works tab -->
             <ng-container *ngFor="let data of howItWorks">
+
               <div *ngIf="!editingContent">
-                <div class="font-cormorantInfant font-medium text-xl " [innerHTML]="formatText(data.description)"></div>
+                <div class="font-cormorantInfant font-medium text-xl" [innerHTML]="data.description"></div>
                 <h2 class="cursor-pointer text-right">
                   <i class="fa text-[#0E483F] text-bold text-2xl px-3 fa-edit" (click)="editContent(data)">
                     Edit
@@ -50,14 +50,46 @@
                 </h2>
               </div>
               <div *ngIf="editingContent" [formGroup]="settingForm">
-                <mat-form-field appearance="outline" class="w-full">
+                <!-- <mat-form-field appearance="outline" class="w-full">
                   <mat-label>Edit Content</mat-label>
-                  <textarea matInput formControlName="description" rows="{{ calculateTextareaRows() }}"></textarea>
-                </mat-form-field>
-                <div class="flex justify-end space-x-2 mt-2">
-                  <button mat-button color="primary" (click)="saveEditedContent()">Save</button>
-                  <button mat-button (click)="cancelEdit()">Cancel</button>
+                  <textarea matInput formControlName="description" rows="{{ calculateTextareaRows() }}">
+
+                  </textarea>
+                </mat-form-field> -->
+
+                <div class="card">
+                  <p-editor formControlName="description" [style]="{ height: '400px' }"></p-editor>
+                  <div class="flex justify-end space-x-2 my-2 px-4">
+                    <!-- <button color="primary" (click)="saveEditedContent()">Save</button> -->
+
+                    <button
+                      class="bg-[#0E483F] text-white py-1 px-8 font-cormorant border text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+                      [disabled]="isSaving"
+                      (click)="saveEditedContent()"
+                    >
+                    <ng-container *ngIf="!isSaving; else loadingAnimation">
+                    Save
+                  </ng-container>
+                    </button>
+
+                    <ng-template #loadingAnimation>
+                    <div class="flex items-center justify-center">
+                      <div class="animate-spin rounded-full mr-3 h-8 w-8 border-t-2 border-b-2 border-[#9e6207]"></div>
+                      <span>Saving...</span>
+                    </div>
+                  </ng-template>
+
+                  <button
+                      class="bg-red-600 text-white py-1 px-8 font-cormorant border text-xl rounded-lg hover:bg-white hover:text-red-500 hover:border hover:border-red-500 transition-transform duration-300 transform"
+                      [disabled]="isSaving"
+                      (click)="cancelEdit()"
+                    >
+                    Cancel
+                    </button>
+                    <!-- <button (click)="cancelEdit()">Cancel</button> -->
+                  </div>
                 </div>
+
               </div>
             </ng-container>
           </ng-container>

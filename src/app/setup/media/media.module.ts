@@ -8,11 +8,15 @@ import { MaterialModule } from 'src/app/app.material.module';
 import { GalleriaModule } from 'primeng/galleria';
 import { MediaFormComponent } from '../ui-forms/media-form/media-form.component';
 import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
+import { PromotionListComponent } from './promotion-list/promotion-list.component';
+import { PromoFormComponent } from '../ui-forms/promo-form/promo-form.component';
 
 @NgModule({
   declarations: [
     MediaListComponent,
-    MediaFormComponent
+    MediaFormComponent,
+    PromotionListComponent,
+    PromoFormComponent
   ],
   imports: [
     CommonModule,

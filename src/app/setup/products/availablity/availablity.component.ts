@@ -34,7 +34,15 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
       private availability:AvaialablityService,
       private product:ProductService,     private changeDetectorRef: ChangeDetectorRef,
       ) {
-      this.getProducts();
+         product.getProducts().then(res=>{
+           this.product.cachedProductListObservable$.subscribe(res=>{
+             console.log('Obx : ', res.data);
+             this.products=res.data;
+             this.getAllProds(this.products);
+           })
+         })
+
+      // this.getProducts();
       this.user = this.auth.getSavedUser();
       console.log(this.user)
       this.userRole=this.user.role
@@ -42,49 +50,92 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
 
     async getProducts() {
       try {
+
         let product = await this.product.getProducts();
-        this.products=product.data
-        console.log('Products:',this.products);
-        const data = this.products.filter((data:any)=>data.branchProducts.length>0);
-        console.log('By Br-Pr: ', data)
+        this.product.cachedProductListObservable$.subscribe(res=>{
+          console.log('Obx : ', res.data);
+          this.products=res.data;
+          this.getAllProds(this.products);
+        })
+      //   console.log('Products:',this.products);
+      //   const data = this.products.filter((data:any)=>data.branchProducts.length>0);
+      //   console.log('By Br-Pr: ', data)
 
 
-        const productBranchPairs = [];
-        for (const product of data) {
-          const productName = product.name;
-          const productId=product.id;
-          for (const branchProduct of product.branchProducts) {
-              const branchName = branchProduct.branch.branchName;
-              const branchId = branchProduct.branch.id;
-              const id=branchProduct.id;
-              const isAvailable= branchProduct.isAvailable
-              const maxThreshold= branchProduct.maxThreshold
-              const minThreshold=branchProduct.minThreshold
-              const type= branchProduct.type
-               productBranchPairs.push({id:id, isAvailable:isAvailable, maxThreshold:maxThreshold, minThreshold:minThreshold, type:type, productName: productName,branchId:branchId, branchName: branchName, productId:productId});
-          }
-        }
-        if(this.userRole=="Branch_Admin"){
-        this.dataFiltered=productBranchPairs.filter(product=>product.branchId===this.user.branch)
-        }
-        else{
-          this.dataFiltered=productBranchPairs;
-        }
-        this.dataSource = new MatTableDataSource<any>(this.dataFiltered);
-      setTimeout(() => {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }, 0);
+      //   for (const product of data) {
+      //     const productName = product.name;
+      //     const productId=product.id;
+      //     for (const branchProduct of product.branchProducts) {
+      //         const branchName = branchProduct.branch.branchName;
+      //         const branchId = branchProduct.branch.id;
+      //         const id=branchProduct.id;
+      //         const isAvailable= branchProduct.isAvailable
+      //         const maxThreshold= branchProduct.maxThreshold
+      //         const minThreshold=branchProduct.minThreshold
+      //         const type= branchProduct.type
+      //          productBranchPairs.push({id:id, isAvailable:isAvailable, maxThreshold:maxThreshold, minThreshold:minThreshold, type:type, productName: productName,branchId:branchId, branchName: branchName, productId:productId});
+      //     }
+      //   }
+      //   if(this.userRole=="Branch_Admin"){
+      //   this.dataFiltered=productBranchPairs.filter(product=>product.branchId===this.user.branch)
+      //   }
+      //   else{
+      //     this.dataFiltered=productBranchPairs;
+      //   }
+      //   this.dataSource = new MatTableDataSource<any>(this.dataFiltered);
+      // setTimeout(() => {
+      //   this.dataSource.paginator = this.paginator;
+      //   this.dataSource.sort = this.sort;
+      // }, 0);
 
-      this.dataLoaded=true;
+      // this.dataLoaded=true;
 
-        console.log("Branch Products",productBranchPairs);
+      //   console.log("Branch Products",productBranchPairs);
       } catch (error) {
         console.error(error);
       }finally {
         this.isLoading = false; // Move isLoading assignment inside the finally block
       }
 
+    }
+    getAllProds(product:any){
+      const productBranchPairs = [];
+
+      // this.products=product.data
+      console.log('Products:',product);
+      const data = this.products.filter((data:any)=>data.branchProducts.length>0);
+      console.log('By Br-Pr: ', data)
+
+
+      for (const product of data) {
+        const productName = product.name;
+        const productId=product.id;
+        for (const branchProduct of product.branchProducts) {
+            const branchName = branchProduct.branch.branchName;
+            const branchId = branchProduct.branch.id;
+            const id=branchProduct.id;
+            const isAvailable= branchProduct.isAvailable
+            const maxThreshold= branchProduct.maxThreshold
+            const minThreshold=branchProduct.minThreshold
+            const type= branchProduct.type
+             productBranchPairs.push({id:id, isAvailable:isAvailable, maxThreshold:maxThreshold, minThreshold:minThreshold, type:type, productName: productName,branchId:branchId, branchName: branchName, productId:productId});
+        }
+      }
+      if(this.userRole=="Branch_Admin"){
+      this.dataFiltered=productBranchPairs.filter(product=>product.branchId===this.user.branch)
+      }
+      else{
+        this.dataFiltered=productBranchPairs;
+      }
+      this.dataSource = new MatTableDataSource<any>(this.dataFiltered);
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, 0);
+
+    this.dataLoaded=true;
+
+      console.log("Branch Products",productBranchPairs);
     }
     isButtonDisabled(userRole: string): boolean {
       return userRole === 'Branch_Admin';
@@ -140,6 +191,8 @@ import { AvaialablityService } from 'src/app/services/availablity/avaialablity.s
       console.log(data)
      }, (err:any) => {
        console.log(err);
+       dialogRef.componentInstance.isSaving=false;
+
    });
 
     }

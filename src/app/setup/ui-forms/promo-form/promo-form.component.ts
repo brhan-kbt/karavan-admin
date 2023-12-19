@@ -1,23 +1,25 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/services/category.service';
 import { SubCategoryService } from 'src/app/services/sub-category/sub-category.service';
 import { ProductFormComponent } from '../product-form/product-form.component';
 import { UserService } from 'src/app/services/user/user.service';
 import { BranchService } from 'src/app/services/branch/branch.service';
+import { ProductService } from 'src/app/services/product/product.service';
 
 @Component({
-  selector: 'app-media-form',
-  templateUrl: './media-form.component.html',
-  styleUrls: ['./media-form.component.scss']
+  selector: 'app-promo-form',
+  templateUrl: './promo-form.component.html',
+  styleUrls: ['./promo-form.component.scss']
 })
-export class MediaFormComponent {
+export class PromoFormComponent implements OnInit{
   @Input() isEdit = false;
   @Input() mediaData: any = {
     title: '',
     description: '',
     type: 1,
+    productId:'',
     image: '',
   };
 
@@ -31,24 +33,33 @@ export class MediaFormComponent {
   selectedSubCategoriesField: any;
   selectedCat: number = 0;
   branches:any;
+  products:any;
+  filteredProducts: any[] = [];
+  formSearch!:FormGroup;
+  searchTerm: string = '';
+
 
   selectedImage!: File ;
   // @Output() save = new EventEmitter<any>();
   @Output() save = new EventEmitter<any>();
   @Output() saveEdit = new EventEmitter<any>();
   constructor(
-    public dialogRef: MatDialogRef<MediaFormComponent>,
+    private fb:FormBuilder,
+    public dialogRef: MatDialogRef<PromoFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private category: CategoryService,
     private subcat: SubCategoryService,
     private user:UserService,
-    private branch:BranchService
+    private branch:BranchService,
+    private product:ProductService
   ) {
+
+
     this.isEdit = data.isEdit;
 
     if (this.isEdit) {
-      this.mediaData = data.user; // Access the candidate from the passed data
+      this.mediaData = data.promo; // Access the candidate from the passed data
     } else {
       this.mediaData = null;
     }
@@ -57,11 +68,41 @@ export class MediaFormComponent {
 
     this.form = this.formBuilder.group({
       title: [this.mediaData?.title || ''],
-      description: [this.mediaData?.alt || null, [Validators.required]],
+      description: [this.mediaData?.description || null, [Validators.required]],
       type: [this.mediaData?.type || null, [Validators.required]],
+      productId: [this.mediaData?.productId || null],
+      searchControl: [''],
     });
 
+    product.getProducts().then(res=>{
+      console.log("Products : ",res);
+      this.products=res.data;
+      this.filteredProducts=[...this.products];
+    })
+
     this.getBranches();
+  }
+
+  displayProduct(product: any): string {
+    return product ? product.name : '';
+  }
+
+  ngOnInit() {
+    this.formSearch = this.fb.group({
+
+    });
+
+    this.form.get('searchControl')?.valueChanges.subscribe((value: string) => {
+      this.filterProducts(value);
+    });
+  }
+
+  filterProducts(searchTerm: string): void {
+    console.log(searchTerm);
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    this.filteredProducts = this.products.filter((product: any) =>
+      product.name.toLowerCase().includes(lowerCaseSearchTerm)
+    );
   }
 
 
@@ -94,64 +135,29 @@ handleRole(event: any): void {
   console.log(this.showBranchSelection);
 }
 
-  onCategorySelectionChange(event: any) {
-    this.selectedCat = event.value;
-    this.getById();
-
-    console.log('Selected Category:', event.value);
-  }
-
-  async getById() {
-    try {
-      let sub = await this.subcat.getById(this.selectedCat);
-      this.subCategories = sub;
-      console.log('All Sub-Categories:', this.subCategories);
-
-      // Create a new array with only categoryName and categoryId
-      this.selectedSubCategoriesField = this.subCategories.map((subCategory: any) => {
-        return {
-          subCategoryName: subCategory.subCategoryName,
-          id: subCategory.subCategoryId
-        };
-      });
-
-      console.log('Selected Sub Categories:', this.selectedSubCategoriesField);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async getSubCategories() {
-    try {
-      let subcategory = await this.subcat.getAll();
-      this.subCategories = subcategory;
-      console.log('Categories:', this.subCategories);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   onSave(): void {
     console.log(this.form.value);
     console.log(this.selectedImage);
     const formData = new FormData();
-    if(this.form.value){
-      formData.append('title', this.form.get('title')?.value);
-      formData.append('type', this.form.get('type')?.value);
-      formData.append('description', this.form.get('description')?.value);
-      formData.append('image', this.selectedImage );
-      if(!this.isEdit){
-        this.save.emit(formData)
-        }
-        else{
-          console.log('eDit');
-          this.save.emit({formData, id:1});
+     if(this.form.value){
+       formData.append('title', this.form.get('title')?.value);
+       formData.append('type', this.form.get('type')?.value);
+       formData.append('description', this.form.get('description')?.value);
+       formData.append('productId', this.form.get('productId')?.value);
+       formData.append('image', this.selectedImage );
+       if(!this.isEdit){
+         this.save.emit(formData)
+         }
+         else{
+           console.log('eDit');
+           this.save.emit({formData, id:1});
 
-        }
-    }
-    else{
-      console.log('Invalid')
-    }
+         }
+     }
+     else{
+       console.log('Invalid')
+     }
 
   }
   selectedImagePreview: string | undefined;
