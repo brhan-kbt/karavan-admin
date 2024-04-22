@@ -1,0 +1,64 @@
+
+<div class="flex flex-col">
+    <h2 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Seasonal Product</h2>
+    <mat-dialog-content class="mat-typography" >
+      <form [formGroup]="form" class="flex flex-col space-y-5 pt-3">
+
+
+
+        <div >
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Select Product</mat-label>
+              <mat-select formControlName="productId" [value]="product?.productId" required>
+                <ng-container *ngFor="let product of products">
+                  <mat-option [value]="product.id">{{ product.name }}</mat-option>
+                </ng-container>
+              </mat-select>
+            <mat-error *ngIf=" !serverErrors  && form.get('productId')?.touched && form.get('productId')?.invalid">Select Product </mat-error>
+            </mat-form-field>
+            <mat-error class="-mt-5 text-xs" *ngIf="serverErrors && serverErrors['productId']"> {{ serverErrors['productId'] }}</mat-error>
+
+          </div>
+
+        <div class="">
+          <div >
+
+
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Select Product</mat-label>
+              <mat-select formControlName="categoryId"   (selectionChange)="onCategorySelectionChange($event)">
+                <ng-container *ngFor="let category of selectedCategoriesField">
+                  <mat-option [value]="category.id">{{category.categoryName}} </mat-option>
+                </ng-container>
+              </mat-select>
+            <mat-error *ngIf="  !serverErrors  && form.get('categoryId')?.touched && form.get('categoryId')?.invalid">Select Category</mat-error>
+
+            </mat-form-field>
+            <mat-error class="-mt-5 text-xs" *ngIf="serverErrors && serverErrors['categoryid']"> {{ serverErrors['categoryid'] }}</mat-error>
+
+
+          </div>
+
+
+        </div>
+
+
+        <button
+        class="bg-[#0E483F] text-white py-2 px-4 font-cormorant text-xl rounded-lg hover:bg-white hover:text-[#0E483F] hover:border hover:border-[#0E483F] transition-transform duration-300 transform"
+        [disabled]="isSaving"
+        (click)="onSave()"
+      >
+      <ng-container *ngIf="!isSaving; else loadingAnimation">
+       Save
+     </ng-container>
+      </button>
+
+      <ng-template #loadingAnimation>
+       <div class="flex items-center justify-center">
+         <div class="animate-spin rounded-full mr-3 h-8 w-8 border-t-2 border-b-2 border-[#9e6207]"></div>
+         <span>Saving...</span>
+       </div>
+     </ng-template>
+      </form>
+    </mat-dialog-content>
+  </div>

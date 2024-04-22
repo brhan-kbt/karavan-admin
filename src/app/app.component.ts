@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from './services/auth/auth.service';
+import { Meta } from '@angular/platform-browser';
 interface SideNavToggle{
   screenWidth:number;
   collapsed:boolean;
@@ -17,11 +18,33 @@ export class AppComponent implements OnInit{
   screenWidth=0;
   isLoginPage:any;
   loggedIn:boolean=false;
-  constructor(private router:Router, private auth:AuthService){
+  constructor(private router:Router, private auth:AuthService,private meta:Meta){
 
   }
 
   ngOnInit() {
+    this.meta.addTag({ name: 'title', content: 'Karavan - Your Go-To Destination' });
+
+    this.meta.addTag(
+      {
+        name:'description',
+        content:`
+        Discover the heart
+                of Ethiopia at Karavan - your go-to destination for
+                exquisite cakes, gourmet coffee, and delightful cuisine.
+                Explore our diverse menu, embrace the warm ambiance, and
+                experience the unique flavors of Ethiopia. Visit us today!`
+      });
+      this.meta.addTag({
+        name:'keywords',
+        content:`
+        Ethiopian café,
+        Best cakes Ethiopia,
+        Gourmet coffee Ethiopia,
+        Ethiopian cuisine,
+        Café in Ethiopia
+        `
+      })
     this.auth.loggedIn$.subscribe(logged=>{
       this.loggedIn=logged;
     })
@@ -48,4 +71,7 @@ export class AppComponent implements OnInit{
     this.screenWidth=data.screenWidth;
     this.isSideNavCollapsed=data.collapsed;
   }
+
+
+
 }
