@@ -152,10 +152,10 @@ updateSeasonalStatus(row:any){
   }
   console.log(productData)
 
-  this.product.updateOrderable(productData).then(res=>{
+  this.product.deleteSeasonalProduct(row.id).subscribe(res=>{
     console.log(res)
-    // this.fetchAndUpdateProducts();
-  }).catch(err=>{
+    this.fetchAndUpdateSeasonalProducts();
+  }, err=>{
     console.log(err)
   })
 }

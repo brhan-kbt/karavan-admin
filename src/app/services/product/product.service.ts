@@ -185,12 +185,13 @@ export class ProductService {
   }
 
 
-  // deleteProduct(id:number){
-  //   return this.http.delete<Product>("http://localhost:3000/products"+id)
-  //           .pipe(map((res:Product)=>{
-  //             return res;
-  //           }))
-  // }
+   deleteSeasonalProduct(id:any){
+     const url = this.popularProductUrl + '/PopularProduct/delete-seasonal-product'
+            return this.http.delete<any>(`${url}/${id}`)
+             .pipe(map((res:Product)=>{
+               return res;
+      }))
+   }
 
   private updateCachedProductList(updatedProduct: any): void {
     console.log('Updated Product Cat:', updatedProduct);
