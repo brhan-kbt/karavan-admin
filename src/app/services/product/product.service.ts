@@ -193,6 +193,14 @@ export class ProductService {
       }))
    }
 
+  changePopularityType(data: any) {
+    const url = this.popularProductUrl + '/PopularProduct/update-popularity-setting';
+    return this.http.put<any>(`${url}`, data).pipe(map((res:Product)=>{
+      return res;
+    }))
+  }
+
+
   private updateCachedProductList(updatedProduct: any): void {
     console.log('Updated Product Cat:', updatedProduct);
     console.log('Cached Product Cat:', this.cachedProduct.data);

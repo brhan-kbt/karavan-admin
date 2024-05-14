@@ -11,6 +11,7 @@ import { IngredientProductComponent } from '../../ui-forms/ingredient-product/in
 import { IngredientService } from 'src/app/services/ingredient/ingredient.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SeasolProductComponent } from '../../ui-forms/seasol-product/seasol-product.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-seasonal-products',
   templateUrl: './seasonal-products.component.html',
@@ -30,18 +31,30 @@ export class SeasonalProductsComponent {
   isSaving:boolean=false;
   user:any;
   userRole:any;
+  selectedType: number;
+  popularityForm!:FormGroup;
+
+
 
   constructor(private dialog:MatDialog,
     private auth:AuthService,
     private product:ProductService,
+    private fb:FormBuilder,
     private ing:IngredientService,
       private changeDetectorRef: ChangeDetectorRef,
     ) {
 
+     this.popularityForm = this.fb.group({
+        popularityType: 0
+      })
+
+      this.selectedType = 0;
+
+
       product.cachedSeasonalProductListObservable$.subscribe(res=>{
         console.log('New Seasonal Product List : ', res);
 
-        const mergedArray = ([] as any[]).concat(...Object.values(res.data));
+        const mergedArray = res.data ? ([] as any[]).concat(...Object.values(res.data)):[];
         this.products = mergedArray;
 
         console.log(' Seasonal Products:', this.products);
@@ -57,14 +70,29 @@ export class SeasonalProductsComponent {
       this.user = this.auth.getSavedUser();
       console.log(this.user)
       this.userRole=this.user.role
-    this.getSeasonalProducts();
+      this.getSeasonalProducts();
 
 
 
   }
 
+  onTypeSelectionChange(value: number) {
+    this.selectedType = value;
+
+
+  }
   ngOnInit(){
 
+  }
+
+  changePopularType() {
+    this.selectedType = 0;
+    console.log('====================================');
+    console.log(this.popularityForm.value);
+    console.log('====================================');
+    this.product.changePopularityType(this.popularityForm.value).subscribe(res=>{
+      console.log(res)
+     })
   }
   async getSeasonalProducts() {
     try {
