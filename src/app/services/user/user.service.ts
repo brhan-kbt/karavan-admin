@@ -8,6 +8,8 @@ import { environment } from 'src/environments/environment';
 })
 export class UserService {
   baseUrl: string = `${environment.apiUrl}/admin/user/list`;
+  a_baseUrl: string = `${environment.apiUrl}`;
+
   cache: { [key: string]: any | undefined } = {}; // Internal cache object
 
   constructor(private http: HttpClient) { }
@@ -63,7 +65,7 @@ export class UserService {
 
   async updateStatus(data: any) {
     if(data && data.id){
-    const res = await this.http.put<any>(`http://196.189.119.123/admin/user/update-status/${data.id}`, data).toPromise();
+    const res = await this.http.put<any>(`${this.a_baseUrl}/admin/user/update-status/${data.id}`, data).toPromise();
     return res;
     }else{
       return 'Failed to update Status';
@@ -73,7 +75,7 @@ export class UserService {
 
   async updateBranchofAdmin(data: any) {
     if(data && data.id){
-      const res = await this.http.put<any>(`http://196.189.119.123/admin/user/update-admin-branch/${data.id}`, data).toPromise();
+      const res = await this.http.put<any>(`${this.a_baseUrl}/admin/user/update-admin-branch/${data.id}`, data).toPromise();
       return res;
     }
     else{
@@ -84,7 +86,7 @@ export class UserService {
 
   async updateRole(data: any) {
     if(data && data.id){
-      const res = await this.http.put<any>(`http://196.189.119.123/admin/user/update-role/${data.id}`, data).toPromise();
+      const res = await this.http.put<any>(`${this.a_baseUrl}/admin/user/update-role/${data.id}`, data).toPromise();
       return res;
     }
     else{
@@ -93,7 +95,7 @@ export class UserService {
   }
 
    deleteUser(data:any){
-    return this.http.put<any>(`http://196.189.119.123/admin/user/softDelete/${data.id}`, data).pipe(
+    return this.http.put<any>(`${this.a_baseUrl}/admin/user/softDelete/${data.id}`, data).pipe(
       map((res: any) => {
         this.updateCache();
         console.log('====================================');
@@ -104,7 +106,7 @@ export class UserService {
    }
 
    deleteUserPermanently(id:any){
-    return this.http.delete<any>(`http://196.189.119.123/admin/user/delete/${id}`).pipe(
+    return this.http.delete<any>(`${this.a_baseUrl}/admin/user/delete/${id}`).pipe(
       map((res: any) => {
         this.updateCache();
         console.log('====================================');
