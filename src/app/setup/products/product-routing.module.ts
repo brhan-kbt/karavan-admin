@@ -5,6 +5,7 @@ import { ProductsListComponent } from './products-list/products-list.component';
 import { AvailablityComponent } from './availablity/availablity.component';
 import { IngredeintComponent } from './ingredeint/ingredeint.component';
 import { ProductIngredientComponent } from './product-ingredient/product-ingredient.component';
+import { SeasonalProductsComponent } from './seasonal-products/seasonal-products.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path:'list',
     component:ProductsListComponent
+  },
+  {
+    path:'seasonal',
+    component:SeasonalProductsComponent
   },
   {
     path:'ingredients-list',

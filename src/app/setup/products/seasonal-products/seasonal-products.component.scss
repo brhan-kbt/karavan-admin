@@ -1,0 +1,6 @@
+.custom-color .mat-progress-spinner-primary circle {
+    stroke: #0E483F;
+  }
+  .mat-mdc-progress-spinner{
+    --mdc-circular-progress-active-indicator-color: #0E483F !important;
+  }

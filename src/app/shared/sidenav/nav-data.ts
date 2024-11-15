@@ -130,6 +130,12 @@ export const navbarData:INavbarData[]=[
                 label:'Availability'
                 },
 
+                {
+                    routeLink:'products/seasonal',
+                    icon:'fal fa-list',
+                    label:'Seasonal'
+                    },
+
         ]
     },
     {

@@ -23,6 +23,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { ProductIngredientComponent } from './product-ingredient/product-ingredient.component';
 import { SharedModule } from 'src/app/shared/shimmer/table-shimmer-effect/shared.module';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { SeasonalProductsComponent } from './seasonal-products/seasonal-products.component';
+import { SeasolProductComponent } from '../ui-forms/seasol-product/seasol-product.component';
 
 
 @NgModule({
@@ -31,6 +33,8 @@ import { MatTableExporterModule } from 'mat-table-exporter';
     AvailablityComponent,
     IngredeintComponent,
     ProductIngredientComponent,
+    SeasonalProductsComponent,
+    SeasolProductComponent,
   ],
   imports: [
     CommonModule,

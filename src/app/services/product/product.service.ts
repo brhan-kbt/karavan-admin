@@ -10,13 +10,17 @@ import { WebsocketService } from '../web-socket/web-socket.service';
 })
 export class ProductService {
   baseUrl: string = `${environment.apiUrl}/api/Product`;
+  popularProductUrl: string = `${environment.apiUrl}/api`;
   cache: { [key: string]: Product | undefined } = {}; // Internal cache object
   private cachedProduct: any;
+  private cachedSProduct: any;
 
   private cachedProductList$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private cachedSeasonalProductList$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   // Expose it as an observable
   public cachedProductListObservable$: Observable<any> = this.cachedProductList$.asObservable();
+  public cachedSeasonalProductListObservable$: Observable<any> = this.cachedSeasonalProductList$.asObservable();
 
   constructor(private http: HttpClient, private webSocketService:WebsocketService) {
     webSocketService.startConnection();
@@ -91,6 +95,28 @@ export class ProductService {
     }
   }
 
+
+  async getSeasonalProducts() {
+    const url = this.popularProductUrl + '/PopularProduct?products=4'
+    const cacheKey = 'seasonalProducts';
+    if (this.cache[cacheKey]) {
+      console.log('From Cache');
+      return this.cache[cacheKey];
+    } else {
+      try {
+        const res = await this.http.get<any>(url).toPromise();
+        this.cache[cacheKey] = res; // Store data in cache
+        this.cachedSProduct=res;
+        this.cachedSeasonalProductList$.next(res);
+        console.log('From Api', res)
+        return res;
+      } catch (error) {
+        console.log(error)
+      }
+
+    }
+  }
+
  async getProdBySubCategory(id:any){
    let prod = await this.getProducts();
    const filtered= prod.data.filter((data:any)=>data.subCategoryId===id);
@@ -118,6 +144,13 @@ export class ProductService {
 
   async saveProduct(data: Product) {
     const url = this.baseUrl + '/create'
+    console.log(data);
+    const res = await this.http.post<Product>(url, data).toPromise();
+    return res;
+  }
+
+  async saveSeasonalProduct(data: Product) {
+    const url = this.popularProductUrl + '/PopularProduct/create-seasonal-products'
     console.log(data);
     const res = await this.http.post<Product>(url, data).toPromise();
     return res;
@@ -152,12 +185,21 @@ export class ProductService {
   }
 
 
-  // deleteProduct(id:number){
-  //   return this.http.delete<Product>("http://localhost:3000/products"+id)
-  //           .pipe(map((res:Product)=>{
-  //             return res;
-  //           }))
-  // }
+   deleteSeasonalProduct(id:any){
+     const url = this.popularProductUrl + '/PopularProduct/delete-seasonal-product'
+            return this.http.delete<any>(`${url}/${id}`)
+             .pipe(map((res:Product)=>{
+               return res;
+      }))
+   }
+
+  changePopularityType(data: any) {
+    const url = this.popularProductUrl + '/PopularProduct/update-popularity-setting';
+    return this.http.put<any>(`${url}`, data).pipe(map((res:Product)=>{
+      return res;
+    }))
+  }
+
 
   private updateCachedProductList(updatedProduct: any): void {
     console.log('Updated Product Cat:', updatedProduct);
